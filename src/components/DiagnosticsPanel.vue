@@ -29,7 +29,7 @@ function toggleExpanded(idx: number): void {
 }
 
 function onIssueClick(issue: Issue, idx: number): void {
-  if (issue.detail || issue.suggestion) toggleExpanded(idx)
+  if (issue.detail || issue.suggestion || issue.fixType) toggleExpanded(idx)
 }
 
 function onNodeBadgeClick(e: MouseEvent, issue: Issue): void {
@@ -216,15 +216,8 @@ const verdictIcon = computed(() => {
                 <p class="text-gray-200 text-xs leading-relaxed">{{ issue.message }}</p>
               </div>
 
-              <!-- Per-issue fix button -->
-              <button
-                v-if="issue.fixable && issue.fixType"
-                class="flex-shrink-0 px-2 py-0.5 rounded text-xs font-semibold border border-[#39ff14]/40 text-[#39ff14] hover:bg-[#39ff14]/10 hover:border-[#39ff14]/70 transition-colors duration-150 cursor-pointer"
-                @click.stop="emit('fix', issue.fixType!)"
-              >Fix</button>
-
               <svg
-                v-if="issue.detail || issue.suggestion"
+                v-if="issue.detail || issue.suggestion || issue.fixType"
                 class="w-3.5 h-3.5 text-gray-600 flex-shrink-0 mt-1 transition-transform duration-150"
                 :class="expanded.has(idx) ? 'rotate-180' : ''"
                 fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
@@ -235,7 +228,7 @@ const verdictIcon = computed(() => {
 
             <!-- Expandable detail + fix -->
             <div
-              v-if="(issue.detail || issue.suggestion) && expanded.has(idx)"
+              v-if="(issue.detail || issue.suggestion || issue.fixType) && expanded.has(idx)"
               class="border-t px-3 py-2 flex flex-col gap-1.5"
               :class="severityExpandBg(issue.severity)"
             >
@@ -243,9 +236,16 @@ const verdictIcon = computed(() => {
                 <span class="text-gray-500 text-xs font-semibold uppercase tracking-wide flex-shrink-0 mt-0.5">Detail</span>
                 <p class="text-gray-400 text-xs leading-relaxed">{{ issue.detail }}</p>
               </div>
-              <div v-if="issue.suggestion" class="flex gap-2">
-                <span class="text-blue-500 text-xs font-semibold uppercase tracking-wide flex-shrink-0 mt-0.5">Fix</span>
-                <p class="text-blue-300 text-xs leading-relaxed">{{ issue.suggestion }}</p>
+              <div v-if="issue.suggestion || issue.fixType" class="flex items-start justify-between gap-3">
+                <div v-if="issue.suggestion" class="flex gap-2 flex-1 min-w-0">
+                  <span class="text-blue-500 text-xs font-semibold uppercase tracking-wide flex-shrink-0 mt-0.5">Fix</span>
+                  <p class="text-blue-300 text-xs leading-relaxed">{{ issue.suggestion }}</p>
+                </div>
+                <button
+                  v-if="issue.fixable && issue.fixType"
+                  class="flex-shrink-0 px-2.5 py-1 rounded text-xs font-semibold border border-[#39ff14]/50 text-[#39ff14] hover:bg-[#39ff14]/10 hover:border-[#39ff14]/80 transition-colors duration-150 cursor-pointer"
+                  @click.stop="emit('fix', issue.fixType!)"
+                >Apply Fix</button>
               </div>
             </div>
           </div>
