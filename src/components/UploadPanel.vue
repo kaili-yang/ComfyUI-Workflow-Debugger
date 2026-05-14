@@ -3,11 +3,14 @@ import { ref } from 'vue'
 
 const props = defineProps<{
   fileName: string | null
+  schemaStatus: 'idle' | 'loading' | 'connected' | 'error'
+  schemaNodeCount: number
 }>()
 
 const emit = defineEmits<{
   fileLoaded: [name: string, content: string]
   reset: []
+  connect: [url: string]
 }>()
 
 const features = [
@@ -23,6 +26,7 @@ const features = [
 const isDragging = ref(false)
 const errorMsg = ref<string | null>(null)
 const fileInputEl = ref<HTMLInputElement | null>(null)
+const serverUrl = ref('http://localhost:8188')
 
 function readFile(file: File): void {
   errorMsg.value = null
@@ -87,6 +91,43 @@ function triggerInput(): void {
           <span class="text-xs text-gray-300">{{ item.label }}</span>
           <span v-if="!item.done" class="ml-1.5 text-[10px] text-gray-600 font-mono">coming soon</span>
         </div>
+      </div>
+    </div>
+
+    <!-- Connection section -->
+    <div class="flex-shrink-0 px-4 py-3 border-b border-gray-800">
+      <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">ComfyUI Server</p>
+      <div class="flex gap-2">
+        <input
+          v-model="serverUrl"
+          type="text"
+          placeholder="http://localhost:8188"
+          class="flex-1 min-w-0 text-xs bg-gray-900 border border-gray-700 rounded-lg px-2.5 py-1.5 text-gray-300 placeholder-gray-600 focus:outline-none focus:border-gray-500 transition-colors"
+          @keydown.enter="emit('connect', serverUrl)"
+        />
+        <button
+          class="px-2.5 py-1.5 text-xs rounded-lg border transition-colors whitespace-nowrap"
+          :class="props.schemaStatus === 'loading'
+            ? 'bg-gray-800 border-gray-700 text-gray-500 cursor-not-allowed'
+            : 'bg-gray-800 hover:bg-gray-700 border-gray-700 hover:border-gray-600 text-gray-300'"
+          :disabled="props.schemaStatus === 'loading'"
+          @click="emit('connect', serverUrl)"
+        >
+          {{ props.schemaStatus === 'loading' ? '…' : 'Connect' }}
+        </button>
+      </div>
+      <div class="flex items-center gap-1.5 mt-2 min-h-[16px]">
+        <template v-if="props.schemaStatus === 'loading'">
+          <span class="text-xs text-gray-500">Connecting…</span>
+        </template>
+        <template v-else-if="props.schemaStatus === 'connected'">
+          <span class="w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
+          <span class="text-xs text-green-400">Connected · {{ props.schemaNodeCount }} nodes</span>
+        </template>
+        <template v-else-if="props.schemaStatus === 'error'">
+          <span class="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
+          <span class="text-xs text-red-400">Connection failed — check the URL and CORS</span>
+        </template>
       </div>
     </div>
 

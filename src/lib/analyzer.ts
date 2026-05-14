@@ -2,6 +2,8 @@ import type {
   AnalysisResult,
   GraphWorkflow,
   Issue,
+  NodeInputConfig,
+  ObjectInfo,
   WorkflowLink,
   WorkflowNode,
 } from '../types/workflow'
@@ -48,7 +50,80 @@ function modeLabel(mode: number): string {
   return labels[mode] ?? `mode-${mode}`
 }
 
-function analyzeGraph(workflow: GraphWorkflow): Issue[] {
+// ---------------------------------------------------------------------------
+// Schema-based widget value checks (requires ObjectInfo from /object_info)
+// ---------------------------------------------------------------------------
+
+const WIDGET_PRIMITIVE_TYPES = new Set(['INT', 'FLOAT', 'STRING', 'BOOLEAN'])
+
+function checkWidgetValues(node: WorkflowNode, schemaDef: { input: { required?: Record<string, [string | string[], NodeInputConfig?]>; optional?: Record<string, [string | string[], NodeInputConfig?]> } }): Issue[] {
+  const issues: Issue[] = []
+  const values = node.widgets_values
+  if (!values?.length) return issues
+
+  const allInputs: [string, [string | string[], NodeInputConfig?]][] = [
+    ...Object.entries(schemaDef.input.required ?? {}),
+    ...Object.entries(schemaDef.input.optional ?? {}),
+  ]
+
+  // Inputs that have an active link — they don't consume a widgets_values slot
+  const connectedInputs = new Set(
+    (node.inputs ?? [])
+      .filter((i) => i.link !== null && i.link !== undefined)
+      .map((i) => i.name),
+  )
+
+  let widgetIdx = 0
+  for (const [inputName, inputDef] of allInputs) {
+    if (widgetIdx >= values.length) break
+    const [inputType, config] = inputDef
+    const isCombo = Array.isArray(inputType)
+    const isPrimitive = !isCombo && WIDGET_PRIMITIVE_TYPES.has(inputType as string)
+    if (!isCombo && !isPrimitive) continue   // pure connection slot, not in widgets_values
+    if (connectedInputs.has(inputName)) continue  // wired via link, no widget value
+
+    const value = values[widgetIdx++]
+    const cfg = (config ?? {}) as NodeInputConfig
+
+    if (isCombo) {
+      const options = inputType as string[]
+      if (typeof value === 'string' && options.length > 0 && !options.includes(value)) {
+        issues.push({
+          severity: 'warning',
+          nodeId: node.id,
+          nodeType: node.type,
+          message: `Node ${node.type} (id: ${node.id}) input '${inputName}': value '${value}' is not in the allowed options`,
+          suggestion: `Valid options: ${options.slice(0, 8).join(', ')}${options.length > 8 ? ' …' : ''}`,
+        })
+      }
+    } else if (inputType === 'INT' || inputType === 'FLOAT') {
+      const num = Number(value)
+      if (!Number.isNaN(num)) {
+        if (cfg.min !== undefined && num < (cfg.min as number)) {
+          issues.push({
+            severity: 'error',
+            nodeId: node.id,
+            nodeType: node.type,
+            message: `Node ${node.type} (id: ${node.id}) input '${inputName}' value ${num} is below minimum ${cfg.min}`,
+            suggestion: `Set '${inputName}' to a value ≥ ${cfg.min}`,
+          })
+        }
+        if (cfg.max !== undefined && num > (cfg.max as number)) {
+          issues.push({
+            severity: 'error',
+            nodeId: node.id,
+            nodeType: node.type,
+            message: `Node ${node.type} (id: ${node.id}) input '${inputName}' value ${num} exceeds maximum ${cfg.max}`,
+            suggestion: `Set '${inputName}' to a value ≤ ${cfg.max}`,
+          })
+        }
+      }
+    }
+  }
+  return issues
+}
+
+function analyzeGraph(workflow: GraphWorkflow, objectInfo?: ObjectInfo): Issue[] {
   const issues: Issue[] = []
 
   // Build node map
@@ -311,6 +386,31 @@ function analyzeGraph(workflow: GraphWorkflow): Issue[] {
     }
   }
 
+  // -------------------------------------------------------------------
+  // Check 8 & 9: Schema checks (only when objectInfo is available)
+  // -------------------------------------------------------------------
+
+  if (objectInfo) {
+    for (const node of workflow.nodes) {
+      const schemaDef = objectInfo[node.type]
+
+      // Check 8: Node type not registered
+      if (!schemaDef) {
+        issues.push({
+          severity: 'error',
+          nodeId: node.id,
+          nodeType: node.type,
+          message: `Node type '${node.type}' (id: ${node.id}) is not registered in the connected ComfyUI instance`,
+          suggestion: `Install the custom node pack that provides '${node.type}', or check that ComfyUI has loaded it correctly`,
+        })
+        continue
+      }
+
+      // Check 9: Widget value range / options validation
+      issues.push(...checkWidgetValues(node, schemaDef))
+    }
+  }
+
   return issues
 }
 
@@ -325,7 +425,7 @@ interface ApiNode {
   _meta?: Record<string, unknown>
 }
 
-function analyzeApi(parsed: Record<string, ApiNode>): Issue[] {
+function analyzeApi(parsed: Record<string, ApiNode>, objectInfo?: ObjectInfo): Issue[] {
   const issues: Issue[] = []
   const nodeIds = new Set(Object.keys(parsed))
 
@@ -434,6 +534,20 @@ function analyzeApi(parsed: Record<string, ApiNode>): Issue[] {
     })
   }
 
+  // Schema check: missing node types
+  if (objectInfo) {
+    for (const [nodeId, node] of Object.entries(parsed)) {
+      if (!objectInfo[node.class_type]) {
+        issues.push({
+          severity: 'error',
+          nodeType: node.class_type,
+          message: `Node type '${node.class_type}' (id: ${nodeId}) is not registered in the connected ComfyUI instance`,
+          suggestion: `Install the custom node pack that provides '${node.class_type}', or check that ComfyUI has loaded it correctly`,
+        })
+      }
+    }
+  }
+
   return issues
 }
 
@@ -441,7 +555,7 @@ function analyzeApi(parsed: Record<string, ApiNode>): Issue[] {
 // Main entry point
 // ---------------------------------------------------------------------------
 
-export function analyzeWorkflow(jsonText: string): AnalysisResult {
+export function analyzeWorkflow(jsonText: string, objectInfo?: ObjectInfo): AnalysisResult {
   let parsed: unknown
   try {
     parsed = JSON.parse(jsonText)
@@ -462,7 +576,7 @@ export function analyzeWorkflow(jsonText: string): AnalysisResult {
   }
 
   if (isGraphFormat(parsed)) {
-    const issues = analyzeGraph(parsed)
+    const issues = analyzeGraph(parsed, objectInfo)
     return {
       format: 'graph',
       nodeCount: parsed.nodes.length,
@@ -474,7 +588,7 @@ export function analyzeWorkflow(jsonText: string): AnalysisResult {
 
   if (isApiFormat(parsed)) {
     const apiWorkflow = parsed as Record<string, ApiNode>
-    const issues = analyzeApi(apiWorkflow)
+    const issues = analyzeApi(apiWorkflow, objectInfo)
     return {
       format: 'api',
       nodeCount: Object.keys(apiWorkflow).length,

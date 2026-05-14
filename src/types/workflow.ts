@@ -72,3 +72,29 @@ export interface AnalysisResult {
   issues: Issue[]
   canRun: boolean
 }
+
+// ---------------------------------------------------------------------------
+// /object_info schema types
+// ---------------------------------------------------------------------------
+
+export interface NodeInputConfig {
+  default?: unknown
+  min?: number
+  max?: number
+  step?: number
+  multiline?: boolean
+  [key: string]: unknown
+}
+
+export interface NodeSchemaDef {
+  input: {
+    required?: Record<string, [string | string[], NodeInputConfig?]>
+    optional?: Record<string, [string | string[], NodeInputConfig?]>
+  }
+  output: string[]
+  output_name?: string[]
+  category: string
+  output_node?: boolean
+}
+
+export type ObjectInfo = Record<string, NodeSchemaDef>
