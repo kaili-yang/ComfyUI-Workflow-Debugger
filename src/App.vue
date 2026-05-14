@@ -49,6 +49,12 @@ async function connectToServer(url: string): Promise<void> {
   }
 }
 
+function disconnect(): void {
+  objectInfo.value = null
+  schemaStatus.value = 'idle'
+  if (rawContent.value) runAnalysis(rawContent.value)
+}
+
 function reset(): void {
   fileName.value = null
   rawContent.value = null
@@ -69,6 +75,7 @@ function reset(): void {
           @file-loaded="onFileLoaded"
           @reset="reset"
           @connect="connectToServer"
+          @disconnect="disconnect"
         />
       </div>
       <div class="flex-1 min-w-0 overflow-hidden">

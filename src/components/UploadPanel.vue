@@ -11,6 +11,7 @@ const emit = defineEmits<{
   fileLoaded: [name: string, content: string]
   reset: []
   connect: [url: string]
+  disconnect: []
 }>()
 
 const features = [
@@ -27,6 +28,12 @@ const isDragging = ref(false)
 const errorMsg = ref<string | null>(null)
 const fileInputEl = ref<HTMLInputElement | null>(null)
 const serverUrl = ref('http://localhost:8188')
+const serverEnabled = ref(false)
+
+function toggleServer(): void {
+  serverEnabled.value = !serverEnabled.value
+  if (!serverEnabled.value) emit('disconnect')
+}
 
 function readFile(file: File): void {
   errorMsg.value = null
@@ -96,39 +103,57 @@ function triggerInput(): void {
 
     <!-- Connection section -->
     <div class="flex-shrink-0 px-4 py-3 border-b border-gray-800">
-      <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">ComfyUI Server</p>
-      <div class="flex gap-2">
-        <input
-          v-model="serverUrl"
-          type="text"
-          placeholder="http://localhost:8188"
-          class="flex-1 min-w-0 text-xs bg-gray-900 border border-gray-700 rounded-lg px-2.5 py-1.5 text-gray-300 placeholder-gray-600 focus:outline-none focus:border-gray-500 transition-colors"
-          @keydown.enter="emit('connect', serverUrl)"
-        />
+      <!-- Header row with toggle -->
+      <div class="flex items-center justify-between mb-2">
+        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">ComfyUI Server</p>
         <button
-          class="px-2.5 py-1.5 text-xs rounded-lg border transition-colors whitespace-nowrap"
-          :class="props.schemaStatus === 'loading'
-            ? 'bg-gray-800 border-gray-700 text-gray-500 cursor-not-allowed'
-            : 'bg-gray-800 hover:bg-gray-700 border-gray-700 hover:border-gray-600 text-gray-300'"
-          :disabled="props.schemaStatus === 'loading'"
-          @click="emit('connect', serverUrl)"
+          class="relative inline-flex h-4 w-7 items-center rounded-full transition-colors duration-200 focus:outline-none"
+          :class="serverEnabled ? 'bg-green-500' : 'bg-gray-600'"
+          @click="toggleServer"
         >
-          {{ props.schemaStatus === 'loading' ? '…' : 'Connect' }}
+          <span
+            class="inline-block h-3 w-3 rounded-full bg-white shadow transition-transform duration-200"
+            :class="serverEnabled ? 'translate-x-3.5' : 'translate-x-0.5'"
+          />
         </button>
       </div>
-      <div class="flex items-center gap-1.5 mt-2 min-h-[16px]">
-        <template v-if="props.schemaStatus === 'loading'">
-          <span class="text-xs text-gray-500">Connecting…</span>
-        </template>
-        <template v-else-if="props.schemaStatus === 'connected'">
-          <span class="w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
-          <span class="text-xs text-green-400">Connected · {{ props.schemaNodeCount }} nodes</span>
-        </template>
-        <template v-else-if="props.schemaStatus === 'error'">
-          <span class="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
-          <span class="text-xs text-red-400">Connection failed — check the URL and CORS</span>
-        </template>
-      </div>
+
+      <!-- Connection form — only visible when enabled -->
+      <template v-if="serverEnabled">
+        <div class="flex gap-2">
+          <input
+            v-model="serverUrl"
+            type="text"
+            placeholder="http://localhost:8188"
+            class="flex-1 min-w-0 text-xs bg-gray-900 border border-gray-700 rounded-lg px-2.5 py-1.5 text-gray-300 placeholder-gray-600 focus:outline-none focus:border-gray-500 transition-colors"
+            @keydown.enter="emit('connect', serverUrl)"
+          />
+          <button
+            class="px-2.5 py-1.5 text-xs rounded-lg border transition-colors whitespace-nowrap"
+            :class="props.schemaStatus === 'loading'
+              ? 'bg-gray-800 border-gray-700 text-gray-500 cursor-not-allowed'
+              : 'bg-gray-800 hover:bg-gray-700 border-gray-700 hover:border-gray-600 text-gray-300'"
+            :disabled="props.schemaStatus === 'loading'"
+            @click="emit('connect', serverUrl)"
+          >
+            {{ props.schemaStatus === 'loading' ? '…' : 'Connect' }}
+          </button>
+        </div>
+        <div class="flex items-center gap-1.5 mt-2 min-h-[16px]">
+          <template v-if="props.schemaStatus === 'loading'">
+            <span class="text-xs text-gray-500">Connecting…</span>
+          </template>
+          <template v-else-if="props.schemaStatus === 'connected'">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
+            <span class="text-xs text-green-400">Connected · {{ props.schemaNodeCount }} nodes</span>
+          </template>
+          <template v-else-if="props.schemaStatus === 'error'">
+            <span class="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
+            <span class="text-xs text-red-400">Connection failed — check the URL and CORS</span>
+          </template>
+        </div>
+      </template>
+      <p v-else class="text-xs text-gray-600">Off — static analysis only</p>
     </div>
 
     <!-- Body -->
