@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
-import type { AnalysisResult, GraphWorkflow, SlotType, WorkflowNode } from '../types/workflow'
+import type { AnalysisResult, GraphWorkflow, SlotType, WorkflowLink, WorkflowNode } from '../types/workflow'
 import { applyFallbackLayout } from '../lib/shared/graph-layout'
 
 const renderError = ref<string | null>(null)
