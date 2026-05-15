@@ -197,12 +197,11 @@ function fixLinkTypeMetadata(workflow: GraphWorkflow): number {
 
 // ---- Public exports ----
 
-// Orchestrates 1a → 1b → 2 in the correct order.
-// Returns total change count.
-export function fixGhostLinks(workflow: GraphWorkflow): number {
-  let n = fixGhostLinkSlots(workflow)
-  n += fixGhostNodeRefs(workflow)
-  return n
+export function fixGhostLinks(workflow: GraphWorkflow): { slotChanges: number; nodeRefChanges: number } {
+  return {
+    slotChanges: fixGhostLinkSlots(workflow),
+    nodeRefChanges: fixGhostNodeRefs(workflow),
+  }
 }
 
 export { fixLinkTypeMetadata }
