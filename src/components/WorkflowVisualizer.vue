@@ -7,7 +7,10 @@ const renderError = ref<string | null>(null)
 const props = defineProps<{
   workflow: GraphWorkflow | null
   result: AnalysisResult | null
+  selectedNodeId: number | null
 }>()
+
+const emit = defineEmits<{ nodeSelect: [id: number | null] }>()
 
 // ─── Refs ────────────────────────────────────────────────────────────────────
 
@@ -38,6 +41,8 @@ let resizeObserver: ResizeObserver
 let panning = false
 let panLastX = 0
 let panLastY = 0
+let panDistance = 0
+let lastEmittedNodeId: number | null = null
 
 // ─── LiteGraph constants (matching ComfyUI source) ───────────────────────────
 // node.pos[1] = top of BODY; title bar is above at pos[1] - TITLE_H
@@ -397,6 +402,18 @@ function drawNode(ctx: CanvasRenderingContext2D, node: WorkflowNode): void {
   ctx.roundRect(x - 1, y - TITLE_H - 1, w + 2, h + TITLE_H + 2, ROUND_R + 1)
   ctx.stroke()
 
+  // ── Selection ring ──
+  if (node.id === props.selectedNodeId) {
+    ctx.strokeStyle = '#93c5fd'  // blue-300
+    ctx.lineWidth = 2.5
+    ctx.shadowColor = '#3b82f6'
+    ctx.shadowBlur = 14
+    ctx.beginPath()
+    ctx.roundRect(x - 4, y - TITLE_H - 4, w + 8, h + TITLE_H + 8, ROUND_R + 3)
+    ctx.stroke()
+    ctx.shadowBlur = 0
+  }
+
   // ── Title text ──
   ctx.fillStyle = C_TITLE_TEXT
   ctx.font = 'bold 12px Inter, system-ui, sans-serif'
@@ -519,33 +536,56 @@ onMounted(() => {
   })
   resizeObserver.observe(container)
 
+  // ── Hit test ──
+  function hitTestNode(e: MouseEvent): WorkflowNode | null {
+    const dpr = window.devicePixelRatio || 1
+    const lw = canvas.width / dpr
+    const lh = canvas.height / dpr
+    const rect = canvas.getBoundingClientRect()
+    const worldX = (e.clientX - rect.left - lw / 2) / camera.zoom + camera.x
+    const worldY = (e.clientY - rect.top  - lh / 2) / camera.zoom + camera.y
+    for (const node of nodes) {
+      if (!node.pos) continue
+      if (worldX >= node.pos[0] && worldX <= node.pos[0] + nodeW(node)
+        && worldY >= node.pos[1] - TITLE_H && worldY <= node.pos[1] + nodeH(node)) {
+        return node
+      }
+    }
+    return null
+  }
+
   // ── Pan ──
   canvas.addEventListener('mousedown', (e: MouseEvent) => {
     if (e.button !== 0) return
     panning = true
+    panDistance = 0
     cursorStyle.value = 'grabbing'
     panLastX = e.clientX
     panLastY = e.clientY
   })
   canvas.addEventListener('mousemove', (e: MouseEvent) => {
     if (!panning) return
-    const dpr = window.devicePixelRatio || 1
-    const cssW = canvas.width / dpr
-    const cssH = canvas.height / dpr
-
-    // Convert screen delta to world delta
-    camera.x -= (e.clientX - panLastX) / camera.zoom
-    camera.y -= (e.clientY - panLastY) / camera.zoom
+    const dx = e.clientX - panLastX
+    const dy = e.clientY - panLastY
+    panDistance += Math.abs(dx) + Math.abs(dy)
+    camera.x -= dx / camera.zoom
+    camera.y -= dy / camera.zoom
     panLastX = e.clientX
     panLastY = e.clientY
-
-    // Suppress unused vars warning
-    void cssW; void cssH
     dirty = true
   })
-  const endPan = () => { panning = false; cursorStyle.value = 'grab' }
-  canvas.addEventListener('mouseup', endPan)
-  canvas.addEventListener('mouseleave', endPan)
+  canvas.addEventListener('mouseup', (e: MouseEvent) => {
+    if (!panning) return
+    panning = false
+    cursorStyle.value = 'grab'
+    if (panDistance < 4) {
+      const node = hitTestNode(e)
+      const id = node?.id ?? null
+      lastEmittedNodeId = id
+      emit('nodeSelect', id)
+    }
+  })
+  canvas.addEventListener('mouseleave', () => { panning = false; cursorStyle.value = 'grab' })
 
   // ── Zoom (centered on cursor) ──
   canvas.addEventListener('wheel', (e: WheelEvent) => {
@@ -594,6 +634,15 @@ onUnmounted(() => {
 
 watch(() => [props.workflow, props.result] as const, () => {
   buildScene()
+  dirty = true
+})
+
+watch(() => props.selectedNodeId, (newId) => {
+  if (newId === null || newId === lastEmittedNodeId) return
+  const node = nodes.find((n) => n.id === newId)
+  if (!node?.pos) return
+  camera.x = node.pos[0] + nodeW(node) / 2
+  camera.y = node.pos[1] + (nodeH(node) - TITLE_H) / 2
   dirty = true
 })
 </script>

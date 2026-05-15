@@ -1,12 +1,20 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { AnalysisResult, Issue, Severity } from '../types/workflow'
 
 const props = defineProps<{
   result: AnalysisResult | null
+  selectedNodeId: number | null
 }>()
 
+const emit = defineEmits<{ nodeSelect: [id: number | null] }>()
+
 const expanded = ref<Set<number>>(new Set())
+const issueEls = ref<(HTMLElement | null)[]>([])
+
+function setIssueEl(el: HTMLElement | null, idx: number): void {
+  issueEls.value[idx] = el
+}
 
 function toggleExpanded(idx: number): void {
   if (expanded.value.has(idx)) {
@@ -17,10 +25,31 @@ function toggleExpanded(idx: number): void {
   expanded.value = new Set(expanded.value)
 }
 
+function onIssueClick(issue: Issue, idx: number): void {
+  if (issue.detail || issue.suggestion) toggleExpanded(idx)
+  if (issue.nodeId !== undefined) emit('nodeSelect', issue.nodeId)
+}
+
 const errors = computed(() => props.result?.issues.filter((i) => i.severity === 'error') ?? [])
 const warnings = computed(() => props.result?.issues.filter((i) => i.severity === 'warning') ?? [])
 const infos = computed(() => props.result?.issues.filter((i) => i.severity === 'info') ?? [])
 const orderedIssues = computed<Issue[]>(() => [...errors.value, ...warnings.value, ...infos.value])
+
+const selectedIndices = computed<Set<number>>(() => {
+  if (props.selectedNodeId === null) return new Set()
+  const set = new Set<number>()
+  orderedIssues.value.forEach((issue, idx) => {
+    if (issue.nodeId === props.selectedNodeId) set.add(idx)
+  })
+  return set
+})
+
+watch(() => props.selectedNodeId, (newId) => {
+  if (newId === null) return
+  const firstIdx = orderedIssues.value.findIndex((i) => i.nodeId === newId)
+  if (firstIdx === -1) return
+  issueEls.value[firstIdx]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+})
 
 function severityIcon(s: Severity): string {
   return s === 'error' ? '✕' : s === 'warning' ? '!' : 'i'
@@ -149,14 +178,14 @@ const verdictIcon = computed(() => {
           <div
             v-for="(issue, idx) in orderedIssues"
             :key="idx"
+            :ref="(el) => setIssueEl(el as HTMLElement | null, idx)"
             class="border rounded-lg overflow-hidden bg-gray-900 transition-colors"
-            :class="severityBorder(issue.severity)"
+            :class="[severityBorder(issue.severity), selectedIndices.has(idx) ? 'ring-1 ring-blue-500/60 bg-gray-800' : '']"
           >
             <!-- Card header -->
             <div
-              class="flex items-start gap-2.5 px-3 py-2.5"
-              :class="(issue.detail || issue.suggestion) ? 'cursor-pointer' : ''"
-              @click="(issue.detail || issue.suggestion) ? toggleExpanded(idx) : undefined"
+              class="flex items-start gap-2.5 px-3 py-2.5 cursor-pointer"
+              @click="onIssueClick(issue, idx)"
             >
               <!-- Severity dot -->
               <div

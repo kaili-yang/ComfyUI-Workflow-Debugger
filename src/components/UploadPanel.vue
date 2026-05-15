@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 
 const props = defineProps<{
   fileName: string | null
@@ -78,6 +78,24 @@ function onFileInput(e: Event): void {
 function triggerInput(): void {
   fileInputEl.value?.click()
 }
+
+function onPaste(e: ClipboardEvent): void {
+  // Ignore paste events that originate from an input/textarea (e.g. the URL field)
+  const target = e.target as HTMLElement
+  if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') return
+  const text = e.clipboardData?.getData('text')
+  if (!text?.trim()) return
+  errorMsg.value = null
+  try {
+    JSON.parse(text)  // validate before accepting
+    emit('fileLoaded', 'pasted-workflow.json', text)
+  } catch {
+    errorMsg.value = 'Pasted text is not valid JSON'
+  }
+}
+
+onMounted(() => document.addEventListener('paste', onPaste))
+onUnmounted(() => document.removeEventListener('paste', onPaste))
 </script>
 
 <template>
@@ -209,7 +227,12 @@ function triggerInput(): void {
           </div>
           <div class="text-center px-4">
             <p class="text-gray-200 text-sm font-medium">Drop workflow JSON here</p>
-            <p class="text-gray-600 text-xs mt-1">or <span class="text-blue-400 underline underline-offset-2">click to browse</span></p>
+            <p class="text-gray-600 text-xs mt-1">
+              <span class="text-blue-400 underline underline-offset-2 cursor-pointer">click to browse</span>
+              <span class="mx-1">·</span>
+              <kbd class="text-gray-500 font-mono text-[10px] bg-gray-800 border border-gray-700 rounded px-1 py-0.5">Ctrl+V</kbd>
+              <span class="text-gray-700"> to paste</span>
+            </p>
           </div>
           <p class="text-gray-700 text-xs">.json</p>
         </div>
