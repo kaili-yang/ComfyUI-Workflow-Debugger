@@ -39,7 +39,7 @@ export function checkLinkIntegrity(ctx: GraphAnalysisContext): Issue[] {
       issues.push({
         severity: 'error',
         message: `Link #${link.id} references non-existent source node id: ${link.fromNodeId}`,
-        suggestion: `Remove link #${link.id} - source node ${link.fromNodeId} does not exist`,
+        suggestion: `Remap or remove link #${link.id} - source node ${link.fromNodeId} does not exist`,
         fixable: true,
       })
     }
@@ -47,7 +47,7 @@ export function checkLinkIntegrity(ctx: GraphAnalysisContext): Issue[] {
       issues.push({
         severity: 'error',
         message: `Link #${link.id} references non-existent target node id: ${link.toNodeId}`,
-        suggestion: `Remove link #${link.id} - target node ${link.toNodeId} does not exist`,
+        suggestion: `Remap or remove link #${link.id} - target node ${link.toNodeId} does not exist`,
         fixable: true,
       })
     }

@@ -1,0 +1,1793 @@
+{
+  "conversionMap": {
+    "MODEL": {
+      "LATENT": [
+        {
+          "class": "KSampler",
+          "inputSlot": "model",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 6
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 7
+            },
+            {
+              "name": "latent_image",
+              "type": "LATENT",
+              "slotIndex": 8
+            }
+          ]
+        },
+        {
+          "class": "KSamplerAdvanced",
+          "inputSlot": "model",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 7
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 8
+            },
+            {
+              "name": "latent_image",
+              "type": "LATENT",
+              "slotIndex": 9
+            }
+          ]
+        }
+      ],
+      "MODEL": [
+        {
+          "class": "LoraLoader",
+          "inputSlot": "model",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "clip",
+              "type": "CLIP",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "LoraLoaderModelOnly",
+          "inputSlot": "model",
+          "outputSlot": 0,
+          "extraInputs": []
+        }
+      ],
+      "CLIP": [
+        {
+          "class": "LoraLoader",
+          "inputSlot": "model",
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "clip",
+              "type": "CLIP",
+              "slotIndex": 1
+            }
+          ]
+        }
+      ],
+      "CONTROL_NET": [
+        {
+          "class": "DiffControlNetLoader",
+          "inputSlot": "model",
+          "outputSlot": 0,
+          "extraInputs": []
+        }
+      ]
+    },
+    "CONDITIONING": {
+      "LATENT": [
+        {
+          "class": "KSampler",
+          "inputSlot": "positive",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "model",
+              "type": "MODEL",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 7
+            },
+            {
+              "name": "latent_image",
+              "type": "LATENT",
+              "slotIndex": 8
+            }
+          ]
+        },
+        {
+          "class": "KSampler",
+          "inputSlot": "negative",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "model",
+              "type": "MODEL",
+              "slotIndex": 0
+            },
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 6
+            },
+            {
+              "name": "latent_image",
+              "type": "LATENT",
+              "slotIndex": 8
+            }
+          ]
+        },
+        {
+          "class": "KSamplerAdvanced",
+          "inputSlot": "positive",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "model",
+              "type": "MODEL",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 8
+            },
+            {
+              "name": "latent_image",
+              "type": "LATENT",
+              "slotIndex": 9
+            }
+          ]
+        },
+        {
+          "class": "KSamplerAdvanced",
+          "inputSlot": "negative",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "model",
+              "type": "MODEL",
+              "slotIndex": 0
+            },
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 7
+            },
+            {
+              "name": "latent_image",
+              "type": "LATENT",
+              "slotIndex": 9
+            }
+          ]
+        },
+        {
+          "class": "InpaintModelConditioning",
+          "inputSlot": "positive",
+          "outputSlot": 2,
+          "extraInputs": [
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 2
+            },
+            {
+              "name": "pixels",
+              "type": "IMAGE",
+              "slotIndex": 3
+            },
+            {
+              "name": "mask",
+              "type": "MASK",
+              "slotIndex": 4
+            }
+          ]
+        },
+        {
+          "class": "InpaintModelConditioning",
+          "inputSlot": "negative",
+          "outputSlot": 2,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 2
+            },
+            {
+              "name": "pixels",
+              "type": "IMAGE",
+              "slotIndex": 3
+            },
+            {
+              "name": "mask",
+              "type": "MASK",
+              "slotIndex": 4
+            }
+          ]
+        }
+      ],
+      "CONDITIONING": [
+        {
+          "class": "ConditioningAverage",
+          "inputSlot": "conditioning_to",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "conditioning_from",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "ConditioningAverage",
+          "inputSlot": "conditioning_from",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "conditioning_to",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "ConditioningCombine",
+          "inputSlot": "conditioning_1",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "conditioning_2",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "ConditioningCombine",
+          "inputSlot": "conditioning_2",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "conditioning_1",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "ConditioningConcat",
+          "inputSlot": "conditioning_to",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "conditioning_from",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "ConditioningConcat",
+          "inputSlot": "conditioning_from",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "conditioning_to",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "ConditioningSetArea",
+          "inputSlot": "conditioning",
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "ConditioningSetAreaPercentage",
+          "inputSlot": "conditioning",
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "ConditioningSetAreaStrength",
+          "inputSlot": "conditioning",
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "ConditioningSetMask",
+          "inputSlot": "conditioning",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "mask",
+              "type": "MASK",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "StyleModelApply",
+          "inputSlot": "conditioning",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "style_model",
+              "type": "STYLE_MODEL",
+              "slotIndex": 1
+            },
+            {
+              "name": "clip_vision_output",
+              "type": "CLIP_VISION_OUTPUT",
+              "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "unCLIPConditioning",
+          "inputSlot": "conditioning",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "clip_vision_output",
+              "type": "CLIP_VISION_OUTPUT",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "ControlNetApply",
+          "inputSlot": "conditioning",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "control_net",
+              "type": "CONTROL_NET",
+              "slotIndex": 1
+            },
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "ControlNetApplyAdvanced",
+          "inputSlot": "positive",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "control_net",
+              "type": "CONTROL_NET",
+              "slotIndex": 2
+            },
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 3
+            }
+          ]
+        },
+        {
+          "class": "ControlNetApplyAdvanced",
+          "inputSlot": "positive",
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "control_net",
+              "type": "CONTROL_NET",
+              "slotIndex": 2
+            },
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 3
+            }
+          ]
+        },
+        {
+          "class": "ControlNetApplyAdvanced",
+          "inputSlot": "negative",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "control_net",
+              "type": "CONTROL_NET",
+              "slotIndex": 2
+            },
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 3
+            }
+          ]
+        },
+        {
+          "class": "ControlNetApplyAdvanced",
+          "inputSlot": "negative",
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "control_net",
+              "type": "CONTROL_NET",
+              "slotIndex": 2
+            },
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 3
+            }
+          ]
+        },
+        {
+          "class": "GLIGENTextBoxApply",
+          "inputSlot": "conditioning_to",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "clip",
+              "type": "CLIP",
+              "slotIndex": 1
+            },
+            {
+              "name": "gligen_textbox_model",
+              "type": "GLIGEN",
+              "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "InpaintModelConditioning",
+          "inputSlot": "positive",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 2
+            },
+            {
+              "name": "pixels",
+              "type": "IMAGE",
+              "slotIndex": 3
+            },
+            {
+              "name": "mask",
+              "type": "MASK",
+              "slotIndex": 4
+            }
+          ]
+        },
+        {
+          "class": "InpaintModelConditioning",
+          "inputSlot": "positive",
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 2
+            },
+            {
+              "name": "pixels",
+              "type": "IMAGE",
+              "slotIndex": 3
+            },
+            {
+              "name": "mask",
+              "type": "MASK",
+              "slotIndex": 4
+            }
+          ]
+        },
+        {
+          "class": "InpaintModelConditioning",
+          "inputSlot": "negative",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 2
+            },
+            {
+              "name": "pixels",
+              "type": "IMAGE",
+              "slotIndex": 3
+            },
+            {
+              "name": "mask",
+              "type": "MASK",
+              "slotIndex": 4
+            }
+          ]
+        },
+        {
+          "class": "InpaintModelConditioning",
+          "inputSlot": "negative",
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 2
+            },
+            {
+              "name": "pixels",
+              "type": "IMAGE",
+              "slotIndex": 3
+            },
+            {
+              "name": "mask",
+              "type": "MASK",
+              "slotIndex": 4
+            }
+          ]
+        },
+        {
+          "class": "ConditioningZeroOut",
+          "inputSlot": "conditioning",
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "ConditioningSetTimestepRange",
+          "inputSlot": "conditioning",
+          "outputSlot": 0,
+          "extraInputs": []
+        }
+      ]
+    },
+    "LATENT": {
+      "LATENT": [
+        {
+          "class": "KSampler",
+          "inputSlot": "latent_image",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "model",
+              "type": "MODEL",
+              "slotIndex": 0
+            },
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 6
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 7
+            }
+          ]
+        },
+        {
+          "class": "LatentUpscale",
+          "inputSlot": "samples",
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "LatentUpscaleBy",
+          "inputSlot": "samples",
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "LatentFromBatch",
+          "inputSlot": "samples",
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "RepeatLatentBatch",
+          "inputSlot": "samples",
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "KSamplerAdvanced",
+          "inputSlot": "latent_image",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "model",
+              "type": "MODEL",
+              "slotIndex": 0
+            },
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 7
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 8
+            }
+          ]
+        },
+        {
+          "class": "SetLatentNoiseMask",
+          "inputSlot": "samples",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "mask",
+              "type": "MASK",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "LatentComposite",
+          "inputSlot": "samples_to",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "samples_from",
+              "type": "LATENT",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "LatentComposite",
+          "inputSlot": "samples_from",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "samples_to",
+              "type": "LATENT",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "LatentBlend",
+          "inputSlot": "samples1",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "samples2",
+              "type": "LATENT",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "LatentBlend",
+          "inputSlot": "samples2",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "samples1",
+              "type": "LATENT",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "LatentRotate",
+          "inputSlot": "samples",
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "LatentFlip",
+          "inputSlot": "samples",
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "LatentCrop",
+          "inputSlot": "samples",
+          "outputSlot": 0,
+          "extraInputs": []
+        }
+      ],
+      "IMAGE": [
+        {
+          "class": "VAEDecode",
+          "inputSlot": "samples",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "VAEDecodeTiled",
+          "inputSlot": "samples",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            }
+          ]
+        }
+      ]
+    },
+    "CLIP": {
+      "CONDITIONING": [
+        {
+          "class": "CLIPTextEncode",
+          "inputSlot": "clip",
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "GLIGENTextBoxApply",
+          "inputSlot": "clip",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "conditioning_to",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "gligen_textbox_model",
+              "type": "GLIGEN",
+              "slotIndex": 2
+            }
+          ]
+        }
+      ],
+      "CLIP": [
+        {
+          "class": "CLIPSetLastLayer",
+          "inputSlot": "clip",
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "LoraLoader",
+          "inputSlot": "clip",
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "model",
+              "type": "MODEL",
+              "slotIndex": 0
+            }
+          ]
+        }
+      ],
+      "MODEL": [
+        {
+          "class": "LoraLoader",
+          "inputSlot": "clip",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "model",
+              "type": "MODEL",
+              "slotIndex": 0
+            }
+          ]
+        }
+      ]
+    },
+    "VAE": {
+      "IMAGE": [
+        {
+          "class": "VAEDecode",
+          "inputSlot": "vae",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "samples",
+              "type": "LATENT",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "VAEDecodeTiled",
+          "inputSlot": "vae",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "samples",
+              "type": "LATENT",
+              "slotIndex": 0
+            }
+          ]
+        }
+      ],
+      "LATENT": [
+        {
+          "class": "VAEEncode",
+          "inputSlot": "vae",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "pixels",
+              "type": "IMAGE",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "VAEEncodeForInpaint",
+          "inputSlot": "vae",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "pixels",
+              "type": "IMAGE",
+              "slotIndex": 0
+            },
+            {
+              "name": "mask",
+              "type": "MASK",
+              "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "VAEEncodeTiled",
+          "inputSlot": "vae",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "pixels",
+              "type": "IMAGE",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "InpaintModelConditioning",
+          "inputSlot": "vae",
+          "outputSlot": 2,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "pixels",
+              "type": "IMAGE",
+              "slotIndex": 3
+            },
+            {
+              "name": "mask",
+              "type": "MASK",
+              "slotIndex": 4
+            }
+          ]
+        }
+      ],
+      "CONDITIONING": [
+        {
+          "class": "InpaintModelConditioning",
+          "inputSlot": "vae",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "pixels",
+              "type": "IMAGE",
+              "slotIndex": 3
+            },
+            {
+              "name": "mask",
+              "type": "MASK",
+              "slotIndex": 4
+            }
+          ]
+        },
+        {
+          "class": "InpaintModelConditioning",
+          "inputSlot": "vae",
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "pixels",
+              "type": "IMAGE",
+              "slotIndex": 3
+            },
+            {
+              "name": "mask",
+              "type": "MASK",
+              "slotIndex": 4
+            }
+          ]
+        }
+      ]
+    },
+    "IMAGE": {
+      "LATENT": [
+        {
+          "class": "VAEEncode",
+          "inputSlot": "pixels",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "VAEEncodeForInpaint",
+          "inputSlot": "pixels",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            },
+            {
+              "name": "mask",
+              "type": "MASK",
+              "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "VAEEncodeTiled",
+          "inputSlot": "pixels",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "InpaintModelConditioning",
+          "inputSlot": "pixels",
+          "outputSlot": 2,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 2
+            },
+            {
+              "name": "mask",
+              "type": "MASK",
+              "slotIndex": 4
+            }
+          ]
+        }
+      ],
+      "IMAGE": [
+        {
+          "class": "ImageScale",
+          "inputSlot": "image",
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "ImageScaleBy",
+          "inputSlot": "image",
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "ImageInvert",
+          "inputSlot": "image",
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "ImageBatch",
+          "inputSlot": "image1",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "image2",
+              "type": "IMAGE",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "ImageBatch",
+          "inputSlot": "image2",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "image1",
+              "type": "IMAGE",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "ImagePadForOutpaint",
+          "inputSlot": "image",
+          "outputSlot": 0,
+          "extraInputs": []
+        }
+      ],
+      "MASK": [
+        {
+          "class": "ImagePadForOutpaint",
+          "inputSlot": "image",
+          "outputSlot": 1,
+          "extraInputs": []
+        }
+      ],
+      "CLIP_VISION_OUTPUT": [
+        {
+          "class": "CLIPVisionEncode",
+          "inputSlot": "image",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "clip_vision",
+              "type": "CLIP_VISION",
+              "slotIndex": 0
+            }
+          ]
+        }
+      ],
+      "CONDITIONING": [
+        {
+          "class": "ControlNetApply",
+          "inputSlot": "image",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "conditioning",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "control_net",
+              "type": "CONTROL_NET",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "ControlNetApplyAdvanced",
+          "inputSlot": "image",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "control_net",
+              "type": "CONTROL_NET",
+              "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "ControlNetApplyAdvanced",
+          "inputSlot": "image",
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "control_net",
+              "type": "CONTROL_NET",
+              "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "InpaintModelConditioning",
+          "inputSlot": "pixels",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 2
+            },
+            {
+              "name": "mask",
+              "type": "MASK",
+              "slotIndex": 4
+            }
+          ]
+        },
+        {
+          "class": "InpaintModelConditioning",
+          "inputSlot": "pixels",
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 2
+            },
+            {
+              "name": "mask",
+              "type": "MASK",
+              "slotIndex": 4
+            }
+          ]
+        }
+      ]
+    },
+    "MASK": {
+      "LATENT": [
+        {
+          "class": "VAEEncodeForInpaint",
+          "inputSlot": "mask",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "pixels",
+              "type": "IMAGE",
+              "slotIndex": 0
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "SetLatentNoiseMask",
+          "inputSlot": "mask",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "samples",
+              "type": "LATENT",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "InpaintModelConditioning",
+          "inputSlot": "mask",
+          "outputSlot": 2,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 2
+            },
+            {
+              "name": "pixels",
+              "type": "IMAGE",
+              "slotIndex": 3
+            }
+          ]
+        }
+      ],
+      "CONDITIONING": [
+        {
+          "class": "ConditioningSetMask",
+          "inputSlot": "mask",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "conditioning",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "InpaintModelConditioning",
+          "inputSlot": "mask",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 2
+            },
+            {
+              "name": "pixels",
+              "type": "IMAGE",
+              "slotIndex": 3
+            }
+          ]
+        },
+        {
+          "class": "InpaintModelConditioning",
+          "inputSlot": "mask",
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 2
+            },
+            {
+              "name": "pixels",
+              "type": "IMAGE",
+              "slotIndex": 3
+            }
+          ]
+        }
+      ]
+    },
+    "COMBO": {
+      "IMAGE": [
+        {
+          "class": "LoadImageOutput",
+          "inputSlot": "image",
+          "outputSlot": 0,
+          "extraInputs": []
+        }
+      ],
+      "MASK": [
+        {
+          "class": "LoadImageOutput",
+          "inputSlot": "image",
+          "outputSlot": 1,
+          "extraInputs": []
+        }
+      ]
+    },
+    "CLIP_VISION": {
+      "CLIP_VISION_OUTPUT": [
+        {
+          "class": "CLIPVisionEncode",
+          "inputSlot": "clip_vision",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 1
+            }
+          ]
+        }
+      ]
+    },
+    "STYLE_MODEL": {
+      "CONDITIONING": [
+        {
+          "class": "StyleModelApply",
+          "inputSlot": "style_model",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "conditioning",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "clip_vision_output",
+              "type": "CLIP_VISION_OUTPUT",
+              "slotIndex": 2
+            }
+          ]
+        }
+      ]
+    },
+    "CLIP_VISION_OUTPUT": {
+      "CONDITIONING": [
+        {
+          "class": "StyleModelApply",
+          "inputSlot": "clip_vision_output",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "conditioning",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "style_model",
+              "type": "STYLE_MODEL",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "unCLIPConditioning",
+          "inputSlot": "clip_vision_output",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "conditioning",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            }
+          ]
+        }
+      ]
+    },
+    "CONTROL_NET": {
+      "CONDITIONING": [
+        {
+          "class": "ControlNetApply",
+          "inputSlot": "control_net",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "conditioning",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "ControlNetApplyAdvanced",
+          "inputSlot": "control_net",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 3
+            }
+          ]
+        },
+        {
+          "class": "ControlNetApplyAdvanced",
+          "inputSlot": "control_net",
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 3
+            }
+          ]
+        }
+      ]
+    },
+    "GLIGEN": {
+      "CONDITIONING": [
+        {
+          "class": "GLIGENTextBoxApply",
+          "inputSlot": "gligen_textbox_model",
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "conditioning_to",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "clip",
+              "type": "CLIP",
+              "slotIndex": 1
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "sourceMap": {
+    "MODEL": [
+      {
+        "class": "CheckpointLoaderSimple",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "ckpt_name": null
+        }
+      },
+      {
+        "class": "UNETLoader",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "unet_name": null,
+          "weight_dtype": null
+        }
+      },
+      {
+        "class": "unCLIPCheckpointLoader",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "ckpt_name": null
+        }
+      },
+      {
+        "class": "CheckpointLoader",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "config_name": null,
+          "ckpt_name": null
+        }
+      },
+      {
+        "class": "DiffusersLoader",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "model_path": null
+        }
+      }
+    ],
+    "CLIP": [
+      {
+        "class": "CheckpointLoaderSimple",
+        "outputSlot": 1,
+        "widgetDefaults": {
+          "ckpt_name": null
+        }
+      },
+      {
+        "class": "CLIPLoader",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "clip_name": null,
+          "type": null
+        }
+      },
+      {
+        "class": "DualCLIPLoader",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "clip_name1": null,
+          "clip_name2": null,
+          "type": null
+        }
+      },
+      {
+        "class": "unCLIPCheckpointLoader",
+        "outputSlot": 1,
+        "widgetDefaults": {
+          "ckpt_name": null
+        }
+      },
+      {
+        "class": "CheckpointLoader",
+        "outputSlot": 1,
+        "widgetDefaults": {
+          "config_name": null,
+          "ckpt_name": null
+        }
+      },
+      {
+        "class": "DiffusersLoader",
+        "outputSlot": 1,
+        "widgetDefaults": {
+          "model_path": null
+        }
+      }
+    ],
+    "VAE": [
+      {
+        "class": "CheckpointLoaderSimple",
+        "outputSlot": 2,
+        "widgetDefaults": {
+          "ckpt_name": null
+        }
+      },
+      {
+        "class": "VAELoader",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "vae_name": null
+        }
+      },
+      {
+        "class": "unCLIPCheckpointLoader",
+        "outputSlot": 2,
+        "widgetDefaults": {
+          "ckpt_name": null
+        }
+      },
+      {
+        "class": "CheckpointLoader",
+        "outputSlot": 2,
+        "widgetDefaults": {
+          "config_name": null,
+          "ckpt_name": null
+        }
+      },
+      {
+        "class": "DiffusersLoader",
+        "outputSlot": 2,
+        "widgetDefaults": {
+          "model_path": null
+        }
+      }
+    ],
+    "LATENT": [
+      {
+        "class": "EmptyLatentImage",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "width": 512,
+          "height": 512,
+          "batch_size": 1
+        }
+      },
+      {
+        "class": "LoadLatent",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "latent": null
+        }
+      }
+    ],
+    "IMAGE": [
+      {
+        "class": "LoadImage",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "image": null
+        }
+      },
+      {
+        "class": "EmptyImage",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "width": 512,
+          "height": 512,
+          "batch_size": 1,
+          "color": 0
+        }
+      }
+    ],
+    "MASK": [
+      {
+        "class": "LoadImage",
+        "outputSlot": 1,
+        "widgetDefaults": {
+          "image": null
+        }
+      },
+      {
+        "class": "LoadImageMask",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "image": null,
+          "channel": null
+        }
+      }
+    ],
+    "CONTROL_NET": [
+      {
+        "class": "ControlNetLoader",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "control_net_name": null
+        }
+      }
+    ],
+    "STYLE_MODEL": [
+      {
+        "class": "StyleModelLoader",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "style_model_name": null
+        }
+      }
+    ],
+    "CLIP_VISION": [
+      {
+        "class": "CLIPVisionLoader",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "clip_name": null
+        }
+      },
+      {
+        "class": "unCLIPCheckpointLoader",
+        "outputSlot": 3,
+        "widgetDefaults": {
+          "ckpt_name": null
+        }
+      }
+    ],
+    "GLIGEN": [
+      {
+        "class": "GLIGENLoader",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "gligen_name": null
+        }
+      }
+    ]
+  }
+}

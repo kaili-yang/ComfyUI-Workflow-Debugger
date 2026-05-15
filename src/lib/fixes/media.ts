@@ -5,8 +5,7 @@ const MEDIA_LOADERS: Record<string, string> = {
   LoadImage: '512x512.webp',
   LoadAudio: '5s.mp3',
   VHS_LoadVideo: 'video 15s.mp4',
-  VHS_LoadVideoPath:
-    '/Users/kelly/Documents/comfyui_all/comfy_workflow_debuger/test data/test video/video 15s.mp4',
+  VHS_LoadVideoPath: 'video 15s.mp4',
 }
 
 export function fixStaleMediaRefs(workflow: GraphWorkflow): { changes: number; substituted: Set<string> } {

@@ -40,6 +40,7 @@ export function checkDisconnectedInputs(ctx: GraphAnalysisContext): Issue[] {
             nodeType: node.type,
             message: `Node ${node.type} (id: ${node.id}) required input '${input.name}' (${input.type}) is not connected`,
             suggestion: `Connect a ${input.type} output to '${input.name}'`,
+            fixable: true,
           })
         }
         // Unknown input name (not in schema) → skip; schema mismatch caught elsewhere
@@ -53,6 +54,7 @@ export function checkDisconnectedInputs(ctx: GraphAnalysisContext): Issue[] {
         nodeType: node.type,
         message: `Node ${node.type} (id: ${node.id}) input '${input.name}' (${input.type}) is not connected`,
         suggestion: `Connect a ${input.type} source, or connect to a ComfyUI server to validate whether this input is required`,
+        fixable: true,
       })
     }
   }

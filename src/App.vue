@@ -176,6 +176,7 @@ function reset(): void {
           :result="result"
           :raw-content="rawContent"
           :file-name="fileName"
+          :object-info="objectInfo ?? undefined"
           @apply="onFixed"
         />
       </div>

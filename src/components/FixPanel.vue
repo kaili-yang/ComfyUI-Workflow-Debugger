@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import type { AnalysisResult } from '../types/workflow'
+import type { AnalysisResult, ObjectInfo } from '../types/workflow'
 import { fixWorkflow } from '../lib/fixer'
 import type { FixResult } from '../lib/fixer'
 
@@ -8,12 +8,14 @@ const props = defineProps<{
   result: AnalysisResult | null
   rawContent: string | null
   fileName: string | null
+  objectInfo?: ObjectInfo
 }>()
 
 const emit = defineEmits<{ apply: [fixedJson: string] }>()
 
 const fixApplied = ref(false)
 const fixChanges = ref(0)
+const fixPartial = ref(false)
 const fixedJson = ref<string | null>(null)
 const fixedMediaFiles = ref<string[]>([])
 
@@ -32,15 +34,17 @@ const canFix = computed(() =>
 watch(() => props.rawContent, () => {
   fixApplied.value = false
   fixChanges.value = 0
+  fixPartial.value = false
   fixedJson.value = null
   fixedMediaFiles.value = []
 })
 
 function applyFix(): void {
   if (!props.rawContent) return
-  const result: FixResult = fixWorkflow(props.rawContent)
+  const result: FixResult = fixWorkflow(props.rawContent, props.objectInfo)
   fixedJson.value = result.fixed
   fixChanges.value = result.changes
+  fixPartial.value = result.partial
   fixedMediaFiles.value = result.mediaFiles
   fixApplied.value = true
   emit('apply', result.fixed)
@@ -91,6 +95,7 @@ function download(): void {
         <p v-else-if="result.format !== 'graph'" class="text-gray-600 text-xs text-center">Graph format only</p>
         <template v-else-if="fixApplied">
           <p class="text-xs text-center" style="color: #39ff14;">Fixed {{ fixChanges }} issue{{ fixChanges !== 1 ? 's' : '' }}</p>
+          <p v-if="fixPartial" class="text-yellow-400 text-xs text-center">Some issues could not be auto-fixed</p>
           <!-- Export button -->
           <button class="export-btn" @click="download">
             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -113,7 +118,7 @@ function download(): void {
           </div>
           <div class="flex items-start gap-2">
             <span class="text-gray-600 text-xs mt-0.5 flex-shrink-0">•</span>
-            <span class="text-gray-500 text-xs leading-relaxed">Link entries pointing to missing nodes</span>
+            <span class="text-gray-500 text-xs leading-relaxed">Links pointing to missing nodes → remapped by ID proximity and type, or removed if ambiguous</span>
           </div>
           <div class="flex items-start gap-2">
             <span class="text-gray-600 text-xs mt-0.5 flex-shrink-0">•</span>
@@ -121,7 +126,15 @@ function download(): void {
           </div>
           <div class="flex items-start gap-2">
             <span class="text-gray-600 text-xs mt-0.5 flex-shrink-0">•</span>
-            <span class="text-gray-500 text-xs leading-relaxed">Stale media file refs (temp files, UUID names, non-ASCII filenames) → replaced with test data files</span>
+            <span class="text-gray-500 text-xs leading-relaxed">Type-mismatched connections → conversion node inserted (e.g. IMAGE→LATENT via VAEEncode)</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-gray-600 text-xs mt-0.5 flex-shrink-0">•</span>
+            <span class="text-gray-500 text-xs leading-relaxed">Unconnected required inputs → wired to an existing matching output, or a source node inserted</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-gray-600 text-xs mt-0.5 flex-shrink-0">•</span>
+            <span class="text-gray-500 text-xs leading-relaxed">Stale media file refs (temp files, UUID names) → replaced with test data files</span>
           </div>
         </div>
       </div>
