@@ -140,6 +140,22 @@ Short path:
 
 Do not duplicate stale-ref logic or the output-node set in category files.
 
+## Optional vs Required Inputs (Offline Detection)
+
+Without a server connection, the graph workflow JSON itself encodes whether a
+connection slot is optional: the ComfyUI frontend sets `input.shape = 7`
+(`RenderShape.HollowCircle`) for any slot that comes from `INPUT_TYPES()['optional']`
+in the backend node definition (`ComfyUI/nodes.py`).
+
+The constant `OPTIONAL_SLOT_SHAPE = 7` in `checks/others/disconnected-inputs.ts`
+references this. Source:
+- Shape enum: `ComfyUI_frontend/src/lib/litegraph/src/types/globalEnums.ts`
+- Assignment: `ComfyUI_frontend/src/services/litegraphService.ts` → `addInputSocket()`
+- Origin: `ComfyUI/nodes.py` → `INPUT_TYPES()['optional']` dict
+
+Additionally, inputs with a `widget` property carry their value in `widgets_values`
+and do not require a wire — never flag them as disconnection issues.
+
 ---
 
 ## Orchestrators Stay Thin

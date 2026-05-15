@@ -20,6 +20,11 @@ export interface NodeInputSlot {
   link: number | null
   slot_index?: number
   widget?: { name: string }
+  // RenderShape.HollowCircle (7) marks an optional connection input.
+  // Set by ComfyUI_frontend/src/services/litegraphService.ts when the input
+  // comes from INPUT_TYPES()['optional'] (ComfyUI/nodes.py).
+  // Source enum: ComfyUI_frontend/src/lib/litegraph/src/types/globalEnums.ts
+  shape?: number
 }
 
 export interface NodeOutputSlot {
