@@ -21,7 +21,7 @@ const features = [
   { label: 'Visual node graph with error highlights', done: true },
   { label: 'Improvement suggestions per node', done: false },
   { label: 'Node performance profiling', done: false },
-  { label: 'Auto-fix common errors', done: false },
+  { label: 'Auto-fix common errors', done: true },
 ]
 
 const isDragging = ref(false)

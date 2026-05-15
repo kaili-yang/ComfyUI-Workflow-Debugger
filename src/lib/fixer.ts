@@ -24,12 +24,12 @@ export function fixWorkflow(jsonText: string, objectInfo?: ObjectInfo): FixResul
   try {
     parsed = JSON.parse(jsonText)
   } catch {
-    return { fixed: jsonText, changes: 0, mediaFiles: [], partial: false }
+    return { fixed: jsonText, changes: 0, mediaFiles: [], partial: false, breakdown: [] }
   }
 
   const obj = parsed as Record<string, unknown>
   if (!Array.isArray(obj['nodes']) || !Array.isArray(obj['links'])) {
-    return { fixed: jsonText, changes: 0, mediaFiles: [], partial: false }
+    return { fixed: jsonText, changes: 0, mediaFiles: [], partial: false, breakdown: [] }
   }
 
   const workflow = JSON.parse(JSON.stringify(parsed)) as GraphWorkflow
