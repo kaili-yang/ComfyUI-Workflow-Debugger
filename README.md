@@ -2,6 +2,17 @@
 
 A lightweight, offline web tool for analyzing and debugging [ComfyUI](https://github.com/comfyanonymous/ComfyUI) workflow JSON files — no ComfyUI installation required.
 
+## Screenshots
+
+![Workflow with no issues](screenshots/no-issues.png)
+*Clean workflow — all connections valid, no issues found*
+
+![Workflow with warnings](screenshots/warnings.png)
+*Workflow with warnings — stale file reference detected, 1 fixable issue*
+
+![Workflow with multiple issues](screenshots/multiple-issues.png)
+*Complex workflow — type mismatches, stale refs, and orphan nodes, 5 fixable issues*
+
 ## Features
 
 - **Offline analysis** — runs entirely in the browser, no server or model downloads needed
