@@ -63,7 +63,7 @@ function download(): void {
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
-  a.download = `${base}_fixed.json`
+  a.download = `fixed_${base}.json`
   document.body.appendChild(a)
   a.click()
   document.body.removeChild(a)

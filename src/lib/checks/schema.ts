@@ -51,6 +51,18 @@ function checkWidgetValues(
         })
       }
     } else if (inputType === 'INT' || inputType === 'FLOAT') {
+      if (value === null || value === undefined) {
+        const fallback = typeof cfg.default === 'number' ? cfg.default : 0
+        issues.push({
+          severity: 'error',
+          nodeId: node.id,
+          nodeType: node.type,
+          message: `Node ${node.type} (id: ${node.id}) input '${inputName}' is null — backend will throw int(None)`,
+          suggestion: `Will be replaced with ${fallback}`,
+          fixable: true,
+        })
+        continue
+      }
       const num = Number(value)
       if (!Number.isNaN(num)) {
         if (cfg.min !== undefined && num < (cfg.min as number)) {

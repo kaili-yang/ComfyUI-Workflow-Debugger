@@ -2,6 +2,7 @@ import type { GraphWorkflow, ObjectInfo } from '../types/workflow'
 import { fixGhostLinks, fixLinkTypeMetadata } from './fixes/link'
 import { fixBypassedNodes } from './fixes/node-state'
 import { fixStaleMediaRefs } from './fixes/media'
+import { fixNullWidgetValues } from './fixes/schema'
 import { fixTypeMismatch } from './fixes/type-conversion'
 import { fixDisconnectedInputs } from './fixes/connect-input'
 import { nodeTypeMap } from './shared/node-type-map'
@@ -35,7 +36,11 @@ export function fixWorkflow(jsonText: string, objectInfo?: ObjectInfo): FixResul
   const workflow = JSON.parse(JSON.stringify(parsed)) as GraphWorkflow
   let partial = false
 
-  // 1. Ghost link slots + ghost node remapping (must run before type metadata)
+  // 1. Replace null INT/FLOAT widget values — must run first so structural fixes
+  //    see correct widget state (e.g. type-mismatch checks that read widget values)
+  const nullWidgetChanges = objectInfo ? fixNullWidgetValues(workflow, objectInfo) : 0
+
+  // 2. Ghost link slots + ghost node remapping (must run before type metadata)
   const ghostResult = fixGhostLinks(workflow)
 
   // 2. Sync link[5] type labels (must run after ghost-link removal)
@@ -59,6 +64,7 @@ export function fixWorkflow(jsonText: string, objectInfo?: ObjectInfo): FixResul
   const mediaResult = fixStaleMediaRefs(workflow)
 
   const breakdown: BreakdownItem[] = [
+    { label: 'Null widget values replaced', count: nullWidgetChanges },
     { label: 'Ghost link slot refs removed', count: ghostResult.slotChanges },
     { label: 'Ghost node refs remapped or removed', count: ghostResult.nodeRefChanges },
     { label: 'Link type labels corrected', count: typeMetaChanges },
@@ -69,6 +75,7 @@ export function fixWorkflow(jsonText: string, objectInfo?: ObjectInfo): FixResul
   ].filter((item) => item.count > 0)
 
   const changes =
+    nullWidgetChanges +
     ghostResult.slotChanges +
     ghostResult.nodeRefChanges +
     typeMetaChanges +
