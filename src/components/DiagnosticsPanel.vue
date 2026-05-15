@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref, triggerRef, watch } from 'vue'
 import type { AnalysisResult, Issue, Severity } from '../types/workflow'
 
 const props = defineProps<{
@@ -22,11 +22,15 @@ function toggleExpanded(idx: number): void {
   } else {
     expanded.value.add(idx)
   }
-  expanded.value = new Set(expanded.value)
+  triggerRef(expanded)
 }
 
 function onIssueClick(issue: Issue, idx: number): void {
   if (issue.detail || issue.suggestion) toggleExpanded(idx)
+}
+
+function onNodeBadgeClick(e: MouseEvent, issue: Issue): void {
+  e.stopPropagation()
   if (issue.nodeId !== undefined) emit('nodeSelect', issue.nodeId)
 }
 
@@ -198,9 +202,13 @@ const verdictIcon = computed(() => {
                   <span class="text-xs font-semibold px-1.5 py-0.5 rounded uppercase tracking-wide" :class="severityTag(issue.severity)">
                     {{ issue.severity }}
                   </span>
-                  <span v-if="issue.nodeType" class="text-xs text-gray-600 font-mono">
-                    {{ issue.nodeType }}<template v-if="issue.nodeId !== undefined"> #{{ issue.nodeId }}</template>
-                  </span>
+                  <span
+                    v-if="issue.nodeType"
+                    class="text-xs font-mono"
+                    :class="issue.nodeId !== undefined ? 'text-gray-500 hover:text-blue-400 cursor-pointer underline underline-offset-2 decoration-dotted' : 'text-gray-600'"
+                    :title="issue.nodeId !== undefined ? 'Click to highlight in canvas' : undefined"
+                    @click.stop="issue.nodeId !== undefined ? onNodeBadgeClick($event, issue) : undefined"
+                  >{{ issue.nodeType }}<template v-if="issue.nodeId !== undefined"> #{{ issue.nodeId }}</template></span>
                 </div>
                 <p class="text-gray-200 text-xs leading-relaxed">{{ issue.message }}</p>
               </div>

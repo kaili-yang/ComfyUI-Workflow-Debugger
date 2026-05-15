@@ -1,12 +1,13 @@
-import type {
-  AnalysisResult,
-  GraphWorkflow,
-  Issue,
-  NodeInputConfig,
-  ObjectInfo,
-  WorkflowLink,
-  WorkflowNode,
-} from '../types/workflow'
+import type { AnalysisResult, GraphWorkflow, ObjectInfo } from '../types/workflow'
+import { buildContext } from './shared/graph-context'
+import { checkLinkIntegrity, checkLinkTypeMetadata } from './checks/link'
+import { checkTypeMismatch } from './checks/type-mismatch'
+import { checkMutedWithDependents, checkOrphans } from './checks/node-state'
+import { checkNoOutputNode, checkCycles } from './checks/topology'
+import { checkSchema } from './checks/schema'
+import { checkMediaRefs } from './checks/media'
+import { checkApiFormat } from './checks/api-format'
+import { checkDisconnectedInputs } from './checks/others/disconnected-inputs'
 
 // ---------------------------------------------------------------------------
 // Format detection
@@ -18,12 +19,16 @@ function isGraphFormat(parsed: unknown): parsed is GraphWorkflow {
   return Array.isArray(obj['nodes']) && Array.isArray(obj['links'])
 }
 
-function isApiFormat(parsed: unknown): boolean {
+interface ApiNode {
+  class_type: string
+  inputs: Record<string, unknown>
+}
+
+function isApiFormat(parsed: unknown): parsed is Record<string, ApiNode> {
   if (typeof parsed !== 'object' || parsed === null) return false
   const obj = parsed as Record<string, unknown>
   const keys = Object.keys(obj)
   if (keys.length === 0) return false
-  // All keys must be numeric strings and all values must have class_type
   return keys.every((k) => {
     if (!/^\d+$/.test(k)) return false
     const v = obj[k]
@@ -32,527 +37,45 @@ function isApiFormat(parsed: unknown): boolean {
 }
 
 // ---------------------------------------------------------------------------
-// Graph format analysis
+// Orchestrators
 // ---------------------------------------------------------------------------
 
-const OUTPUT_NODE_TYPES = new Set([
-  'SaveImage',
-  'PreviewImage',
-  'SaveAnimatedWEBP',
-  'SaveAnimatedPNG',
-  'VHS_VideoCombine',
-  'DisplayText',
-  'ShowText|pysssss',
-])
-
-function modeLabel(mode: number): string {
-  const labels: Record<number, string> = { 0: 'active', 1: 'on-event', 2: 'muted', 3: 'on-trigger', 4: 'bypassed' }
-  return labels[mode] ?? `mode-${mode}`
-}
-
-// ---------------------------------------------------------------------------
-// Schema-based widget value checks (requires ObjectInfo from /object_info)
-// ---------------------------------------------------------------------------
-
-const WIDGET_PRIMITIVE_TYPES = new Set(['INT', 'FLOAT', 'STRING', 'BOOLEAN'])
-
-function checkWidgetValues(node: WorkflowNode, schemaDef: { input: { required?: Record<string, [string | string[], NodeInputConfig?]>; optional?: Record<string, [string | string[], NodeInputConfig?]> } }): Issue[] {
-  const issues: Issue[] = []
-  const values = node.widgets_values
-  if (!values?.length) return issues
-
-  const allInputs: [string, [string | string[], NodeInputConfig?]][] = [
-    ...Object.entries(schemaDef.input.required ?? {}),
-    ...Object.entries(schemaDef.input.optional ?? {}),
+function analyzeGraph(workflow: GraphWorkflow, objectInfo?: ObjectInfo): AnalysisResult {
+  const ctx = buildContext(workflow, objectInfo)
+  const issues = [
+    ...checkLinkIntegrity(ctx),
+    ...checkLinkTypeMetadata(ctx),
+    ...checkTypeMismatch(ctx),
+    ...checkDisconnectedInputs(ctx),
+    ...checkMutedWithDependents(ctx),
+    ...checkNoOutputNode(ctx),
+    ...checkCycles(ctx),
+    ...checkOrphans(ctx),
+    ...checkMediaRefs(ctx),
+    ...checkSchema(ctx),
   ]
-
-  // Inputs that have an active link — they don't consume a widgets_values slot
-  const connectedInputs = new Set(
-    (node.inputs ?? [])
-      .filter((i) => i.link !== null && i.link !== undefined)
-      .map((i) => i.name),
-  )
-
-  let widgetIdx = 0
-  for (const [inputName, inputDef] of allInputs) {
-    if (widgetIdx >= values.length) break
-    const [inputType, config] = inputDef
-    const isCombo = Array.isArray(inputType)
-    const isPrimitive = !isCombo && WIDGET_PRIMITIVE_TYPES.has(inputType as string)
-    if (!isCombo && !isPrimitive) continue   // pure connection slot, not in widgets_values
-    if (connectedInputs.has(inputName)) continue  // wired via link, no widget value
-
-    const value = values[widgetIdx++]
-    const cfg = (config ?? {}) as NodeInputConfig
-
-    if (isCombo) {
-      const options = inputType as string[]
-      if (typeof value === 'string' && options.length > 0 && !options.includes(value)) {
-        issues.push({
-          severity: 'warning',
-          nodeId: node.id,
-          nodeType: node.type,
-          message: `Node ${node.type} (id: ${node.id}) input '${inputName}': value '${value}' is not in the allowed options`,
-          suggestion: `Valid options: ${options.slice(0, 8).join(', ')}${options.length > 8 ? ' …' : ''}`,
-        })
-      }
-    } else if (inputType === 'INT' || inputType === 'FLOAT') {
-      const num = Number(value)
-      if (!Number.isNaN(num)) {
-        if (cfg.min !== undefined && num < (cfg.min as number)) {
-          issues.push({
-            severity: 'error',
-            nodeId: node.id,
-            nodeType: node.type,
-            message: `Node ${node.type} (id: ${node.id}) input '${inputName}' value ${num} is below minimum ${cfg.min}`,
-            suggestion: `Set '${inputName}' to a value ≥ ${cfg.min}`,
-          })
-        }
-        if (cfg.max !== undefined && num > (cfg.max as number)) {
-          issues.push({
-            severity: 'error',
-            nodeId: node.id,
-            nodeType: node.type,
-            message: `Node ${node.type} (id: ${node.id}) input '${inputName}' value ${num} exceeds maximum ${cfg.max}`,
-            suggestion: `Set '${inputName}' to a value ≤ ${cfg.max}`,
-          })
-        }
-      }
-    }
+  return {
+    format: 'graph',
+    nodeCount: workflow.nodes.length,
+    linkCount: workflow.links.length,
+    issues,
+    canRun: issues.filter((i) => i.severity === 'error').length === 0,
   }
-  return issues
 }
 
-function analyzeGraph(workflow: GraphWorkflow, objectInfo?: ObjectInfo): Issue[] {
-  const issues: Issue[] = []
-
-  // Build node map
-  const nodeMap = new Map<number, WorkflowNode>()
-  for (const node of workflow.nodes) {
-    nodeMap.set(node.id, node)
+function analyzeApi(parsed: Record<string, ApiNode>, objectInfo?: ObjectInfo): AnalysisResult {
+  const issues = checkApiFormat(parsed, objectInfo)
+  return {
+    format: 'api',
+    nodeCount: Object.keys(parsed).length,
+    linkCount: 0,
+    issues,
+    canRun: issues.filter((i) => i.severity === 'error').length === 0,
   }
-
-  // Build link map
-  const linkMap = new Map<number, WorkflowLink>()
-  for (const raw of workflow.links) {
-    const [id, fromNodeId, fromSlot, toNodeId, toSlot, type] = raw
-    linkMap.set(id, { id, fromNodeId, fromSlot, toNodeId, toSlot, type })
-  }
-
-  // -------------------------------------------------------------------
-  // Check 1: Link integrity
-  // -------------------------------------------------------------------
-
-  // Inputs referencing missing link IDs
-  for (const node of workflow.nodes) {
-    if (!node.inputs) continue
-    for (const input of node.inputs) {
-      if (input.link !== null && input.link !== undefined) {
-        if (!linkMap.has(input.link)) {
-          issues.push({
-            severity: 'error',
-            nodeId: node.id,
-            nodeType: node.type,
-            message: `Node ${node.type} (id: ${node.id}) input '${input.name}' references missing link #${input.link}`,
-            suggestion: `Remove or reconnect node ${node.type} (id: ${node.id}) - link #${input.link} is missing`,
-          })
-        }
-      }
-    }
-  }
-
-  // Outputs referencing missing link IDs
-  for (const node of workflow.nodes) {
-    if (!node.outputs) continue
-    for (const output of node.outputs) {
-      for (const linkId of output.links ?? []) {
-        if (!linkMap.has(linkId)) {
-          issues.push({
-            severity: 'error',
-            nodeId: node.id,
-            nodeType: node.type,
-            message: `Node ${node.type} (id: ${node.id}) output '${output.name}' references missing link #${linkId}`,
-            suggestion: `Remove or reconnect node ${node.type} (id: ${node.id}) - link #${linkId} is missing`,
-          })
-        }
-      }
-    }
-  }
-
-  // Links referencing missing node IDs
-  for (const link of linkMap.values()) {
-    if (!nodeMap.has(link.fromNodeId)) {
-      issues.push({
-        severity: 'error',
-        message: `Link #${link.id} references non-existent source node id: ${link.fromNodeId}`,
-        suggestion: `Remove link #${link.id} - source node ${link.fromNodeId} does not exist`,
-      })
-    }
-    if (!nodeMap.has(link.toNodeId)) {
-      issues.push({
-        severity: 'error',
-        message: `Link #${link.id} references non-existent target node id: ${link.toNodeId}`,
-        suggestion: `Remove link #${link.id} - target node ${link.toNodeId} does not exist`,
-      })
-    }
-  }
-
-  // -------------------------------------------------------------------
-  // Check 2: Type consistency
-  // -------------------------------------------------------------------
-
-  for (const link of linkMap.values()) {
-    const fromNode = nodeMap.get(link.fromNodeId)
-    const toNode = nodeMap.get(link.toNodeId)
-
-    // Skip if nodes are missing (already caught above)
-    if (!fromNode || !toNode) continue
-
-    const sourceOutput = fromNode.outputs?.[link.fromSlot]
-    const targetInput = toNode.inputs?.[link.toSlot]
-
-    if (sourceOutput && sourceOutput.type !== link.type) {
-      issues.push({
-        severity: 'warning',
-        nodeId: fromNode.id,
-        nodeType: fromNode.type,
-        message: `Link #${link.id}: source output type '${sourceOutput.type}' disagrees with link type '${link.type}'`,
-        detail: `Node ${fromNode.type} (id: ${fromNode.id}) slot ${link.fromSlot} → ${toNode.type} (id: ${toNode.id})`,
-      })
-    }
-
-    if (sourceOutput && targetInput && sourceOutput.type !== targetInput.type) {
-      // Wildcard / any-type passthrough — skip if either side is '*'
-      if (sourceOutput.type !== '*' && targetInput.type !== '*') {
-        issues.push({
-          severity: 'error',
-          nodeId: toNode.id,
-          nodeType: toNode.type,
-          message: `Type mismatch on link #${link.id}: '${sourceOutput.type}' connected to '${targetInput.type}'`,
-          detail: `From ${fromNode.type} (id: ${fromNode.id}) output '${sourceOutput.name}' → ${toNode.type} (id: ${toNode.id}) input '${targetInput.name}'`,
-          suggestion: `Disconnect link #${link.id} and reconnect a matching ${targetInput.type} output to ${toNode.type} (id: ${toNode.id}) input '${targetInput.name}'`,
-        })
-      }
-    }
-  }
-
-  // -------------------------------------------------------------------
-  // Check 3: Disconnected input slots
-  // -------------------------------------------------------------------
-
-  for (const node of workflow.nodes) {
-    if (!node.inputs) continue
-    for (const input of node.inputs) {
-      if (input.link === null || input.link === undefined) {
-        issues.push({
-          severity: 'warning',
-          nodeId: node.id,
-          nodeType: node.type,
-          message: `Node ${node.type} (id: ${node.id}) input '${input.name}' (type: ${input.type}) is not connected`,
-          suggestion: `Connect a ${input.type} output to this input, or verify this node works without it`,
-        })
-      }
-    }
-  }
-
-  // -------------------------------------------------------------------
-  // Check 4: Muted/bypassed nodes with downstream dependents
-  // -------------------------------------------------------------------
-
-  for (const link of linkMap.values()) {
-    const fromNode = nodeMap.get(link.fromNodeId)
-    const toNode = nodeMap.get(link.toNodeId)
-    if (!fromNode || !toNode) continue
-
-    const mode = fromNode.mode ?? 0
-    if (mode !== 0) {
-      issues.push({
-        severity: 'error',
-        nodeId: fromNode.id,
-        nodeType: fromNode.type,
-        message: `Node ${fromNode.type} (id: ${fromNode.id}) is ${modeLabel(mode)} but node ${toNode.type} (id: ${toNode.id}) depends on its output`,
-        detail: `Link #${link.id} carries type '${link.type}' from ${modeLabel(mode)} node`,
-        suggestion: `Either unmute/unbypass node ${fromNode.type} (id: ${fromNode.id}), or disconnect its outputs`,
-      })
-    }
-  }
-
-  // -------------------------------------------------------------------
-  // Check 5: No output nodes
-  // -------------------------------------------------------------------
-
-  const hasOutputNode = workflow.nodes.some((n) => OUTPUT_NODE_TYPES.has(n.type))
-  if (!hasOutputNode) {
-    issues.push({
-      severity: 'warning',
-      message: 'No output node found (SaveImage, PreviewImage, etc.) - workflow produces no visible result',
-      suggestion: 'Add a SaveImage or PreviewImage node and connect an IMAGE output to it',
-    })
-  }
-
-  // -------------------------------------------------------------------
-  // Check 6: Cycle detection
-  // -------------------------------------------------------------------
-
-  // Build adjacency list
-  const adj = new Map<number, number[]>()
-  for (const node of workflow.nodes) {
-    adj.set(node.id, [])
-  }
-  for (const link of linkMap.values()) {
-    if (nodeMap.has(link.fromNodeId) && nodeMap.has(link.toNodeId)) {
-      adj.get(link.fromNodeId)!.push(link.toNodeId)
-    }
-  }
-
-  // DFS cycle detection: 0=white, 1=gray, 2=black
-  const color = new Map<number, 0 | 1 | 2>()
-  const parent = new Map<number, number | null>()
-  let cycleFound = false
-  let cyclePath: number[] = []
-
-  for (const node of workflow.nodes) {
-    color.set(node.id, 0)
-    parent.set(node.id, null)
-  }
-
-  function dfs(nodeId: number, stack: number[]): void {
-    if (cycleFound) return
-    color.set(nodeId, 1)
-    stack.push(nodeId)
-
-    for (const neighbor of adj.get(nodeId) ?? []) {
-      if (cycleFound) return
-      const c = color.get(neighbor) ?? 0
-      if (c === 1) {
-        // Found a cycle — extract the cycle from the stack
-        const idx = stack.indexOf(neighbor)
-        cyclePath = stack.slice(idx)
-        cycleFound = true
-        return
-      }
-      if (c === 0) {
-        parent.set(neighbor, nodeId)
-        dfs(neighbor, stack)
-      }
-    }
-
-    stack.pop()
-    color.set(nodeId, 2)
-  }
-
-  for (const node of workflow.nodes) {
-    if ((color.get(node.id) ?? 0) === 0) {
-      dfs(node.id, [])
-      if (cycleFound) break
-    }
-  }
-
-  if (cycleFound && cyclePath.length > 0) {
-    const pathStr = cyclePath
-      .map((id) => {
-        const n = nodeMap.get(id)
-        return n ? `${n.type}(${id})` : `?(${id})`
-      })
-      .join(' → ')
-    issues.push({
-      severity: 'error',
-      message: `Circular dependency detected: ${pathStr} → ${(() => { const n = nodeMap.get(cyclePath[0]); return n ? `${n.type}(${cyclePath[0]})` : `?(${cyclePath[0]})` })()}`,
-      suggestion: 'Remove one of the connections that forms the cycle',
-    })
-  }
-
-  // -------------------------------------------------------------------
-  // Check 7: Orphan nodes (info)
-  // -------------------------------------------------------------------
-
-  for (const node of workflow.nodes) {
-    const hasInputConnections =
-      node.inputs?.some((i) => i.link !== null && i.link !== undefined) ?? false
-    const hasOutputConnections =
-      node.outputs?.some((o) => o.links && o.links.length > 0) ?? false
-
-    // A node with no inputs defined and no outputs defined is also orphaned
-    const hasInputSlots = (node.inputs?.length ?? 0) > 0
-    const hasOutputSlots = (node.outputs?.length ?? 0) > 0
-
-    if (!hasInputConnections && !hasOutputConnections && (hasInputSlots || hasOutputSlots)) {
-      issues.push({
-        severity: 'info',
-        nodeId: node.id,
-        nodeType: node.type,
-        message: `Node ${node.type} (id: ${node.id}) has no connections - it won't affect the workflow`,
-      })
-    }
-  }
-
-  // -------------------------------------------------------------------
-  // Check 8 & 9: Schema checks (only when objectInfo is available)
-  // -------------------------------------------------------------------
-
-  if (objectInfo) {
-    for (const node of workflow.nodes) {
-      const schemaDef = objectInfo[node.type]
-
-      // Check 8: Node type not registered
-      if (!schemaDef) {
-        issues.push({
-          severity: 'error',
-          nodeId: node.id,
-          nodeType: node.type,
-          message: `Node type '${node.type}' (id: ${node.id}) is not registered in the connected ComfyUI instance`,
-          suggestion: `Install the custom node pack that provides '${node.type}', or check that ComfyUI has loaded it correctly`,
-        })
-        continue
-      }
-
-      // Check 9: Widget value range / options validation
-      issues.push(...checkWidgetValues(node, schemaDef))
-    }
-  }
-
-  return issues
 }
 
 // ---------------------------------------------------------------------------
-// API format analysis
-// ---------------------------------------------------------------------------
-
-interface ApiNode {
-  class_type: string
-  // Values are either raw (string/number/boolean) or node-references [nodeId, slotIndex]
-  inputs: Record<string, unknown>
-  _meta?: Record<string, unknown>
-}
-
-function analyzeApi(parsed: Record<string, ApiNode>, objectInfo?: ObjectInfo): Issue[] {
-  const issues: Issue[] = []
-  const nodeIds = new Set(Object.keys(parsed))
-
-  for (const [nodeId, node] of Object.entries(parsed)) {
-    for (const [inputName, value] of Object.entries(node.inputs)) {
-      // Node references look like ["nodeId", slotIndex]
-      if (
-        Array.isArray(value) &&
-        value.length === 2 &&
-        typeof value[0] === 'string' &&
-        typeof value[1] === 'number'
-      ) {
-        const refId = value[0] as string
-        if (!nodeIds.has(refId)) {
-          issues.push({
-            severity: 'error',
-            nodeType: node.class_type,
-            message: `Node ${node.class_type} (id: ${nodeId}) input '${inputName}' references missing node id: ${refId}`,
-            suggestion: `Add a node with id '${refId}' or rewire input '${inputName}' on node ${nodeId}`,
-          })
-        }
-      }
-    }
-  }
-
-  // Cycle detection for API format
-  const adj = new Map<string, string[]>()
-  for (const id of nodeIds) {
-    adj.set(id, [])
-  }
-  for (const [nodeId, node] of Object.entries(parsed)) {
-    for (const value of Object.values(node.inputs)) {
-      if (
-        Array.isArray(value) &&
-        value.length === 2 &&
-        typeof value[0] === 'string' &&
-        typeof value[1] === 'number'
-      ) {
-        const refId = value[0] as string
-        if (nodeIds.has(refId)) {
-          adj.get(refId)!.push(nodeId)
-        }
-      }
-    }
-  }
-
-  const color = new Map<string, 0 | 1 | 2>()
-  for (const id of nodeIds) color.set(id, 0)
-
-  let cycleFound = false
-  let cyclePath: string[] = []
-
-  function dfsApi(nodeId: string, stack: string[]): void {
-    if (cycleFound) return
-    color.set(nodeId, 1)
-    stack.push(nodeId)
-    for (const neighbor of adj.get(nodeId) ?? []) {
-      if (cycleFound) return
-      const c = color.get(neighbor) ?? 0
-      if (c === 1) {
-        const idx = stack.indexOf(neighbor)
-        cyclePath = stack.slice(idx)
-        cycleFound = true
-        return
-      }
-      if (c === 0) dfsApi(neighbor, stack)
-    }
-    stack.pop()
-    color.set(nodeId, 2)
-  }
-
-  for (const id of nodeIds) {
-    if ((color.get(id) ?? 0) === 0) {
-      dfsApi(id, [])
-      if (cycleFound) break
-    }
-  }
-
-  if (cycleFound && cyclePath.length > 0) {
-    const pathStr = cyclePath
-      .map((id) => {
-        const node = parsed[id]
-        return node ? `${node.class_type}(${id})` : `?(${id})`
-      })
-      .join(' → ')
-    const firstNode = parsed[cyclePath[0]]
-    const firstLabel = firstNode
-      ? `${firstNode.class_type}(${cyclePath[0]})`
-      : `?(${cyclePath[0]})`
-    issues.push({
-      severity: 'error',
-      message: `Circular dependency detected: ${pathStr} → ${firstLabel}`,
-      suggestion: 'Remove one of the connections that forms the cycle',
-    })
-  }
-
-  // No output node check for API format
-  const hasOutputNode = Object.values(parsed).some((n) =>
-    OUTPUT_NODE_TYPES.has(n.class_type),
-  )
-  if (!hasOutputNode) {
-    issues.push({
-      severity: 'warning',
-      message: 'No output node found (SaveImage, PreviewImage, etc.) - workflow produces no visible result',
-      suggestion: 'Add a SaveImage or PreviewImage node and connect an IMAGE output to it',
-    })
-  }
-
-  // Schema check: missing node types
-  if (objectInfo) {
-    for (const [nodeId, node] of Object.entries(parsed)) {
-      if (!objectInfo[node.class_type]) {
-        issues.push({
-          severity: 'error',
-          nodeType: node.class_type,
-          message: `Node type '${node.class_type}' (id: ${nodeId}) is not registered in the connected ComfyUI instance`,
-          suggestion: `Install the custom node pack that provides '${node.class_type}', or check that ComfyUI has loaded it correctly`,
-        })
-      }
-    }
-  }
-
-  return issues
-}
-
-// ---------------------------------------------------------------------------
-// Main entry point
+// Entry point
 // ---------------------------------------------------------------------------
 
 export function analyzeWorkflow(jsonText: string, objectInfo?: ObjectInfo): AnalysisResult {
@@ -575,28 +98,8 @@ export function analyzeWorkflow(jsonText: string, objectInfo?: ObjectInfo): Anal
     }
   }
 
-  if (isGraphFormat(parsed)) {
-    const issues = analyzeGraph(parsed, objectInfo)
-    return {
-      format: 'graph',
-      nodeCount: parsed.nodes.length,
-      linkCount: parsed.links.length,
-      issues,
-      canRun: issues.filter((i) => i.severity === 'error').length === 0,
-    }
-  }
-
-  if (isApiFormat(parsed)) {
-    const apiWorkflow = parsed as Record<string, ApiNode>
-    const issues = analyzeApi(apiWorkflow, objectInfo)
-    return {
-      format: 'api',
-      nodeCount: Object.keys(apiWorkflow).length,
-      linkCount: 0,
-      issues,
-      canRun: issues.filter((i) => i.severity === 'error').length === 0,
-    }
-  }
+  if (isGraphFormat(parsed)) return analyzeGraph(parsed, objectInfo)
+  if (isApiFormat(parsed)) return analyzeApi(parsed, objectInfo)
 
   return {
     format: 'unknown',
@@ -608,7 +111,8 @@ export function analyzeWorkflow(jsonText: string, objectInfo?: ObjectInfo): Anal
         message: 'Unrecognized workflow format',
         detail:
           'Expected either a graph format (with "nodes" and "links" arrays) or an API/prompt format (with numeric string keys and "class_type" values)',
-        suggestion: 'Export the workflow from ComfyUI using Save (graph format) or Save (API format)',
+        suggestion:
+          'Export the workflow from ComfyUI using Save (graph format) or Save (API format)',
       },
     ],
     canRun: false,

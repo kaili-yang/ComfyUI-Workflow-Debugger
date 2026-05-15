@@ -63,6 +63,7 @@ export interface Issue {
   message: string
   detail?: string
   suggestion?: string
+  fixable?: boolean
 }
 
 export interface AnalysisResult {

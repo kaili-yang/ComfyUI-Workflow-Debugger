@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import UploadPanel from './components/UploadPanel.vue'
 import WorkflowVisualizer from './components/WorkflowVisualizer.vue'
 import DiagnosticsPanel from './components/DiagnosticsPanel.vue'
+import FixPanel from './components/FixPanel.vue'
 import { analyzeWorkflow } from './lib/analyzer'
 import type { AnalysisResult, GraphWorkflow, ObjectInfo } from './types/workflow'
 
@@ -123,6 +124,11 @@ function selectNode(id: number | null): void {
   selectedNodeId.value = id
 }
 
+function onFixed(fixedJson: string): void {
+  rawContent.value = fixedJson
+  runAnalysis(fixedJson)
+}
+
 function reset(): void {
   fileName.value = null
   rawContent.value = null
@@ -163,13 +169,23 @@ function reset(): void {
     >
       <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-gray-700 group-hover:bg-blue-500/60 transition-colors" />
     </div>
-    <!-- Bottom row: diagnostics -->
-    <div class="min-h-0 overflow-hidden" :style="{ height: (100 - topHeightPct) + '%' }">
-      <DiagnosticsPanel
-        :result="result"
-        :selected-node-id="selectedNodeId"
-        @node-select="selectNode"
-      />
+    <!-- Bottom row: fix panel (left) + diagnostics (right) -->
+    <div class="flex min-h-0 overflow-hidden" :style="{ height: (100 - topHeightPct) + '%' }">
+      <div class="w-72 flex-shrink-0 border-r border-gray-800 overflow-hidden">
+        <FixPanel
+          :result="result"
+          :raw-content="rawContent"
+          :file-name="fileName"
+          @apply="onFixed"
+        />
+      </div>
+      <div class="flex-1 min-w-0 overflow-hidden">
+        <DiagnosticsPanel
+          :result="result"
+          :selected-node-id="selectedNodeId"
+          @node-select="selectNode"
+        />
+      </div>
     </div>
   </div>
 </template>
