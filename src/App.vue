@@ -92,7 +92,7 @@ function onFixIssue(fixType: FixType): void {
     <!-- Main content -->
     <div class="flex flex-row flex-1 min-h-0 overflow-hidden">
     <!-- Left column: upload -->
-    <div class="w-72 flex-shrink-0 border-r border-gray-800 overflow-hidden">
+    <div class="w-80 flex-shrink-0 border-r border-gray-800 overflow-hidden">
       <UploadPanel
         :file-name="fileName"
         :schema-status="schemaStatus"
@@ -133,7 +133,7 @@ function onFixIssue(fixType: FixType): void {
     </div>
 
     <!-- Right column: fix + export -->
-    <div class="w-72 flex-shrink-0 border-l border-gray-800 overflow-hidden">
+    <div class="w-80 flex-shrink-0 border-l border-gray-800 overflow-hidden">
       <FixPanel
         :result="result"
         :raw-content="rawContent"

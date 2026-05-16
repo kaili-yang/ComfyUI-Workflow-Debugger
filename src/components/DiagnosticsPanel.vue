@@ -126,7 +126,7 @@ const verdictIcon = computed(() => {
 
     <template v-else>
       <!-- Summary bar -->
-      <div class="flex-shrink-0 flex items-center gap-4 px-5 py-2.5 border-b border-gray-800 bg-gray-950">
+      <div class="flex-shrink-0 flex items-center gap-4 px-6 py-3 border-b border-gray-800 bg-gray-950">
         <!-- Verdict -->
         <div class="flex items-center gap-2">
           <span class="text-base font-bold leading-none" :class="verdictStyle">{{ verdictIcon }}</span>
@@ -166,10 +166,10 @@ const verdictIcon = computed(() => {
       </div>
 
       <!-- Issues area -->
-      <div class="flex-1 min-h-0 overflow-y-auto px-5 py-3">
+      <div class="flex-1 min-h-0 overflow-y-auto px-6 py-4">
         <!-- No issues -->
-        <div v-if="orderedIssues.length === 0" class="h-full flex flex-col items-center justify-center gap-2">
-          <div class="w-10 h-10 bg-green-500/10 border border-green-700/30 rounded-full flex items-center justify-center">
+        <div v-if="orderedIssues.length === 0" class="h-full flex flex-col items-center justify-center gap-3">
+          <div class="w-12 h-12 bg-green-500/10 border border-green-700/30 rounded-full flex items-center justify-center">
             <span class="text-green-400 font-bold">✓</span>
           </div>
           <p class="text-green-300 text-sm font-medium">No issues found</p>
@@ -179,8 +179,8 @@ const verdictIcon = computed(() => {
         <!-- Issues grid -->
         <div
           v-else
-          class="grid gap-2"
-          style="grid-template-columns: repeat(auto-fill, minmax(360px, 1fr))"
+          class="grid gap-3"
+          style="grid-template-columns: repeat(auto-fill, minmax(380px, 1fr))"
         >
           <div
             v-for="(issue, idx) in orderedIssues"

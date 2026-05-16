@@ -75,16 +75,16 @@ function download(): void {
 <template>
   <div class="flex flex-col h-full bg-gray-950">
     <!-- Header -->
-    <div class="flex-shrink-0 px-4 py-3 border-b border-gray-800">
+    <div class="flex-shrink-0 px-5 py-4 border-b border-gray-800">
       <p class="text-sm font-bold text-gray-100 tracking-tight">Auto Fix</p>
-      <p class="text-xs text-gray-600 mt-0.5">Clean up broken link references</p>
+      <p class="text-xs text-gray-600 mt-1">Clean up broken link references</p>
     </div>
 
     <!-- Body -->
-    <div class="flex-1 min-h-0 overflow-y-auto px-4 py-4 flex flex-col gap-4">
+    <div class="flex-1 min-h-0 overflow-y-auto px-5 py-5 flex flex-col gap-5">
 
       <!-- Big circular Fix button, always centered -->
-      <div class="flex flex-col items-center justify-center gap-3 py-4">
+      <div class="flex flex-col items-center justify-center gap-4 py-6">
         <button
           class="fix-circle-btn"
           :class="{
@@ -110,8 +110,8 @@ function download(): void {
 
       <!-- What got fixed (animated, shown only after fix) -->
       <div v-if="fixApplied && fixBreakdown.length > 0" class="flex flex-col gap-2">
-        <p class="text-xs text-gray-600 uppercase tracking-wider font-semibold px-0.5">What got fixed</p>
-        <div class="flex flex-col gap-1">
+        <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold px-0.5">What got fixed</p>
+        <div class="flex flex-col gap-1.5">
           <div
             v-for="(item, idx) in fixBreakdown"
             :key="item.label"
@@ -130,7 +130,7 @@ function download(): void {
     </div>
 
     <!-- Footer: export -->
-    <div class="flex-shrink-0 border-t border-gray-800 px-4 py-3">
+    <div class="flex-shrink-0 border-t border-gray-800 px-5 py-4">
       <button
         class="w-full flex items-center justify-center gap-2 py-2 rounded-lg border text-xs font-semibold tracking-wide transition-all duration-150"
         :class="rawContent
@@ -151,8 +151,8 @@ function download(): void {
 
 <style scoped>
 .fix-circle-btn {
-  width: 120px;
-  height: 120px;
+  width: 136px;
+  height: 136px;
   border-radius: 50%;
   border: 3px solid #39ff14;
   background: radial-gradient(circle at 40% 35%, #0d2b0d, #050f05);
@@ -166,7 +166,7 @@ function download(): void {
 }
 
 .fix-circle-label {
-  font-size: 1.75rem;
+  font-size: 2rem;
   font-weight: 800;
   letter-spacing: 0.02em;
   color: #39ff14;
