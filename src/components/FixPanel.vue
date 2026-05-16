@@ -125,17 +125,7 @@ function download(): void {
         </div>
       </div>
 
-      <!-- After fix: which media files to copy to ComfyUI input/ -->
-      <div
-        v-if="fixApplied && fixedMediaFiles.length > 0"
-        class="bg-yellow-950/20 border border-yellow-700/30 rounded-lg p-3 flex flex-col gap-2"
-      >
-        <p class="text-yellow-300 text-xs font-semibold">Copy these files to ComfyUI's <code class="font-mono bg-gray-800 px-1 rounded">input/</code> folder:</p>
-        <div class="flex flex-col gap-1">
-          <div v-for="f in fixedMediaFiles" :key="f" class="font-mono text-xs text-yellow-200 bg-gray-900 px-2 py-1 rounded truncate" :title="f">{{ f }}</div>
-        </div>
-        <p class="text-gray-600 text-xs">Test files are in <span class="font-mono">comfy_workflow_debuger/test data/</span></p>
-      </div>
+      <!-- TODO: dynamic media file validation (future) -->
 
     </div>
 
