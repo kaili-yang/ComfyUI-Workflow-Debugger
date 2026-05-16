@@ -11,6 +11,7 @@ export interface SourceNode {
   class: string
   outputSlot: number
   widgetDefaults: Record<string, unknown>
+  requiredInputs?: { name: string; type: string; slotIndex: number }[]
 }
 
 export interface NodeTypeMap {

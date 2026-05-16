@@ -180,12 +180,6 @@ function fixLinkTypeMetadata(workflow: GraphWorkflow): number {
     if (!fromNode) continue
     const out = fromNode.outputs?.[link[2]]
     if (!out) continue
-    if (out.type === '*') continue
-
-    // Only fix the label — skip if the two slot types are genuinely different (Check 3)
-    const toNode = nodeMap.get(link[3])
-    const inType = toNode?.inputs?.[link[4]]?.type
-    if (inType && inType !== out.type && inType !== '*' && out.type !== '*') continue
 
     if (link[5] !== out.type) {
       link[5] = out.type

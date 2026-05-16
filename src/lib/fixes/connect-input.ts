@@ -78,32 +78,6 @@ export function fixDisconnectedInputs(
         continue
       }
 
-      // ---- Level 1b: any (possibly already-used) matching output ----
-      const reusable: Candidate[] = []
-
-      for (const candidate of workflow.nodes) {
-        if (descendants.has(candidate.id)) continue
-        for (let oi = 0; oi < (candidate.outputs?.length ?? 0); oi++) {
-          const out = candidate.outputs![oi]
-          if (out.type !== requiredType || out.type === '*') continue
-          let score = 0
-          if (ancestors.has(candidate.id)) score += 2
-          const totalOut = (candidate.outputs ?? []).reduce(
-            (s, o) => s + (o.links?.length ?? 0), 0,
-          )
-          if (totalOut >= 2) score += 1
-          reusable.push({ nodeId: candidate.id, slotIdx: oi, score })
-        }
-      }
-
-      if (reusable.length) {
-        reusable.sort((a, b) => b.score - a.score)
-        const best = reusable[0]
-        createLink(workflow, best.nodeId, best.slotIdx, node.id, slotIdx, requiredType)
-        changes++
-        continue
-      }
-
       // ---- Level 2: insert a new node via satisfyInput ----
       const ctx = makeSatisfyContext()
       const res = satisfyInput(workflow, node.id, slotIdx, requiredType, nodeTypeMap, ctx)

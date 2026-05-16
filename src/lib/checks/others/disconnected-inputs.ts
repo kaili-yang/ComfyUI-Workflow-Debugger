@@ -56,6 +56,7 @@ export function checkDisconnectedInputs(ctx: GraphAnalysisContext): Issue[] {
         message: `Node ${node.type} (id: ${node.id}) input '${input.name}' (${input.type}) is not connected`,
         suggestion: `Connect a ${input.type} source, or connect to a ComfyUI server to validate whether this input is required`,
         fixable: true,
+        fixType: 'disconnected-input' as const,
       })
     }
   }

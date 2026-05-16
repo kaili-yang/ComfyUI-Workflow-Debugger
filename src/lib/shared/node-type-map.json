@@ -1567,6 +1567,16 @@
     }
   },
   "sourceMap": {
+    "CONDITIONING": [
+      {
+        "class": "CLIPTextEncode",
+        "outputSlot": 0,
+        "widgetDefaults": { "text": "" },
+        "requiredInputs": [
+          { "name": "clip", "type": "CLIP", "slotIndex": 0 }
+        ]
+      }
+    ],
     "MODEL": [
       {
         "class": "CheckpointLoaderSimple",

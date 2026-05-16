@@ -1,4 +1,4 @@
-import type { GraphWorkflow, NodeInputSlot, NodeOutputSlot } from '../../types/workflow'
+import type { GraphWorkflow, NodeInputSlot, NodeOutputSlot, WorkflowNode } from '../../types/workflow'
 import type { NodeTypeMap } from './node-type-map'
 import {
   computeDescendants,
@@ -47,6 +47,11 @@ export function satisfyInput(
   ctx.visiting.add(key)
 
   // ---- Level 1: reuse an existing output in the workflow ----
+  // At depth 0 (called directly from fixDisconnectedInputs after orphan search fails),
+  // skip already-used outputs — reusing them causes semantic duplicates (e.g. the same
+  // CONDITIONING wired to both positive and negative KSampler inputs).
+  // At depth > 0 (wiring a newly-created node's own inputs), reuse any available output
+  // so new nodes get connected to existing sources like CheckpointLoaderSimple.
   const forbidden = computeDescendants(workflow, targetNodeId)
   forbidden.add(targetNodeId)
 
@@ -58,7 +63,7 @@ export function satisfyInput(
       const out = node.outputs![si]
       if (out.type !== requiredType || out.type === '*') continue
       const outLinks = out.links?.length ?? 0
-      // Prefer already-used outputs (trunk nodes like MODEL/VAE/CLIP) over unused
+      if (outLinks > 0 && ctx.depth === 0) continue
       const score = outLinks > 0 ? 2 : 1
       if (!bestReuse || score > bestReuse.score) {
         bestReuse = { nodeId: node.id, slotIdx: si, score }
@@ -79,20 +84,32 @@ export function satisfyInput(
     const newId = nextNodeId(workflow)
     const pos = placeUpstream(workflow, targetNode, null)
 
-    const newNode = {
+    const newNode: WorkflowNode = {
       id: newId,
       type: src.class,
       pos,
       outputs: [{ name: requiredType, type: requiredType, links: [] as number[] }] as NodeOutputSlot[],
-      inputs: [] as NodeInputSlot[],
+      inputs: (src.requiredInputs ?? []).map((ri) => ({
+        name: ri.name,
+        type: ri.type,
+        link: null,
+      })) as NodeInputSlot[],
       widgets_values: Object.values(src.widgetDefaults),
     }
     workflow.nodes.push(newNode)
     ctx.newNodeIds.push(newId)
 
+    // Recursively satisfy the new node's required inputs at depth+1 so that
+    // already-connected sources (e.g. CLIP from CheckpointLoaderSimple) are reused.
+    ctx.depth++
+    for (const reqInput of src.requiredInputs ?? []) {
+      satisfyInput(workflow, newId, reqInput.slotIndex, reqInput.type, nodeTypeMap, ctx)
+    }
+    ctx.depth--
+
     createLink(workflow, newId, src.outputSlot, targetNodeId, targetSlot, requiredType)
     ctx.visiting.delete(key)
-    return { ok: true, newNodeIds: [newId] }
+    return { ok: true, newNodeIds: [...ctx.newNodeIds] }
   }
 
   ctx.visiting.delete(key)
