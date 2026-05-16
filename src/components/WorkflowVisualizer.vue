@@ -288,7 +288,10 @@ function render(): void {
       ctx.globalAlpha = 1
     }
 
-    // ── Fixed links: second pass on top with cyan glow ──
+    // ── Fixed links: animated marching-ants + pulsing glow ──
+    const t = Date.now() / 1000
+    const pulse = 0.5 + 0.5 * Math.sin(t * 2.5)   // 0→1 at ~2.5 Hz
+
     for (const link of links) {
       if (!props.fixedLinkIds?.has(link.id)) continue
       const from = nodeMap.get(link.fromNodeId)
@@ -301,26 +304,37 @@ function render(): void {
       const y2 = slotY(to, link.toSlot)
       const dx = Math.abs(x2 - x1) * 0.5
 
-      // Glow halo
-      ctx.beginPath()
-      ctx.moveTo(x1, y1)
-      ctx.bezierCurveTo(x1 + dx, y1, x2 - dx, y2, x2, y2)
-      ctx.strokeStyle = '#22d3ee'
-      ctx.lineWidth = 8
-      ctx.globalAlpha = 0.25
-      ctx.shadowColor = '#22d3ee'
-      ctx.shadowBlur = 12
-      ctx.stroke()
+      const path = new Path2D()
+      path.moveTo(x1, y1)
+      path.bezierCurveTo(x1 + dx, y1, x2 - dx, y2, x2, y2)
 
-      // Solid line
-      ctx.beginPath()
-      ctx.moveTo(x1, y1)
-      ctx.bezierCurveTo(x1 + dx, y1, x2 - dx, y2, x2, y2)
-      ctx.strokeStyle = '#67e8f9'
-      ctx.lineWidth = 3
-      ctx.globalAlpha = 1
+      // Wide pulsing glow halo
+      ctx.shadowColor = '#22d3ee'
+      ctx.shadowBlur = 10 + 20 * pulse
+      ctx.strokeStyle = '#22d3ee'
+      ctx.lineWidth = 10
+      ctx.globalAlpha = 0.15 + 0.2 * pulse
+      ctx.stroke(path)
+
+      // Solid base line
       ctx.shadowBlur = 0
-      ctx.stroke()
+      ctx.strokeStyle = '#67e8f9'
+      ctx.lineWidth = 3.5
+      ctx.globalAlpha = 1
+      ctx.setLineDash([])
+      ctx.stroke(path)
+
+      // Marching-ants overlay (white dashes flowing forward)
+      ctx.strokeStyle = '#ffffff'
+      ctx.lineWidth = 2
+      ctx.globalAlpha = 0.7
+      ctx.setLineDash([8, 10])
+      ctx.lineDashOffset = -(t * 35) % 18
+      ctx.stroke(path)
+
+      ctx.setLineDash([])
+      ctx.lineDashOffset = 0
+      ctx.globalAlpha = 1
       ctx.shadowColor = 'transparent'
     }
 
@@ -399,15 +413,26 @@ function drawNode(ctx: CanvasRenderingContext2D, node: WorkflowNode): void {
 
   // ── Status border — always drawn for every node ──
   if (isNew) {
+    const pulse = 0.5 + 0.5 * Math.sin(Date.now() / 400)
     ctx.shadowColor = '#22d3ee'
-    ctx.shadowBlur = 14
+    ctx.shadowBlur = 8 + 18 * pulse
+    ctx.strokeStyle = '#22d3ee'
+    ctx.lineWidth = borderWidth + 1.5 * pulse
+    // Extra outer glow ring
+    ctx.globalAlpha = 0.3 + 0.3 * pulse
+    ctx.beginPath()
+    ctx.roundRect(x - 4, y - TITLE_H - 4, w + 8, h + TITLE_H + 8, ROUND_R + 3)
+    ctx.stroke()
+    ctx.globalAlpha = 1
   }
   ctx.strokeStyle = borderColor
   ctx.lineWidth = borderWidth
+  ctx.shadowColor = isNew ? '#22d3ee' : 'transparent'
+  ctx.shadowBlur = isNew ? 8 : 0
   ctx.beginPath()
   ctx.roundRect(x - 1, y - TITLE_H - 1, w + 2, h + TITLE_H + 2, ROUND_R + 1)
   ctx.stroke()
-  if (isNew) { ctx.shadowBlur = 0; ctx.shadowColor = 'transparent' }
+  ctx.shadowBlur = 0; ctx.shadowColor = 'transparent'
 
   // ── Selection ring ──
   if (node.id === props.selectedNodeId) {
@@ -642,9 +667,11 @@ onMounted(() => {
   // ── Build initial scene ──
   buildScene()
 
-  // ── Render loop (only redraws when dirty) ──
+  // ── Render loop: always dirty when animated elements are present ──
   function frame(): void {
     animId = requestAnimationFrame(frame)
+    const hasAnim = (props.fixedNodeIds?.size ?? 0) > 0 || (props.fixedLinkIds?.size ?? 0) > 0
+    if (hasAnim) dirty = true
     if (dirty) { render(); dirty = false }
   }
   frame()
