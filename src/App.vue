@@ -3,6 +3,7 @@ import UploadPanel from './components/UploadPanel.vue'
 import WorkflowVisualizer from './components/WorkflowVisualizer.vue'
 import DiagnosticsPanel from './components/DiagnosticsPanel.vue'
 import FixPanel from './components/FixPanel.vue'
+import { ref } from 'vue'
 import { usePanelSplit } from './composables/usePanelSplit'
 import { useServerConnection } from './composables/useServerConnection'
 import { useWorkflowFile } from './composables/useWorkflowFile'
@@ -15,14 +16,38 @@ const { objectInfo, schemaStatus, connect, disconnect } = useServerConnection()
 const { fileName, rawContent, onFileLoaded, reset } = useWorkflowFile()
 const { result, workflow, selectedNodeId, selectNode } = useWorkflowAnalysis(rawContent, objectInfo)
 
-function onFixed(fixedJson: string): void {
+const fixedNodeIds = ref<Set<number>>(new Set())
+const fixedLinkIds = ref<Set<number>>(new Set())
+
+function clearFixHighlights(): void {
+  fixedNodeIds.value = new Set()
+  fixedLinkIds.value = new Set()
+}
+
+function onFileLoadedAndClear(...args: Parameters<typeof onFileLoaded>): void {
+  clearFixHighlights()
+  onFileLoaded(...args)
+}
+
+function onResetAndClear(): void {
+  clearFixHighlights()
+  reset()
+}
+
+function onFixed(fixedJson: string, newNodeIds: number[], newLinkIds: number[]): void {
+  fixedNodeIds.value = new Set(newNodeIds)
+  fixedLinkIds.value = new Set(newLinkIds)
   rawContent.value = fixedJson
 }
 
 function onFixIssue(fixType: FixType): void {
   if (!rawContent.value) return
   const r = fixByType(rawContent.value, fixType, objectInfo.value ?? undefined)
-  if (r.changes > 0) rawContent.value = r.fixed
+  if (r.changes > 0) {
+    fixedNodeIds.value = new Set(r.newNodeIds)
+    fixedLinkIds.value = new Set(r.newLinkIds)
+    rawContent.value = r.fixed
+  }
 }
 </script>
 
@@ -34,8 +59,8 @@ function onFixIssue(fixType: FixType): void {
         :file-name="fileName"
         :schema-status="schemaStatus"
         :schema-node-count="objectInfo ? Object.keys(objectInfo).length : 0"
-        @file-loaded="onFileLoaded"
-        @reset="reset"
+        @file-loaded="onFileLoadedAndClear"
+        @reset="onResetAndClear"
         @connect="connect"
         @disconnect="disconnect"
       />
@@ -48,6 +73,8 @@ function onFixIssue(fixType: FixType): void {
           :workflow="workflow"
           :result="result"
           :selected-node-id="selectedNodeId"
+          :fixed-node-ids="fixedNodeIds"
+          :fixed-link-ids="fixedLinkIds"
           @node-select="selectNode"
         />
       </div>

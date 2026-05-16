@@ -9,6 +9,8 @@ const props = defineProps<{
   workflow: GraphWorkflow | null
   result: AnalysisResult | null
   selectedNodeId: number | null
+  fixedNodeIds?: Set<number>
+  fixedLinkIds?: Set<number>
 }>()
 
 const emit = defineEmits<{ nodeSelect: [id: number | null] }>()
@@ -265,6 +267,7 @@ function render(): void {
     // ── Links (drawn below nodes) ──
     ctx.lineCap = 'round'
     for (const link of links) {
+      if (props.fixedLinkIds?.has(link.id)) continue   // drawn in second pass
       const from = nodeMap.get(link.fromNodeId)
       const to   = nodeMap.get(link.toNodeId)
       if (!from?.pos || !to?.pos) continue
@@ -283,6 +286,42 @@ function render(): void {
       ctx.globalAlpha = 0.75
       ctx.stroke()
       ctx.globalAlpha = 1
+    }
+
+    // ── Fixed links: second pass on top with cyan glow ──
+    for (const link of links) {
+      if (!props.fixedLinkIds?.has(link.id)) continue
+      const from = nodeMap.get(link.fromNodeId)
+      const to   = nodeMap.get(link.toNodeId)
+      if (!from?.pos || !to?.pos) continue
+
+      const x1 = outputX(from)
+      const y1 = slotY(from, link.fromSlot)
+      const x2 = inputX(to)
+      const y2 = slotY(to, link.toSlot)
+      const dx = Math.abs(x2 - x1) * 0.5
+
+      // Glow halo
+      ctx.beginPath()
+      ctx.moveTo(x1, y1)
+      ctx.bezierCurveTo(x1 + dx, y1, x2 - dx, y2, x2, y2)
+      ctx.strokeStyle = '#22d3ee'
+      ctx.lineWidth = 8
+      ctx.globalAlpha = 0.25
+      ctx.shadowColor = '#22d3ee'
+      ctx.shadowBlur = 12
+      ctx.stroke()
+
+      // Solid line
+      ctx.beginPath()
+      ctx.moveTo(x1, y1)
+      ctx.bezierCurveTo(x1 + dx, y1, x2 - dx, y2, x2, y2)
+      ctx.strokeStyle = '#67e8f9'
+      ctx.lineWidth = 3
+      ctx.globalAlpha = 1
+      ctx.shadowBlur = 0
+      ctx.stroke()
+      ctx.shadowColor = 'transparent'
     }
 
     // ── Nodes ──
@@ -308,26 +347,30 @@ function drawNode(ctx: CanvasRenderingContext2D, node: WorkflowNode): void {
   const h   = nodeH(node)
   const s   = severity(node.id)
   const muted = node.mode !== undefined && node.mode !== 0
+  const isNew = props.fixedNodeIds?.has(node.id) ?? false
 
-  // Title bar color:  green = ok, red = error, amber = warning, gray = muted
-  const titleColor = s === 'error'   ? '#7f1d1d'
+  // Title bar color
+  const titleColor = isNew          ? '#0c3345'
+    : s === 'error'   ? '#7f1d1d'
     : s === 'warning' ? '#713f12'
     : muted           ? '#374151'
-    : '#14532d'   // dark green for healthy nodes
+    : '#14532d'
 
-  // Body color: subtle tint matching the severity
-  const bodyColor = s === 'error'   ? '#2a1515'
+  // Body color
+  const bodyColor = isNew           ? '#071e2b'
+    : s === 'error'   ? '#2a1515'
     : s === 'warning' ? '#2a1f0a'
     : muted           ? '#1f2937'
-    : '#1e2d22'   // dark green-tinted body for healthy nodes
+    : '#1e2d22'
 
-  // Border color + width: always drawn so every node has a clear status ring
-  const borderColor = s === 'error'   ? '#ef4444'
+  // Border color + width
+  const borderColor = isNew         ? '#22d3ee'
+    : s === 'error'   ? '#ef4444'
     : s === 'warning' ? '#f59e0b'
     : muted           ? '#4b5563'
-    : '#4ade80'   // green-400 for healthy
+    : '#4ade80'
 
-  const borderWidth = s === 'error' ? 2.5 : s === 'warning' ? 2 : 1.5
+  const borderWidth = isNew ? 2.5 : s === 'error' ? 2.5 : s === 'warning' ? 2 : 1.5
 
   // ── Drop shadow ──
   ctx.shadowColor = 'rgba(0,0,0,0.5)'
@@ -355,11 +398,16 @@ function drawNode(ctx: CanvasRenderingContext2D, node: WorkflowNode): void {
   ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + w, y); ctx.stroke()
 
   // ── Status border — always drawn for every node ──
+  if (isNew) {
+    ctx.shadowColor = '#22d3ee'
+    ctx.shadowBlur = 14
+  }
   ctx.strokeStyle = borderColor
   ctx.lineWidth = borderWidth
   ctx.beginPath()
   ctx.roundRect(x - 1, y - TITLE_H - 1, w + 2, h + TITLE_H + 2, ROUND_R + 1)
   ctx.stroke()
+  if (isNew) { ctx.shadowBlur = 0; ctx.shadowColor = 'transparent' }
 
   // ── Selection ring ──
   if (node.id === props.selectedNodeId) {
@@ -398,6 +446,23 @@ function drawNode(ctx: CanvasRenderingContext2D, node: WorkflowNode): void {
     ctx.font = 'bold 10px system-ui'
     ctx.textAlign = 'center'
     ctx.fillText(node.mode === 2 ? 'MUTED' : 'BYPASSED', x + w / 2, y - TITLE_H / 2)
+  }
+
+  // New node badge
+  if (isNew) {
+    const badgeText = 'NEW'
+    ctx.font = 'bold 9px system-ui'
+    const bw = ctx.measureText(badgeText).width + 8
+    const bx = x + 4
+    const by = y - TITLE_H + 4
+    ctx.fillStyle = '#22d3ee'
+    ctx.beginPath()
+    ctx.roundRect(bx, by, bw, 13, 3)
+    ctx.fill()
+    ctx.fillStyle = '#0a1a20'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText(badgeText, bx + bw / 2, by + 6.5)
   }
 
   // ── Input slots ──
@@ -593,6 +658,10 @@ onUnmounted(() => {
 
 watch(() => [props.workflow, props.result] as const, () => {
   buildScene()
+  dirty = true
+})
+
+watch(() => [props.fixedNodeIds, props.fixedLinkIds] as const, () => {
   dirty = true
 })
 

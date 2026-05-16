@@ -19,6 +19,8 @@ export interface FixResult {
   mediaFiles: string[]
   partial: boolean
   breakdown: BreakdownItem[]
+  newNodeIds: number[]
+  newLinkIds: number[]
 }
 
 export function fixWorkflow(jsonText: string, objectInfo?: ObjectInfo): FixResult {
@@ -26,16 +28,19 @@ export function fixWorkflow(jsonText: string, objectInfo?: ObjectInfo): FixResul
   try {
     parsed = JSON.parse(jsonText)
   } catch {
-    return { fixed: jsonText, changes: 0, mediaFiles: [], partial: false, breakdown: [] }
+    return { fixed: jsonText, changes: 0, mediaFiles: [], partial: false, breakdown: [], newNodeIds: [], newLinkIds: [] }
   }
 
   const obj = parsed as Record<string, unknown>
   if (!Array.isArray(obj['nodes']) || !Array.isArray(obj['links'])) {
-    return { fixed: jsonText, changes: 0, mediaFiles: [], partial: false, breakdown: [] }
+    return { fixed: jsonText, changes: 0, mediaFiles: [], partial: false, breakdown: [], newNodeIds: [], newLinkIds: [] }
   }
 
   const workflow = JSON.parse(JSON.stringify(parsed)) as GraphWorkflow
   let partial = false
+
+  const nodeIdsBefore = new Set(workflow.nodes.map((n) => n.id))
+  const linkIdsBefore = new Set(workflow.links.map((l) => l[0]))
 
   // 1. Replace null widget values — must run first so structural fixes see correct
   //    widget state. Online path uses objectInfo defaults; offline path uses static schema.
@@ -87,12 +92,17 @@ export function fixWorkflow(jsonText: string, objectInfo?: ObjectInfo): FixResul
     connResult.changes +
     mediaResult.changes
 
+  const newNodeIds = workflow.nodes.filter((n) => !nodeIdsBefore.has(n.id)).map((n) => n.id)
+  const newLinkIds = workflow.links.filter((l) => !linkIdsBefore.has(l[0])).map((l) => l[0])
+
   return {
     fixed: JSON.stringify(workflow, null, 2),
     changes,
     mediaFiles: [...mediaResult.substituted],
     partial,
     breakdown,
+    newNodeIds,
+    newLinkIds,
   }
 }
 
@@ -107,18 +117,21 @@ export function fixByType(jsonText: string, fixType: FixType, objectInfo?: Objec
   try {
     parsed = JSON.parse(jsonText)
   } catch {
-    return { fixed: jsonText, changes: 0, mediaFiles: [], partial: false, breakdown: [] }
+    return { fixed: jsonText, changes: 0, mediaFiles: [], partial: false, breakdown: [], newNodeIds: [], newLinkIds: [] }
   }
 
   const obj = parsed as Record<string, unknown>
   if (!Array.isArray(obj['nodes']) || !Array.isArray(obj['links'])) {
-    return { fixed: jsonText, changes: 0, mediaFiles: [], partial: false, breakdown: [] }
+    return { fixed: jsonText, changes: 0, mediaFiles: [], partial: false, breakdown: [], newNodeIds: [], newLinkIds: [] }
   }
 
   const workflow = JSON.parse(JSON.stringify(parsed)) as GraphWorkflow
   let partial = false
   let mediaFiles: string[] = []
   const breakdown: BreakdownItem[] = []
+
+  const nodeIdsBefore = new Set(workflow.nodes.map((n) => n.id))
+  const linkIdsBefore = new Set(workflow.links.map((l) => l[0]))
 
   switch (fixType) {
     case 'null-widget-value': {
@@ -169,5 +182,7 @@ export function fixByType(jsonText: string, fixType: FixType, objectInfo?: Objec
   }
 
   const changes = breakdown.reduce((sum, item) => sum + item.count, 0)
-  return { fixed: JSON.stringify(workflow, null, 2), changes, mediaFiles, partial, breakdown }
+  const newNodeIds = workflow.nodes.filter((n) => !nodeIdsBefore.has(n.id)).map((n) => n.id)
+  const newLinkIds = workflow.links.filter((l) => !linkIdsBefore.has(l[0])).map((l) => l[0])
+  return { fixed: JSON.stringify(workflow, null, 2), changes, mediaFiles, partial, breakdown, newNodeIds, newLinkIds }
 }

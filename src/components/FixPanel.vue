@@ -11,7 +11,7 @@ const props = defineProps<{
   objectInfo?: ObjectInfo
 }>()
 
-const emit = defineEmits<{ apply: [fixedJson: string] }>()
+const emit = defineEmits<{ apply: [fixedJson: string, newNodeIds: number[], newLinkIds: number[]] }>()
 
 const fixApplied = ref(false)
 const fixChanges = ref(0)
@@ -51,7 +51,7 @@ function applyFix(): void {
   fixedMediaFiles.value = result.mediaFiles
   fixBreakdown.value = result.breakdown
   fixApplied.value = true
-  emit('apply', result.fixed)
+  emit('apply', result.fixed, result.newNodeIds, result.newLinkIds)
 }
 
 function download(): void {
