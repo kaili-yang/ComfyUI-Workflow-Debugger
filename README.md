@@ -75,14 +75,6 @@ The offline schema (`src/lib/nodes_schema.json`) is generated from a static copy
    python3 scripts/build_schema.py
    ```
 
-3. Review the diff and commit:
-
-   ```bash
-   git diff src/lib/nodes_schema.json   # inspect added/changed/removed nodes
-   git add nodes_lib/ src/lib/nodes_schema.json
-   git commit -m "Update node schema to ComfyUI vX.Y.Z"
-   ```
-
 `nodes_lib/` is the single source of truth. `nodes_schema.json` is always derived from it — never edit it by hand.
 
 ## Tech Stack
