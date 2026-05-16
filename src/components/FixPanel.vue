@@ -108,13 +108,19 @@ function download(): void {
         <p v-else class="text-yellow-400 text-xs text-center">{{ fixableCount }} fixable issue{{ fixableCount !== 1 ? 's' : '' }} found</p>
       </div>
 
-      <!-- What got fixed (dynamic, shown only after fix) -->
+      <!-- What got fixed (animated, shown only after fix) -->
       <div v-if="fixApplied && fixBreakdown.length > 0" class="flex flex-col gap-2">
-        <p class="text-xs text-gray-600 uppercase tracking-wider font-semibold">What got fixed</p>
-        <div class="flex flex-col gap-1.5">
-          <div v-for="item in fixBreakdown" :key="item.label" class="flex items-center justify-between gap-2">
-            <span class="text-gray-500 text-xs leading-relaxed">{{ item.label }}</span>
-            <span class="text-[#39ff14] text-xs font-semibold tabular-nums flex-shrink-0">{{ item.count }}</span>
+        <p class="text-xs text-gray-600 uppercase tracking-wider font-semibold px-0.5">What got fixed</p>
+        <div class="flex flex-col gap-1">
+          <div
+            v-for="(item, idx) in fixBreakdown"
+            :key="item.label"
+            class="fix-item flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-gray-900 border border-[#39ff14]/20"
+            :style="{ animationDelay: `${idx * 90}ms` }"
+          >
+            <span class="fix-check text-sm leading-none flex-shrink-0">✓</span>
+            <span class="text-gray-300 text-xs leading-relaxed flex-1 min-w-0">{{ item.label }}</span>
+            <span class="text-[#39ff14] text-xs font-bold tabular-nums flex-shrink-0">+{{ item.count }}</span>
           </div>
         </div>
       </div>
@@ -213,6 +219,26 @@ function download(): void {
 @keyframes fix-pulse {
   0%, 100% { box-shadow: 0 0 18px 4px #39ff1440, 0 0 6px 1px #39ff1466; }
   50%       { box-shadow: 0 0 30px 8px #39ff1460, 0 0 10px 3px #39ff14aa; }
+}
+
+.fix-item {
+  animation: fix-item-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.fix-check {
+  color: #39ff14;
+  text-shadow: 0 0 8px #39ff14bb;
+  animation: fix-check-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes fix-item-in {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fix-check-pop {
+  from { opacity: 0; transform: scale(0.4); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 </style>
