@@ -57,6 +57,34 @@ Open the app in your browser, then drag and drop a ComfyUI workflow `.json` file
 | No output node in workflow | Warning |
 | Orphan node (no connections) | Info |
 
+## Updating the Node Schema
+
+The offline schema (`src/lib/nodes_schema.json`) is generated from a static copy of the ComfyUI backend source files in `nodes_lib/`. When ComfyUI adds or changes nodes, follow these steps:
+
+1. Copy the updated source files into `nodes_lib/`:
+
+   ```bash
+   cp -r /path/to/ComfyUI/comfy_extras/* nodes_lib/comfy_extras/
+   cp -r /path/to/ComfyUI/comfy_api_nodes/* nodes_lib/comfy_api_nodes/
+   cp /path/to/ComfyUI/nodes.py nodes_lib/nodes.py
+   ```
+
+2. Regenerate the schema:
+
+   ```bash
+   python3 scripts/build_schema.py
+   ```
+
+3. Review the diff and commit:
+
+   ```bash
+   git diff src/lib/nodes_schema.json   # inspect added/changed/removed nodes
+   git add nodes_lib/ src/lib/nodes_schema.json
+   git commit -m "Update node schema to ComfyUI vX.Y.Z"
+   ```
+
+`nodes_lib/` is the single source of truth. `nodes_schema.json` is always derived from it — never edit it by hand.
+
 ## Tech Stack
 
 - [Vue 3](https://vuejs.org/) + TypeScript
