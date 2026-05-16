@@ -41,6 +41,7 @@ export function checkDisconnectedInputs(ctx: GraphAnalysisContext): Issue[] {
             message: `Node ${node.type} (id: ${node.id}) required input '${input.name}' (${input.type}) is not connected`,
             suggestion: `Connect a ${input.type} output to '${input.name}'`,
             fixable: true,
+            fixType: 'disconnected-input',
           })
         }
         // Unknown input name (not in schema) → skip; schema mismatch caught elsewhere

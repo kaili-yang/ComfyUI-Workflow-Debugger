@@ -35,6 +35,7 @@ export function checkMediaRefs(ctx: GraphAnalysisContext): Issue[] {
         message: `${node.type} (id: ${node.id}) references a file that may not exist: "${fileRef || '(empty)'}"`,
         suggestion: `Will be substituted with test data file: "${testFile}"`,
         fixable: true,
+        fixType: 'stale-media-ref',
       })
     }
   }

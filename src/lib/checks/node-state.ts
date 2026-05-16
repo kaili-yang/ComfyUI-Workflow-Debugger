@@ -56,6 +56,7 @@ export function checkMutedWithDependents(ctx: GraphAnalysisContext): Issue[] {
           detail: `Link #${link.id} carries type '${link.type}' from bypassed node — bypass cannot produce valid output`,
           suggestion: `Enable the node to restore data flow`,
           fixable: true,
+          fixType: 'bypassed-node',
         })
       }
     } else {

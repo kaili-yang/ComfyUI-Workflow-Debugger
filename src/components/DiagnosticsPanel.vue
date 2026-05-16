@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { computed, ref, triggerRef, watch } from 'vue'
-import type { AnalysisResult, Issue, Severity } from '../types/workflow'
+import type { AnalysisResult, FixType, Issue, Severity } from '../types/workflow'
 
 const props = defineProps<{
   result: AnalysisResult | null
   selectedNodeId: number | null
 }>()
 
-const emit = defineEmits<{ nodeSelect: [id: number | null] }>()
+const emit = defineEmits<{
+  nodeSelect: [id: number | null]
+  fix: [fixType: FixType]
+}>()
 
 const expanded = ref<Set<number>>(new Set())
 const issueEls = ref<(HTMLElement | null)[]>([])
@@ -212,6 +215,13 @@ const verdictIcon = computed(() => {
                 </div>
                 <p class="text-gray-200 text-xs leading-relaxed">{{ issue.message }}</p>
               </div>
+
+              <!-- Per-issue fix button -->
+              <button
+                v-if="issue.fixable && issue.fixType"
+                class="flex-shrink-0 px-2 py-0.5 rounded text-xs font-semibold border border-[#39ff14]/40 text-[#39ff14] hover:bg-[#39ff14]/10 hover:border-[#39ff14]/70 transition-colors duration-150 cursor-pointer"
+                @click.stop="emit('fix', issue.fixType!)"
+              >Fix</button>
 
               <svg
                 v-if="issue.detail || issue.suggestion"

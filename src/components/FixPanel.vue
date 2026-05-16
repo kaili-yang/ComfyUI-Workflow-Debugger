@@ -55,11 +55,12 @@ function applyFix(): void {
 }
 
 function download(): void {
-  if (!fixedJson.value) return
+  const content = fixedJson.value ?? props.rawContent
+  if (!content) return
   const base = props.fileName
     ? props.fileName.replace(/\.json$/i, '')
     : 'workflow'
-  const blob = new Blob([fixedJson.value], { type: 'application/json' })
+  const blob = new Blob([content], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
@@ -136,10 +137,10 @@ function download(): void {
     <div class="flex-shrink-0 border-t border-gray-800 px-4 py-3">
       <button
         class="w-full flex items-center justify-center gap-2 py-2 rounded-lg border text-xs font-semibold tracking-wide transition-all duration-150"
-        :class="fixedJson
+        :class="rawContent
           ? 'border-[#39ff14] text-[#39ff14] hover:bg-[#39ff14]/10 cursor-pointer'
           : 'border-gray-800 text-gray-700 cursor-not-allowed'"
-        :disabled="!fixedJson"
+        :disabled="!rawContent"
         @click="download"
       >
         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

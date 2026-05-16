@@ -23,6 +23,7 @@ export function checkTypeMismatch(ctx: GraphAnalysisContext): Issue[] {
           detail: `From ${fromNode.type} (id: ${fromNode.id}) output '${sourceOutput.name}' → ${toNode.type} (id: ${toNode.id}) input '${targetInput.name}'`,
           suggestion: `Disconnect link #${link.id} and reconnect a matching ${targetInput.type} output to ${toNode.type} (id: ${toNode.id}) input '${targetInput.name}'`,
           fixable: true,
+          fixType: 'type-mismatch',
         })
       }
     }

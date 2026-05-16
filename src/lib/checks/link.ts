@@ -1,5 +1,7 @@
-import type { Issue } from '../../types/workflow'
+import type { Issue, FixType } from '../../types/workflow'
 import type { GraphAnalysisContext } from '../shared/graph-context'
+
+const GHOST_FIX: FixType = 'ghost-link'
 
 export function checkLinkIntegrity(ctx: GraphAnalysisContext): Issue[] {
   const { workflow, nodeMap, linkMap } = ctx
@@ -15,6 +17,7 @@ export function checkLinkIntegrity(ctx: GraphAnalysisContext): Issue[] {
           message: `Node ${node.type} (id: ${node.id}) input '${input.name}' references missing link #${input.link}`,
           suggestion: `Remove or reconnect node ${node.type} (id: ${node.id}) - link #${input.link} is missing`,
           fixable: true,
+          fixType: GHOST_FIX,
         })
       }
     }
@@ -28,6 +31,7 @@ export function checkLinkIntegrity(ctx: GraphAnalysisContext): Issue[] {
             message: `Node ${node.type} (id: ${node.id}) output '${output.name}' references missing link #${linkId}`,
             suggestion: `Remove or reconnect node ${node.type} (id: ${node.id}) - link #${linkId} is missing`,
             fixable: true,
+            fixType: GHOST_FIX,
           })
         }
       }
@@ -41,6 +45,7 @@ export function checkLinkIntegrity(ctx: GraphAnalysisContext): Issue[] {
         message: `Link #${link.id} references non-existent source node id: ${link.fromNodeId}`,
         suggestion: `Remap or remove link #${link.id} - source node ${link.fromNodeId} does not exist`,
         fixable: true,
+        fixType: GHOST_FIX,
       })
     }
     if (!nodeMap.has(link.toNodeId)) {
@@ -49,6 +54,7 @@ export function checkLinkIntegrity(ctx: GraphAnalysisContext): Issue[] {
         message: `Link #${link.id} references non-existent target node id: ${link.toNodeId}`,
         suggestion: `Remap or remove link #${link.id} - target node ${link.toNodeId} does not exist`,
         fixable: true,
+        fixType: GHOST_FIX,
       })
     }
   }
@@ -75,6 +81,7 @@ export function checkLinkTypeMetadata(ctx: GraphAnalysisContext): Issue[] {
         detail: `Node ${fromNode.type} (id: ${fromNode.id}) slot ${link.fromSlot} → ${toNode.type} (id: ${toNode.id})`,
         suggestion: `Update link type to '${sourceOutput.type}' to match the output slot`,
         fixable: true,
+        fixType: 'link-type-metadata',
       })
     }
   }

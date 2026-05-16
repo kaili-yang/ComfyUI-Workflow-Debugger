@@ -8,6 +8,7 @@ import { checkSchema } from './checks/schema'
 import { checkMediaRefs } from './checks/media'
 import { checkApiFormat } from './checks/api-format'
 import { checkDisconnectedInputs } from './checks/others/disconnected-inputs'
+import { checkNullWidgetValues } from './checks/others/null-widget-values'
 
 // ---------------------------------------------------------------------------
 // Format detection
@@ -47,6 +48,7 @@ function analyzeGraph(workflow: GraphWorkflow, objectInfo?: ObjectInfo): Analysi
     ...checkLinkTypeMetadata(ctx),
     ...checkTypeMismatch(ctx),
     ...checkDisconnectedInputs(ctx),
+    ...checkNullWidgetValues(ctx),
     ...checkMutedWithDependents(ctx),
     ...checkNoOutputNode(ctx),
     ...checkCycles(ctx),

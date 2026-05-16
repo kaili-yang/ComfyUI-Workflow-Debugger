@@ -265,11 +265,32 @@ def _find_node_class_mappings(tree: ast.Module) -> dict[str, str]:
     return {}
 
 
+def _has_control_after_generate(config_node: ast.expr) -> bool:
+    """Return True if the config dict literal has control_after_generate=True."""
+    if not isinstance(config_node, ast.Dict):
+        return False
+    for k, v in zip(config_node.keys, config_node.values):
+        if (
+            isinstance(k, ast.Constant)
+            and k.value == "control_after_generate"
+            and isinstance(v, ast.Constant)
+            and v.value is True
+        ):
+            return True
+    return False
+
+
 def _parse_v1_input_types(
     method: ast.FunctionDef,
     combo_names: set[str],
-) -> dict[str, dict[str, str]]:
+) -> tuple[dict[str, dict[str, str]], list[str]]:
+    """
+    Returns (inputs, cag_inputs) where cag_inputs lists INT slot names that
+    have control_after_generate=True — the frontend injects an extra COMBO slot
+    after each of these in widgets_values.
+    """
     result: dict[str, dict[str, str]] = {"required": {}, "optional": {}}
+    cag_inputs: list[str] = []
 
     for node in ast.walk(method):
         if not isinstance(node, ast.Return):
@@ -294,12 +315,19 @@ def _parse_v1_input_types(
                 # Slot spec is a tuple: ("TYPE", {options…}) or (list_expr,)
                 if isinstance(slot_val, ast.Tuple) and slot_val.elts:
                     type_str = _resolve_type(slot_val.elts[0], combo_names)
-                    if type_str != "HIDDEN":
-                        result[cat][slot_name] = type_str
+                    if type_str == "HIDDEN":
+                        continue
+                    result[cat][slot_name] = type_str
+                    if (
+                        type_str == "INT"
+                        and len(slot_val.elts) >= 2
+                        and _has_control_after_generate(slot_val.elts[1])
+                    ):
+                        cag_inputs.append(slot_name)
 
         break  # Only the first return dict
 
-    return result
+    return result, cag_inputs
 
 
 def _parse_v1_outputs(cls: ast.ClassDef, combo_names: set[str]) -> list[str]:
@@ -331,19 +359,23 @@ def _extract_v1_nodes(
             continue
 
         inputs: dict[str, dict[str, str]] = {"required": {}, "optional": {}}
+        cag_inputs: list[str] = []
         for item in cls.body:
             if isinstance(item, ast.FunctionDef) and item.name == "INPUT_TYPES":
-                inputs = _parse_v1_input_types(item, combo_names)
+                inputs, cag_inputs = _parse_v1_input_types(item, combo_names)
                 break
 
         outputs = _parse_v1_outputs(cls, combo_names)
         category = _constant_str(_class_attr(cls, "CATEGORY"))
 
-        schema[node_type] = {
+        entry: dict = {
             "category": category,
             "inputs": inputs,
             "outputs": outputs,
         }
+        if cag_inputs:
+            entry["control_after_generate"] = cag_inputs
+        schema[node_type] = entry
 
     return schema
 

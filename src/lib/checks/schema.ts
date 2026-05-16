@@ -60,6 +60,7 @@ function checkWidgetValues(
           message: `Node ${node.type} (id: ${node.id}) input '${inputName}' is null — backend will throw int(None)`,
           suggestion: `Will be replaced with ${fallback}`,
           fixable: true,
+          fixType: 'null-widget-value',
         })
         continue
       }
