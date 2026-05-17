@@ -1,6 +1,6 @@
 # ComfyUI Workflow Debugger
 
-A lightweight, offline web tool for analyzing and debugging [ComfyUI](https://github.com/comfyanonymous/ComfyUI) workflow JSON files — no ComfyUI installation required.
+A free, browser-based tool that checks your ComfyUI workflow for problems and fixes them automatically — no ComfyUI installation required.
 
 ## Screenshots
 
@@ -13,24 +13,42 @@ A lightweight, offline web tool for analyzing and debugging [ComfyUI](https://gi
 ![Workflow with multiple issues](screenshots/multiple-issues.png)
 *Complex workflow — type mismatches, stale refs, and orphan nodes, 5 fixable issues*
 
-## Features
+## How to use
 
-- **Offline analysis** — runs entirely in the browser, no server or model downloads needed
-- **Dual format support** — handles both Graph format (exported via *Save*) and API/Prompt format (exported via *Save (API Format)*)
-- **Link integrity checks** — detects inputs/outputs referencing non-existent link IDs and links pointing to missing nodes
-- **Type mismatch detection** — flags connections where the output type doesn't match the input type
-- **Cycle detection** — identifies circular dependencies that would prevent execution
-- **Muted/bypassed node warnings** — catches nodes that are muted or bypassed while downstream nodes still depend on their output
-- **Orphan node detection** — highlights nodes with no connections that won't affect the workflow
-- **Missing output node warning** — alerts when the workflow has no SaveImage, PreviewImage, or other output nodes
-- **Actionable suggestions** — every issue includes a plain-language fix recommendation
-- **Visual node graph** — renders the workflow graph with error highlights
+1. Open the app in your browser
+2. Drag and drop a ComfyUI workflow `.json` file, or click to browse
+3. Review the issues found in the Diagnostics panel
+4. Click **Fix** to auto-repair all fixable issues
+5. Download the fixed workflow and load it back into ComfyUI
 
-## Coming Soon
+Works with both workflow formats: the standard graph format (*Save*) and the API format (*Save (API Format)*).
 
-- Per-node improvement suggestions
-- Node performance profiling
-- Auto-fix common errors
+**Optional:** connect to a running ComfyUI instance to also check for missing custom nodes and invalid parameter values.
+
+## Diagnostics
+
+The tool scans your workflow and flags:
+
+- **Broken connections** — wires that reference links or nodes that no longer exist
+- **Type mismatches** — connections between nodes that expect different data types
+- **Invalid parameter values** — empty or out-of-range values that will cause errors at runtime
+- **Disabled nodes** — nodes that are muted or bypassed while other nodes still depend on their output
+- **No output node** — workflows that have no Save Image or other output node and can never produce a result
+- **Infinite loops** — circular dependencies between nodes that would prevent execution
+- **Orphan nodes** — nodes with no connections that have no effect on the output
+- **Stale file references** — image or video paths that point to files that have been moved or deleted
+- **Missing custom nodes** *(requires server connection)* — node types that aren't installed in your ComfyUI instance
+
+## Auto-Fix
+
+Click **Fix** to automatically repair all fixable issues in one step:
+
+- **Remove broken connections** — clears dangling wires and remaps connections that can be recovered
+- **Re-enable disabled nodes** — restores muted or bypassed nodes that are still needed by the workflow
+- **Insert type converters** — adds the appropriate conversion node between mismatched connections so the data flows correctly
+- **Wire disconnected inputs** — connects available outputs to required inputs that have nothing plugged in
+- **Reset invalid values** — replaces empty or null parameter values with safe defaults
+- **Restore file references** — substitutes missing file paths with placeholder test data so the workflow can run
 
 ## Getting Started
 
@@ -38,44 +56,6 @@ A lightweight, offline web tool for analyzing and debugging [ComfyUI](https://gi
 pnpm install
 pnpm dev
 ```
-
-Open the app in your browser, then drag and drop a ComfyUI workflow `.json` file (or click to browse). The analyzer will immediately report any errors, warnings, and informational notices.
-
-## Supported Checks
-
-| Check | Severity |
-|-------|----------|
-| Invalid JSON | Error |
-| Unrecognized workflow format | Error |
-| Input referencing missing link | Error |
-| Output referencing missing link | Error |
-| Link pointing to missing node | Error |
-| Type mismatch between connected slots | Error |
-| Muted/bypassed node with active dependents | Error |
-| Circular dependency | Error |
-| Disconnected input slot | Warning |
-| No output node in workflow | Warning |
-| Orphan node (no connections) | Info |
-
-## Updating the Node Schema
-
-The offline schema (`src/lib/nodes_schema.json`) is generated from a static copy of the ComfyUI backend source files in `nodes_lib/`. When ComfyUI adds or changes nodes, follow these steps:
-
-1. Copy the updated source files into `nodes_lib/`:
-
-   ```bash
-   cp -r /path/to/ComfyUI/comfy_extras/* nodes_lib/comfy_extras/
-   cp -r /path/to/ComfyUI/comfy_api_nodes/* nodes_lib/comfy_api_nodes/
-   cp /path/to/ComfyUI/nodes.py nodes_lib/nodes.py
-   ```
-
-2. Regenerate the schema:
-
-   ```bash
-   python3 scripts/build_schema.py
-   ```
-
-`nodes_lib/` is the single source of truth. `nodes_schema.json` is always derived from it — never edit it by hand.
 
 ## Tech Stack
 
