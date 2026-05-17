@@ -1,5 +1,7 @@
 # ComfyUI Workflow Debugger
 
+**https://comfy-workflow-debugger.netlify.app/**
+
 A free, browser-based tool that checks your ComfyUI workflow for problems and fixes them automatically — no ComfyUI installation required.
 
 ## Screenshots
