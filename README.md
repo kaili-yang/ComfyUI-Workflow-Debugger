@@ -17,15 +17,24 @@ A free, browser-based tool that checks your ComfyUI workflow for problems and fi
 
 ## How to use
 
-1. Open the app in your browser
-2. Drag and drop a ComfyUI workflow `.json` file, or click to browse
-3. Review the issues found in the Diagnostics panel
-4. Click **Fix** to auto-repair all fixable issues
-5. Download the fixed workflow and load it back into ComfyUI
+**Step 1 — Upload your workflow**
 
-Works with both workflow formats: the standard graph format (*Save*) and the API format (*Save (API Format)*).
+Open the app and drag and drop your ComfyUI workflow `.json` file, or click to browse. Both the standard graph format (*Save*) and the API format (*Save (API Format)*) are supported.
 
-**Optional:** connect to a running ComfyUI instance to also check for missing custom nodes and invalid parameter values.
+**Step 2 — Review diagnostics**
+
+The tool instantly scans your workflow and lists every issue found, grouped by severity — errors that will prevent the workflow from running, warnings that may cause unexpected results, and informational notices.
+
+**Step 3 — Fix issues**
+
+- Click **Fix All** to repair every fixable issue in one step
+- Or fix individual categories one at a time if you want more control
+
+**Step 4 — Download the fixed workflow**
+
+Download the repaired workflow JSON and load it back into ComfyUI.
+
+**Optional:** connect to a running ComfyUI instance to also check for missing custom nodes and invalid parameter values specific to your setup.
 
 ## Diagnostics
 
@@ -60,7 +69,7 @@ ComfyUI Core follows a weekly release cycle, targeting Monday. This tool syncs t
 
 To always check against the exact nodes installed in your ComfyUI instance, connect the tool to your running ComfyUI server — this bypasses the built-in schema entirely.
 
-## Getting Started
+## Getting Started (Local Development)
 
 ```bash
 pnpm install
