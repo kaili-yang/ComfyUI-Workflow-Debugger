@@ -54,6 +54,8 @@ Click **Fix** to automatically repair all fixable issues in one step:
 
 ## Node Schema Updates
 
+The built-in node definitions are sourced directly from the [official ComfyUI repository](https://github.com/comfyanonymous/ComfyUI) — the same source ComfyUI itself uses. There is no secondary or third-party data involved.
+
 ComfyUI Core follows a weekly release cycle, targeting Monday. This tool syncs the built-in node schema every Tuesday after the ComfyUI release. If ComfyUI delays its release, the schema update here is delayed accordingly.
 
 To always check against the exact nodes installed in your ComfyUI instance, connect the tool to your running ComfyUI server — this bypasses the built-in schema entirely.
@@ -65,8 +67,3 @@ pnpm install
 pnpm dev
 ```
 
-## Tech Stack
-
-- [Vue 3](https://vuejs.org/) + TypeScript
-- [Vite](https://vitejs.dev/)
-- [Tailwind CSS](https://tailwindcss.com/)
