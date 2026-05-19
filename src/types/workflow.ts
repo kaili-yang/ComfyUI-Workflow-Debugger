@@ -63,6 +63,7 @@ export type Severity = 'error' | 'warning' | 'info'
 
 export type FixType =
   | 'null-widget-value'
+  | 'widget-value-out-of-range'
   | 'ghost-link'
   | 'link-type-metadata'
   | 'stale-media-ref'

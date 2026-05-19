@@ -2,7 +2,7 @@ import type { GraphWorkflow, ObjectInfo, FixType } from '../types/workflow'
 import { fixGhostLinks, fixLinkTypeMetadata } from './fixes/link'
 import { fixBypassedNodes } from './fixes/node-state'
 import { fixStaleMediaRefs } from './fixes/media'
-import { fixNullWidgetValues } from './fixes/schema'
+import { fixNullWidgetValues, fixWidgetValueOutOfRange } from './fixes/schema'
 import { fixNullWidgetValuesOffline } from './fixes/null-widget-values'
 import { fixTypeMismatch } from './fixes/type-conversion'
 import { fixDisconnectedInputs } from './fixes/connect-input'
@@ -48,6 +48,9 @@ export function fixWorkflow(jsonText: string, objectInfo?: ObjectInfo): FixResul
     ? fixNullWidgetValues(workflow, objectInfo)
     : fixNullWidgetValuesOffline(workflow)
 
+  // 1b. Clamp out-of-range INT/FLOAT and replace invalid COMBO values (requires objectInfo).
+  const outOfRangeChanges = objectInfo ? fixWidgetValueOutOfRange(workflow, objectInfo) : 0
+
   // 2. Ghost link slots + ghost node remapping (must run before type metadata)
   const ghostResult = fixGhostLinks(workflow)
 
@@ -73,6 +76,7 @@ export function fixWorkflow(jsonText: string, objectInfo?: ObjectInfo): FixResul
 
   const breakdown: BreakdownItem[] = [
     { label: 'Null widget values replaced', count: nullWidgetChanges },
+    { label: 'Widget values clamped or corrected', count: outOfRangeChanges },
     { label: 'Ghost link slot refs removed', count: ghostResult.slotChanges },
     { label: 'Ghost node refs remapped or removed', count: ghostResult.nodeRefChanges },
     { label: 'Link type labels corrected', count: typeMetaChanges },
@@ -84,6 +88,7 @@ export function fixWorkflow(jsonText: string, objectInfo?: ObjectInfo): FixResul
 
   const changes =
     nullWidgetChanges +
+    outOfRangeChanges +
     ghostResult.slotChanges +
     ghostResult.nodeRefChanges +
     typeMetaChanges +
@@ -139,6 +144,13 @@ export function fixByType(jsonText: string, fixType: FixType, objectInfo?: Objec
         ? fixNullWidgetValues(workflow, objectInfo)
         : fixNullWidgetValuesOffline(workflow)
       if (c > 0) breakdown.push({ label: 'Null widget values replaced', count: c })
+      break
+    }
+    case 'widget-value-out-of-range': {
+      if (objectInfo) {
+        const c = fixWidgetValueOutOfRange(workflow, objectInfo)
+        if (c > 0) breakdown.push({ label: 'Widget values clamped or corrected', count: c })
+      }
       break
     }
     case 'ghost-link': {

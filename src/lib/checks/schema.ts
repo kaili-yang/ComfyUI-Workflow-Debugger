@@ -47,7 +47,9 @@ function checkWidgetValues(
           nodeId: node.id,
           nodeType: node.type,
           message: `Node ${node.type} (id: ${node.id}) input '${inputName}': value '${value}' is not in the allowed options`,
-          suggestion: `Valid options: ${options.slice(0, 8).join(', ')}${options.length > 8 ? ' …' : ''}`,
+          suggestion: `Will be replaced with '${options[0]}'. Valid options: ${options.slice(0, 8).join(', ')}${options.length > 8 ? ' …' : ''}`,
+          fixable: true,
+          fixType: 'widget-value-out-of-range',
         })
       }
     } else if (inputType === 'INT' || inputType === 'FLOAT') {
@@ -72,7 +74,9 @@ function checkWidgetValues(
             nodeId: node.id,
             nodeType: node.type,
             message: `Node ${node.type} (id: ${node.id}) input '${inputName}' value ${num} is below minimum ${cfg.min}`,
-            suggestion: `Set '${inputName}' to a value ≥ ${cfg.min}`,
+            suggestion: `Will be clamped to ${cfg.min}`,
+            fixable: true,
+            fixType: 'widget-value-out-of-range',
           })
         }
         if (cfg.max !== undefined && num > (cfg.max as number)) {
@@ -81,7 +85,9 @@ function checkWidgetValues(
             nodeId: node.id,
             nodeType: node.type,
             message: `Node ${node.type} (id: ${node.id}) input '${inputName}' value ${num} exceeds maximum ${cfg.max}`,
-            suggestion: `Set '${inputName}' to a value ≤ ${cfg.max}`,
+            suggestion: `Will be clamped to ${cfg.max}`,
+            fixable: true,
+            fixType: 'widget-value-out-of-range',
           })
         }
       }
