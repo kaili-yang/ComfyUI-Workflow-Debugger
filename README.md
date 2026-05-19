@@ -69,10 +69,3 @@ ComfyUI Core follows a weekly release cycle, targeting Monday. This tool syncs t
 
 To always check against the exact nodes installed in your ComfyUI instance, connect the tool to your running ComfyUI server — this bypasses the built-in schema entirely.
 
-## Getting Started (Local Development)
-
-```bash
-pnpm install
-pnpm dev
-```
-
