@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Sync node schema from ComfyUI backend and check frontend enum values for drift.
+# Sync node schema from ComfyUI backend and auto-update frontend-derived types.
 #
 # Usage:
 #   ./scripts/update_schema.sh /path/to/ComfyUI [/path/to/ComfyUI_frontend]
@@ -38,12 +38,12 @@ echo "Regenerating nodes_schema.json ..."
 python3 "$SCRIPT_DIR/build_schema.py"
 
 # ---------------------------------------------------------------------------
-# 2. Check frontend enum values for drift (optional — skip if no frontend path)
+# 2. Sync frontend-derived types (optional — skip if no frontend path)
 # ---------------------------------------------------------------------------
 
 if [[ -z "$FRONTEND_DIR" ]]; then
   echo ""
-  echo "Tip: pass a second argument to also check frontend enum values."
+  echo "Tip: pass a second argument to also sync frontend-derived types."
   echo "  $0 $COMFYUI_DIR /path/to/ComfyUI_frontend"
   echo ""
   echo "Done."
@@ -51,7 +51,7 @@ if [[ -z "$FRONTEND_DIR" ]]; then
 fi
 
 if [[ ! -d "$FRONTEND_DIR" ]]; then
-  echo "Warning: frontend directory not found: $FRONTEND_DIR — skipping enum check"
+  echo "Warning: frontend directory not found: $FRONTEND_DIR — skipping type sync"
   echo "Done."
   exit 0
 fi
@@ -59,45 +59,99 @@ fi
 GLOBAL_ENUMS="$FRONTEND_DIR/src/lib/litegraph/src/types/globalEnums.ts"
 
 if [[ ! -f "$GLOBAL_ENUMS" ]]; then
-  echo "Warning: globalEnums.ts not found at expected path — skipping enum check"
+  echo "Warning: globalEnums.ts not found at expected path — skipping type sync"
   echo "Done."
   exit 0
 fi
 
 echo ""
-echo "Checking frontend enum values for drift ..."
+echo "Syncing frontend-derived types ..."
 
-WARNINGS=0
+python3 - "$GLOBAL_ENUMS" "$REPO_ROOT" <<'PYEOF'
+import os
+import re
+import sys
+import tempfile
 
-# Check RenderShape.HollowCircle
-# Used in: src/lib/checks/others/disconnected-inputs.ts as OPTIONAL_SLOT_SHAPE = 7
-HOLLOW_CIRCLE=$(grep "HollowCircle" "$GLOBAL_ENUMS" | grep -o '[0-9]\+' | head -1)
-if [[ "$HOLLOW_CIRCLE" != "7" ]]; then
-  echo "  ⚠️  RenderShape.HollowCircle changed: $HOLLOW_CIRCLE (was 7)"
-  echo "     → Update OPTIONAL_SLOT_SHAPE in src/lib/checks/others/disconnected-inputs.ts"
-  WARNINGS=$((WARNINGS + 1))
-else
-  echo "  ✓  RenderShape.HollowCircle = $HOLLOW_CIRCLE (unchanged)"
-fi
+enums_file = sys.argv[1]
+repo_root  = sys.argv[2]
 
-# Check LGraphEventMode values
-# Used in: src/types/workflow.ts as NodeMode = 0 | 1 | 2 | 3 | 4
-ALWAYS=$(grep "ALWAYS" "$GLOBAL_ENUMS" | grep -o '[0-9]\+' | head -1)
-NEVER=$(grep "NEVER" "$GLOBAL_ENUMS" | grep -o '[0-9]\+' | head -1)
-BYPASS=$(grep "BYPASS" "$GLOBAL_ENUMS" | grep -o '[0-9]\+' | head -1)
+def read_file(path):
+    with open(path, encoding='utf-8') as f:
+        return f.read()
 
-if [[ "$ALWAYS" != "0" || "$NEVER" != "2" || "$BYPASS" != "4" ]]; then
-  echo "  ⚠️  LGraphEventMode values changed: ALWAYS=$ALWAYS NEVER=$NEVER BYPASS=$BYPASS (were 0/2/4)"
-  echo "     → Update NodeMode in src/types/workflow.ts"
-  WARNINGS=$((WARNINGS + 1))
-else
-  echo "  ✓  LGraphEventMode ALWAYS=$ALWAYS NEVER=$NEVER BYPASS=$BYPASS (unchanged)"
-fi
+def write_file_atomic(path, content):
+    """Write via a temp file in the same directory, then atomically replace."""
+    dir_ = os.path.dirname(path)
+    with tempfile.NamedTemporaryFile('w', encoding='utf-8', dir=dir_, delete=False) as tmp:
+        tmp.write(content)
+        tmp_path = tmp.name
+    os.replace(tmp_path, path)
+
+def apply_patch(path, pattern, replacement, description):
+    src = read_file(path)
+    updated, count = re.subn(pattern, replacement, src)
+    if count == 0:
+        print(f"  ✗  Pattern not found in {os.path.basename(path)}: {description}")
+        sys.exit(1)
+    if updated != src:
+        write_file_atomic(path, updated)
+        return True
+    return False
+
+src = read_file(enums_file)
+
+# ── RenderShape.HollowCircle ─────────────────────────────────────────────────
+# Syncs OPTIONAL_SLOT_SHAPE and its inline comment in disconnected-inputs.ts
+hollow_match = re.search(r'HollowCircle\s*=\s*(\d+)', src)
+if not hollow_match:
+    print("  ✗  RenderShape.HollowCircle not found in globalEnums.ts")
+    sys.exit(1)
+hollow_value = hollow_match.group(1)
+
+disconnected_path = f"{repo_root}/src/lib/checks/others/disconnected-inputs.ts"
+changed = any([
+    apply_patch(
+        disconnected_path,
+        r'(// RenderShape\.HollowCircle = )\d+',
+        rf'\g<1>{hollow_value}',
+        'comment RenderShape.HollowCircle',
+    ),
+    apply_patch(
+        disconnected_path,
+        r'(const OPTIONAL_SLOT_SHAPE = )\d+',
+        rf'\g<1>{hollow_value}',
+        'const OPTIONAL_SLOT_SHAPE',
+    ),
+])
+if changed:
+    print(f"  ✓  RenderShape.HollowCircle updated to {hollow_value} in disconnected-inputs.ts")
+else:
+    print(f"  ✓  RenderShape.HollowCircle = {hollow_value} (unchanged)")
+
+# ── LGraphEventMode → NodeMode ───────────────────────────────────────────────
+# Syncs the NodeMode union type and inline comment in workflow.ts
+block_match = re.search(r'export enum LGraphEventMode \{([^}]+)\}', src, re.DOTALL)
+if not block_match:
+    print("  ✗  LGraphEventMode enum not found in globalEnums.ts")
+    sys.exit(1)
+
+entries = sorted(re.findall(r'(\w+)\s*=\s*(\d+)', block_match.group(1)), key=lambda e: int(e[1]))
+values_str = ' | '.join(v for _, v in entries)
+names_str  = ' | '.join(n for n, _ in entries)
+
+workflow_path = f"{repo_root}/src/types/workflow.ts"
+changed = apply_patch(
+    workflow_path,
+    r'export type NodeMode = [^\n]+',
+    f'export type NodeMode = {values_str} // {names_str}',
+    'export type NodeMode',
+)
+if changed:
+    print(f"  ✓  NodeMode updated to: {values_str} in workflow.ts")
+else:
+    print(f"  ✓  NodeMode = {values_str} (unchanged)")
+PYEOF
 
 echo ""
-if [[ $WARNINGS -gt 0 ]]; then
-  echo "Done — $WARNINGS enum value(s) changed, manual update required (see above)."
-  exit 1
-else
-  echo "Done."
-fi
+echo "Done."
