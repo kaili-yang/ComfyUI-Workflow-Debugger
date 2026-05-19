@@ -12,7 +12,7 @@ import { fixByType } from './lib/fixer'
 import type { FixType } from './types/workflow'
 
 const { topHeightPct, onDividerMousedown } = usePanelSplit('cwd-panel-split')
-const { objectInfo, schemaStatus, connect, disconnect } = useServerConnection()
+const { objectInfo, schemaStatus, cachedAt, connect, disconnect } = useServerConnection()
 const { fileName, rawContent, onFileLoaded, reset } = useWorkflowFile()
 const { result, workflow, selectedNodeId, selectNode } = useWorkflowAnalysis(rawContent, objectInfo)
 
@@ -97,6 +97,7 @@ function onFixIssue(fixType: FixType): void {
         :file-name="fileName"
         :schema-status="schemaStatus"
         :schema-node-count="objectInfo ? Object.keys(objectInfo).length : 0"
+        :cached-at="cachedAt"
         @file-loaded="onFileLoadedAndClear"
         @reset="onResetAndClear"
         @connect="connect"

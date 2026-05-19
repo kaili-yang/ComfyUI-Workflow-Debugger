@@ -3,8 +3,9 @@ import { onMounted, onUnmounted, ref } from 'vue'
 
 const props = defineProps<{
   fileName: string | null
-  schemaStatus: 'idle' | 'loading' | 'connected' | 'error'
+  schemaStatus: 'idle' | 'loading' | 'connected' | 'cached' | 'error'
   schemaNodeCount: number
+  cachedAt: string | null
 }>()
 
 const emit = defineEmits<{
@@ -94,6 +95,14 @@ function onPaste(e: ClipboardEvent): void {
   }
 }
 
+function formatCachedAt(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime()
+  const days = Math.floor(diff / 86400000)
+  if (days === 0) return 'today'
+  if (days === 1) return 'yesterday'
+  return `${days} days ago`
+}
+
 onMounted(() => document.addEventListener('paste', onPaste))
 onUnmounted(() => document.removeEventListener('paste', onPaste))
 </script>
@@ -159,13 +168,23 @@ onUnmounted(() => document.removeEventListener('paste', onPaste))
             <span class="w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
             <span class="text-xs text-green-400">Connected · {{ props.schemaNodeCount }} nodes</span>
           </template>
+          <template v-else-if="props.schemaStatus === 'cached'">
+            <span class="w-1.5 h-1.5 rounded-full bg-yellow-400 flex-shrink-0" />
+            <span class="text-xs text-yellow-400">Cached · {{ props.schemaNodeCount }} nodes · {{ props.cachedAt ? formatCachedAt(props.cachedAt) : '' }} · Connect to refresh</span>
+          </template>
           <template v-else-if="props.schemaStatus === 'error'">
             <span class="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
             <span class="text-xs text-red-400">Connection failed — check the URL and CORS</span>
           </template>
         </div>
       </template>
-      <p v-else class="text-xs text-gray-600">Off — static analysis only</p>
+      <div v-else class="flex items-center gap-1.5 min-h-[16px]">
+        <template v-if="props.cachedAt">
+          <span class="w-1.5 h-1.5 rounded-full bg-yellow-400/70 flex-shrink-0" />
+          <span class="text-xs text-yellow-500/80">Cached · {{ props.schemaNodeCount }} nodes · {{ formatCachedAt(props.cachedAt) }}</span>
+        </template>
+        <span v-else class="text-xs text-gray-600">Off — static analysis only</span>
+      </div>
     </div>
 
     <!-- Body -->
