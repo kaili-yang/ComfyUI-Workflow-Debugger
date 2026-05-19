@@ -52,6 +52,12 @@ Click **Fix** to automatically repair all fixable issues in one step:
 - **Reset invalid values** — replaces empty or null parameter values with safe defaults
 - **Restore file references** — substitutes missing file paths with placeholder test data so the workflow can run
 
+## Node Schema Updates
+
+ComfyUI Core follows a weekly release cycle, targeting Monday. This tool syncs the built-in node schema every Tuesday after the ComfyUI release. If ComfyUI delays its release, the schema update here is delayed accordingly.
+
+To always check against the exact nodes installed in your ComfyUI instance, connect the tool to your running ComfyUI server — this bypasses the built-in schema entirely.
+
 ## Getting Started
 
 ```bash
