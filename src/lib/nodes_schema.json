@@ -49,7 +49,7 @@
     ]
   },
   "AlignYourStepsScheduler": {
-    "category": "sampling/custom_sampling/schedulers",
+    "category": "sampling/schedulers",
     "inputs": {
       "required": {
         "model_type": "COMBO",
@@ -143,7 +143,7 @@
     ]
   },
   "BasicGuider": {
-    "category": "sampling/custom_sampling/guiders",
+    "category": "sampling/guiders",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -156,7 +156,7 @@
     ]
   },
   "BasicScheduler": {
-    "category": "sampling/custom_sampling/schedulers",
+    "category": "sampling/schedulers",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -191,7 +191,7 @@
     ]
   },
   "BatchMasksNode": {
-    "category": "mask",
+    "category": "image/mask",
     "inputs": {
       "required": {},
       "optional": {}
@@ -201,7 +201,7 @@
     ]
   },
   "BetaSamplingScheduler": {
-    "category": "sampling/custom_sampling/schedulers",
+    "category": "sampling/schedulers",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -421,6 +421,21 @@
       "VIDEO"
     ]
   },
+  "ByteDanceSeedNode": {
+    "category": "api node/text/ByteDance",
+    "inputs": {
+      "required": {
+        "prompt": "STRING",
+        "seed": "INT"
+      },
+      "optional": {
+        "system_prompt": "STRING"
+      }
+    },
+    "outputs": [
+      "STRING"
+    ]
+  },
   "ByteDanceSeedreamNode": {
     "category": "api node/image/ByteDance",
     "inputs": {
@@ -480,7 +495,7 @@
     ]
   },
   "CFGGuider": {
-    "category": "sampling/custom_sampling/guiders",
+    "category": "sampling/guiders",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -809,7 +824,7 @@
     ]
   },
   "Canny": {
-    "category": "image/preprocessors",
+    "category": "image/filters",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -887,6 +902,21 @@
       "MODEL"
     ]
   },
+  "ClaudeNode": {
+    "category": "api node/text/Anthropic",
+    "inputs": {
+      "required": {
+        "prompt": "STRING",
+        "seed": "INT"
+      },
+      "optional": {
+        "system_prompt": "STRING"
+      }
+    },
+    "outputs": [
+      "STRING"
+    ]
+  },
   "ColorToRGBInt": {
     "category": "utils",
     "inputs": {
@@ -898,7 +928,7 @@
     ]
   },
   "ColorTransfer": {
-    "category": "image/postprocessing",
+    "category": "image/filters",
     "inputs": {
       "required": {
         "image_target": "IMAGE",
@@ -1286,7 +1316,7 @@
     ]
   },
   "CropByBBoxes": {
-    "category": "image/preprocessors",
+    "category": "image/transform",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -1302,7 +1332,7 @@
     ]
   },
   "CropMask": {
-    "category": "mask",
+    "category": "image/mask",
     "inputs": {
       "required": {
         "mask": "MASK",
@@ -1380,7 +1410,7 @@
     ]
   },
   "DisableNoise": {
-    "category": "sampling/custom_sampling/noise",
+    "category": "sampling/noise",
     "inputs": {
       "required": {},
       "optional": {}
@@ -1390,7 +1420,7 @@
     ]
   },
   "DrawBBoxes": {
-    "category": "detection",
+    "category": "image/detection",
     "inputs": {
       "required": {},
       "optional": {
@@ -1402,7 +1432,7 @@
     ]
   },
   "DualCFGGuider": {
-    "category": "sampling/custom_sampling/guiders",
+    "category": "sampling/guiders",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -1655,6 +1685,14 @@
       "LATENT"
     ]
   },
+  "EmptyHiDreamO1LatentImage": {
+    "category": "latent/image",
+    "inputs": {
+      "required": {},
+      "optional": {}
+    },
+    "outputs": []
+  },
   "EmptyHunyuanImageLatent": {
     "category": "latent",
     "inputs": {
@@ -1812,7 +1850,7 @@
     ]
   },
   "ExponentialScheduler": {
-    "category": "sampling/custom_sampling/schedulers",
+    "category": "sampling/schedulers",
     "inputs": {
       "required": {
         "steps": "INT",
@@ -1826,7 +1864,7 @@
     ]
   },
   "ExtendIntermediateSigmas": {
-    "category": "sampling/custom_sampling/sigmas",
+    "category": "sampling/sigmas",
     "inputs": {
       "required": {
         "sigmas": "SIGMAS",
@@ -1842,7 +1880,7 @@
     ]
   },
   "FeatherMask": {
-    "category": "mask",
+    "category": "image/mask",
     "inputs": {
       "required": {
         "mask": "MASK",
@@ -1858,7 +1896,7 @@
     ]
   },
   "FlipSigmas": {
-    "category": "sampling/custom_sampling/sigmas",
+    "category": "sampling/sigmas",
     "inputs": {
       "required": {
         "sigmas": "SIGMAS"
@@ -1901,7 +1939,7 @@
     ]
   },
   "Flux2Scheduler": {
-    "category": "sampling/custom_sampling/schedulers",
+    "category": "sampling/schedulers",
     "inputs": {
       "required": {
         "steps": "INT",
@@ -1940,7 +1978,7 @@
     ]
   },
   "FluxKVCache": {
-    "category": "",
+    "category": "experimental",
     "inputs": {
       "required": {
         "model": "MODEL"
@@ -2124,7 +2162,7 @@
     ]
   },
   "GITSScheduler": {
-    "category": "sampling/custom_sampling/schedulers",
+    "category": "sampling/schedulers",
     "inputs": {
       "required": {
         "coeff": "FLOAT",
@@ -2320,6 +2358,16 @@
       "INT"
     ]
   },
+  "GetICLoRAParameters": {
+    "category": "conditioning/video_models",
+    "inputs": {
+      "required": {
+        "iclora_model": "MODEL"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
   "GetImageSize": {
     "category": "image",
     "inputs": {
@@ -2460,7 +2508,7 @@
     ]
   },
   "GrowMask": {
-    "category": "mask",
+    "category": "image/mask",
     "inputs": {
       "required": {
         "mask": "MASK",
@@ -2525,6 +2573,27 @@
     },
     "outputs": [
       "VIDEO"
+    ]
+  },
+  "HiDreamO1PatchSeamSmoothing": {
+    "category": "advanced/model",
+    "inputs": {
+      "required": {},
+      "optional": {}
+    },
+    "outputs": [
+      "MODEL"
+    ]
+  },
+  "HiDreamO1ReferenceImages": {
+    "category": "conditioning/image",
+    "inputs": {
+      "required": {},
+      "optional": {}
+    },
+    "outputs": [
+      "CONDITIONING",
+      "CONDITIONING"
     ]
   },
   "HitPawGeneralImageEnhance": {
@@ -2776,7 +2845,7 @@
     ]
   },
   "ImageAddNoise": {
-    "category": "image/postprocessing",
+    "category": "image/filters",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -2803,7 +2872,7 @@
     ]
   },
   "ImageBlend": {
-    "category": "image/postprocessing",
+    "category": "image/filters",
     "inputs": {
       "required": {
         "image1": "IMAGE",
@@ -2818,7 +2887,7 @@
     ]
   },
   "ImageBlur": {
-    "category": "image/postprocessing",
+    "category": "image/filters",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -2832,7 +2901,7 @@
     ]
   },
   "ImageColorToMask": {
-    "category": "mask",
+    "category": "image/mask",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -2856,16 +2925,16 @@
     "outputs": []
   },
   "ImageCompositeMasked": {
-    "category": "image",
+    "category": "image/compositing",
     "inputs": {
       "required": {
+        "destination": "IMAGE",
         "source": "IMAGE",
         "x": "INT",
         "y": "INT",
         "resize_source": "BOOLEAN"
       },
       "optional": {
-        "destination": "IMAGE",
         "mask": "MASK"
       }
     },
@@ -3011,7 +3080,7 @@
     ]
   },
   "ImageQuantize": {
-    "category": "image/postprocessing",
+    "category": "image/filters",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -3111,7 +3180,7 @@
     ]
   },
   "ImageSharpen": {
-    "category": "image/postprocessing",
+    "category": "image/filters",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -3144,7 +3213,7 @@
     ]
   },
   "ImageToMask": {
-    "category": "mask",
+    "category": "image/mask",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -3220,7 +3289,7 @@
     ]
   },
   "InvertMask": {
-    "category": "mask",
+    "category": "image/mask",
     "inputs": {
       "required": {
         "mask": "MASK"
@@ -3245,7 +3314,7 @@
     ]
   },
   "JoinImageWithAlpha": {
-    "category": "mask/compositing",
+    "category": "image/compositing",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -3322,7 +3391,7 @@
     ]
   },
   "KSamplerSelect": {
-    "category": "sampling/custom_sampling/samplers",
+    "category": "sampling/samplers",
     "inputs": {
       "required": {
         "sampler_name": "COMBO"
@@ -3357,7 +3426,7 @@
     ]
   },
   "KarrasScheduler": {
-    "category": "sampling/custom_sampling/schedulers",
+    "category": "sampling/schedulers",
     "inputs": {
       "required": {
         "steps": "INT",
@@ -3849,7 +3918,9 @@
         "frame_idx": "INT",
         "strength": "FLOAT"
       },
-      "optional": {}
+      "optional": {
+        "attention_mask": "MASK"
+      }
     },
     "outputs": [
       "CONDITIONING",
@@ -4036,7 +4107,7 @@
     ]
   },
   "LTXVScheduler": {
-    "category": "sampling/custom_sampling/schedulers",
+    "category": "sampling/schedulers",
     "inputs": {
       "required": {
         "steps": "INT",
@@ -4065,7 +4136,7 @@
     ]
   },
   "LaplaceScheduler": {
-    "category": "sampling/custom_sampling/schedulers",
+    "category": "sampling/schedulers",
     "inputs": {
       "required": {
         "steps": "INT",
@@ -4478,7 +4549,7 @@
     ]
   },
   "LoadImageMask": {
-    "category": "mask",
+    "category": "image",
     "inputs": {
       "required": {
         "channel": "COMBO"
@@ -4521,6 +4592,16 @@
     "outputs": [
       "LATENT"
     ]
+  },
+  "LoadMoGeModel": {
+    "category": "loaders",
+    "inputs": {
+      "required": {
+        "model_name": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": []
   },
   "LoadTrainingDataset": {
     "category": "dataset",
@@ -4954,7 +5035,7 @@
     ]
   },
   "MaskComposite": {
-    "category": "mask",
+    "category": "image/mask",
     "inputs": {
       "required": {
         "destination": "MASK",
@@ -4970,7 +5051,7 @@
     ]
   },
   "MaskPreview": {
-    "category": "mask",
+    "category": "image/mask",
     "inputs": {
       "required": {
         "mask": "MASK"
@@ -4980,7 +5061,7 @@
     "outputs": []
   },
   "MaskToImage": {
-    "category": "mask",
+    "category": "image/mask",
     "inputs": {
       "required": {
         "mask": "MASK"
@@ -5145,6 +5226,62 @@
     },
     "outputs": [
       "VIDEO"
+    ]
+  },
+  "MoGeInference": {
+    "category": "image/geometry_estimation",
+    "inputs": {
+      "required": {
+        "image": "IMAGE",
+        "resolution_level": "INT",
+        "fov_x_degrees": "FLOAT",
+        "batch_size": "INT",
+        "force_projection": "BOOLEAN",
+        "apply_mask": "BOOLEAN"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
+  "MoGePanoramaInference": {
+    "category": "image/geometry_estimation",
+    "inputs": {
+      "required": {
+        "image": "IMAGE",
+        "resolution_level": "INT",
+        "split_resolution": "INT",
+        "merge_resolution": "INT",
+        "batch_size": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
+  "MoGePointMapToMesh": {
+    "category": "image/geometry_estimation",
+    "inputs": {
+      "required": {
+        "batch_index": "INT",
+        "decimation": "INT",
+        "discontinuity_threshold": "FLOAT",
+        "texture": "BOOLEAN"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "MESH"
+    ]
+  },
+  "MoGeRender": {
+    "category": "image/geometry_estimation",
+    "inputs": {
+      "required": {
+        "output": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "IMAGE"
     ]
   },
   "ModelComputeDtype": {
@@ -5337,6 +5474,19 @@
     },
     "outputs": []
   },
+  "ModelNoiseScale": {
+    "category": "advanced/model",
+    "inputs": {
+      "required": {
+        "model": "MODEL",
+        "noise_scale": "FLOAT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "MODEL"
+    ]
+  },
   "ModelPatchLoader": {
     "category": "advanced/loaders",
     "inputs": {
@@ -5474,7 +5624,7 @@
     "outputs": []
   },
   "Morphology": {
-    "category": "image/postprocessing",
+    "category": "image/filters",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -5656,7 +5806,7 @@
     "outputs": []
   },
   "OptimalStepsScheduler": {
-    "category": "sampling/custom_sampling/schedulers",
+    "category": "sampling/schedulers",
     "inputs": {
       "required": {
         "model_type": "COMBO",
@@ -5842,7 +5992,7 @@
     ]
   },
   "PolyexponentialScheduler": {
-    "category": "sampling/custom_sampling/schedulers",
+    "category": "sampling/schedulers",
     "inputs": {
       "required": {
         "steps": "INT",
@@ -5857,7 +6007,7 @@
     ]
   },
   "PorterDuffImageComposite": {
-    "category": "mask/compositing",
+    "category": "image/compositing",
     "inputs": {
       "required": {
         "source": "IMAGE",
@@ -6047,7 +6197,7 @@
     ]
   },
   "RTDETR_detect": {
-    "category": "detection",
+    "category": "image/detection",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -6061,7 +6211,7 @@
     "outputs": []
   },
   "RandomNoise": {
-    "category": "sampling/custom_sampling/noise",
+    "category": "sampling/noise",
     "inputs": {
       "required": {
         "noise_seed": "INT"
@@ -6729,7 +6879,7 @@
     ]
   },
   "SAM3_Detect": {
-    "category": "detection",
+    "category": "image/detection",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -6749,7 +6899,7 @@
     ]
   },
   "SAM3_TrackPreview": {
-    "category": "detection",
+    "category": "image/detection",
     "inputs": {
       "required": {
         "opacity": "FLOAT",
@@ -6762,7 +6912,7 @@
     "outputs": []
   },
   "SAM3_TrackToMask": {
-    "category": "detection",
+    "category": "image/detection",
     "inputs": {
       "required": {
         "object_indices": "STRING"
@@ -6774,7 +6924,7 @@
     ]
   },
   "SAM3_VideoTrack": {
-    "category": "detection",
+    "category": "image/detection",
     "inputs": {
       "required": {
         "images": "IMAGE",
@@ -6791,7 +6941,7 @@
     "outputs": []
   },
   "SDPoseDrawKeypoints": {
-    "category": "image/preprocessors",
+    "category": "image/detection",
     "inputs": {
       "required": {
         "draw_body": "BOOLEAN",
@@ -6809,7 +6959,7 @@
     ]
   },
   "SDPoseFaceBBoxes": {
-    "category": "image/preprocessors",
+    "category": "image/detection",
     "inputs": {
       "required": {
         "scale": "FLOAT",
@@ -6820,7 +6970,7 @@
     "outputs": []
   },
   "SDPoseKeypointExtractor": {
-    "category": "image/preprocessors",
+    "category": "image/detection",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -6833,7 +6983,7 @@
     "outputs": []
   },
   "SDTurboScheduler": {
-    "category": "sampling/custom_sampling/schedulers",
+    "category": "sampling/schedulers",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -6915,7 +7065,7 @@
     ]
   },
   "SamplerARVideo": {
-    "category": "sampling/custom_sampling/samplers",
+    "category": "sampling/samplers",
     "inputs": {
       "required": {
         "num_frame_per_block": "INT"
@@ -6965,7 +7115,7 @@
     ]
   },
   "SamplerDPMAdaptative": {
-    "category": "sampling/custom_sampling/samplers",
+    "category": "sampling/samplers",
     "inputs": {
       "required": {
         "order": "INT",
@@ -6986,7 +7136,7 @@
     ]
   },
   "SamplerDPMPP_2M_SDE": {
-    "category": "sampling/custom_sampling/samplers",
+    "category": "sampling/samplers",
     "inputs": {
       "required": {
         "solver_type": "COMBO",
@@ -7001,7 +7151,7 @@
     ]
   },
   "SamplerDPMPP_2S_Ancestral": {
-    "category": "sampling/custom_sampling/samplers",
+    "category": "sampling/samplers",
     "inputs": {
       "required": {
         "eta": "FLOAT",
@@ -7014,7 +7164,7 @@
     ]
   },
   "SamplerDPMPP_3M_SDE": {
-    "category": "sampling/custom_sampling/samplers",
+    "category": "sampling/samplers",
     "inputs": {
       "required": {
         "eta": "FLOAT",
@@ -7028,7 +7178,7 @@
     ]
   },
   "SamplerDPMPP_SDE": {
-    "category": "sampling/custom_sampling/samplers",
+    "category": "sampling/samplers",
     "inputs": {
       "required": {
         "eta": "FLOAT",
@@ -7043,7 +7193,7 @@
     ]
   },
   "SamplerER_SDE": {
-    "category": "sampling/custom_sampling/samplers",
+    "category": "sampling/samplers",
     "inputs": {
       "required": {
         "solver_type": "COMBO",
@@ -7058,7 +7208,7 @@
     ]
   },
   "SamplerEulerAncestral": {
-    "category": "sampling/custom_sampling/samplers",
+    "category": "sampling/samplers",
     "inputs": {
       "required": {
         "eta": "FLOAT",
@@ -7071,7 +7221,7 @@
     ]
   },
   "SamplerEulerAncestralCFGPP": {
-    "category": "sampling/custom_sampling/samplers",
+    "category": "sampling/samplers",
     "inputs": {
       "required": {
         "eta": "FLOAT",
@@ -7095,8 +7245,22 @@
       "SAMPLER"
     ]
   },
+  "SamplerLCM": {
+    "category": "sampling/samplers",
+    "inputs": {
+      "required": {
+        "s_noise": "FLOAT",
+        "s_noise_end": "FLOAT",
+        "noise_clip_std": "FLOAT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "SAMPLER"
+    ]
+  },
   "SamplerLCMUpscale": {
-    "category": "sampling/custom_sampling/samplers",
+    "category": "sampling/samplers",
     "inputs": {
       "required": {
         "scale_ratio": "FLOAT",
@@ -7110,7 +7274,7 @@
     ]
   },
   "SamplerLMS": {
-    "category": "sampling/custom_sampling/samplers",
+    "category": "sampling/samplers",
     "inputs": {
       "required": {
         "order": "INT"
@@ -7122,7 +7286,7 @@
     ]
   },
   "SamplerSASolver": {
-    "category": "sampling/custom_sampling/samplers",
+    "category": "sampling/samplers",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -7142,7 +7306,7 @@
     ]
   },
   "SamplerSEEDS2": {
-    "category": "sampling/custom_sampling/samplers",
+    "category": "sampling/samplers",
     "inputs": {
       "required": {
         "solver_type": "COMBO",
@@ -7157,7 +7321,7 @@
     ]
   },
   "SamplingPercentToSigma": {
-    "category": "sampling/custom_sampling/sigmas",
+    "category": "sampling/sigmas",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -7171,7 +7335,7 @@
     ]
   },
   "SaveAnimatedPNG": {
-    "category": "image/animation",
+    "category": "image",
     "inputs": {
       "required": {
         "images": "IMAGE",
@@ -7184,7 +7348,7 @@
     "outputs": []
   },
   "SaveAnimatedWEBP": {
-    "category": "image/animation",
+    "category": "image",
     "inputs": {
       "required": {
         "images": "IMAGE",
@@ -7303,7 +7467,7 @@
     "outputs": []
   },
   "SaveSVGNode": {
-    "category": "image/save",
+    "category": "image",
     "inputs": {
       "required": {
         "filename_prefix": "STRING"
@@ -7385,7 +7549,7 @@
     ]
   },
   "SetFirstSigma": {
-    "category": "sampling/custom_sampling/sigmas",
+    "category": "sampling/sigmas",
     "inputs": {
       "required": {
         "sigmas": "SIGMAS",
@@ -7489,7 +7653,7 @@
     ]
   },
   "SolidMask": {
-    "category": "mask",
+    "category": "image/mask",
     "inputs": {
       "required": {
         "value": "FLOAT",
@@ -7559,7 +7723,7 @@
     ]
   },
   "SplitImageWithAlpha": {
-    "category": "mask/compositing",
+    "category": "image/compositing",
     "inputs": {
       "required": {
         "image": "IMAGE"
@@ -7572,7 +7736,7 @@
     ]
   },
   "SplitSigmas": {
-    "category": "sampling/custom_sampling/sigmas",
+    "category": "sampling/sigmas",
     "inputs": {
       "required": {
         "sigmas": "SIGMAS",
@@ -7586,7 +7750,7 @@
     ]
   },
   "SplitSigmasDenoise": {
-    "category": "sampling/custom_sampling/sigmas",
+    "category": "sampling/sigmas",
     "inputs": {
       "required": {
         "sigmas": "SIGMAS",
@@ -8238,7 +8402,7 @@
     "outputs": []
   },
   "ThresholdMask": {
-    "category": "mask",
+    "category": "image/mask",
     "inputs": {
       "required": {
         "mask": "MASK",
@@ -8829,7 +8993,7 @@
     ]
   },
   "VOIDQuadmaskPreprocess": {
-    "category": "mask/video",
+    "category": "image/mask",
     "inputs": {
       "required": {
         "mask": "MASK",
@@ -8842,7 +9006,7 @@
     ]
   },
   "VOIDSampler": {
-    "category": "sampling/custom_sampling/samplers",
+    "category": "sampling/samplers",
     "inputs": {
       "required": {},
       "optional": {}
@@ -8868,7 +9032,7 @@
     ]
   },
   "VOIDWarpedNoiseSource": {
-    "category": "sampling/custom_sampling/noise",
+    "category": "sampling/noise",
     "inputs": {
       "required": {
         "warped_noise": "LATENT"
@@ -8880,7 +9044,7 @@
     ]
   },
   "VPScheduler": {
-    "category": "sampling/custom_sampling/schedulers",
+    "category": "sampling/schedulers",
     "inputs": {
       "required": {
         "steps": "INT",
@@ -8975,7 +9139,7 @@
     ]
   },
   "VideoLinearCFGGuidance": {
-    "category": "sampling/video_models",
+    "category": "sampling/guiders",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -8988,7 +9152,7 @@
     ]
   },
   "VideoTriangleCFGGuidance": {
-    "category": "sampling/video_models",
+    "category": "sampling/guiders",
     "inputs": {
       "required": {
         "model": "MODEL",
