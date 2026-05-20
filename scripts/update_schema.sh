@@ -37,6 +37,9 @@ cp -r "$COMFYUI_DIR/comfy_api_nodes/." "$REPO_ROOT/nodes_lib/comfy_api_nodes/"
 echo "Regenerating nodes_schema.json ..."
 python3 "$SCRIPT_DIR/build_schema.py"
 
+echo "Regenerating node-type-map.json ..."
+python3 "$SCRIPT_DIR/extract-node-type-map.py"
+
 # ---------------------------------------------------------------------------
 # 2. Sync frontend-derived types (optional — skip if no frontend path)
 # ---------------------------------------------------------------------------
