@@ -683,8 +683,14 @@ onUnmounted(() => {
   document.removeEventListener('fullscreenchange', onFullscreenChange)
 })
 
-watch(() => [props.workflow, props.result] as const, () => {
+// Workflow changed: rebuild scene from scratch and re-fit camera.
+watch(() => props.workflow, () => {
   buildScene()
+})
+
+// Only analysis result changed (e.g. server schema connected/disconnected):
+// severity colors update without rebuilding the scene or resetting the camera.
+watch(() => props.result, () => {
   dirty = true
 })
 

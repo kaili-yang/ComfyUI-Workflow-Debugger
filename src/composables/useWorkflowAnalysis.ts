@@ -12,8 +12,7 @@ export function useWorkflowAnalysis(
   const workflow = ref<GraphWorkflow | null>(null)
   const selectedNodeId = ref<number | null>(null)
 
-  function runAnalysis(content: string): void {
-    result.value = analyzeWorkflow(content, objectInfo.value ?? undefined)
+  function parseWorkflow(content: string): void {
     try {
       const parsed = JSON.parse(content)
       if (Array.isArray(parsed.nodes) && Array.isArray(parsed.links)) {
@@ -30,14 +29,24 @@ export function useWorkflowAnalysis(
     }
   }
 
-  watch([rawContent, objectInfo], ([content]) => {
+  // Workflow content changed: re-parse the graph and re-run analysis.
+  watch(rawContent, (content) => {
     if (!content) {
       result.value = null
       workflow.value = null
       selectedNodeId.value = null
       return
     }
-    runAnalysis(content)
+    parseWorkflow(content)
+    result.value = analyzeWorkflow(content, objectInfo.value ?? undefined)
+  })
+
+  // Server schema changed: re-run analysis only.
+  // workflow.value is intentionally NOT touched here — keeping the same object
+  // reference prevents WorkflowVisualizer from resetting the camera.
+  watch(objectInfo, () => {
+    if (!rawContent.value) return
+    result.value = analyzeWorkflow(rawContent.value, objectInfo.value ?? undefined)
   })
 
   function selectNode(id: number | null): void {
