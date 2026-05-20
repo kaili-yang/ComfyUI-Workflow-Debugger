@@ -3,6 +3,7 @@ import mapJson from './node-type-map.json'
 export interface ConversionNode {
   class: string
   inputSlot: string
+  inputSlotIndex: number
   outputSlot: number
   extraInputs: { name: string; type: string; slotIndex: number }[]
 }

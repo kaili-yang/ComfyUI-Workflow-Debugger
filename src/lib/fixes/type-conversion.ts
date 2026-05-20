@@ -57,7 +57,7 @@ export function fixTypeMismatch(
     // Build inputs array in slot order, merging main input + extraInputs
     const inputSlots: NodeInputSlot[] = []
     const allSlots = [
-      { name: convDef.inputSlot, type: sourceType, slotIndex: 0 },
+      { name: convDef.inputSlot, type: sourceType, slotIndex: convDef.inputSlotIndex },
       ...convDef.extraInputs,
     ].sort((a, b) => a.slotIndex - b.slotIndex)
 
@@ -84,11 +84,13 @@ export function fixTypeMismatch(
     createLink(workflow, newId, convDef.outputSlot, toNodeId, toSlot, targetType)
     changes++
 
-    // Satisfy extraInputs recursively
-    for (const extra of convDef.extraInputs) {
+    // Satisfy extraInputs recursively; use array index i (= connection-slot index)
+    for (let i = 0; i < allSlots.length; i++) {
+      const s = allSlots[i]
+      if (s.name === convDef.inputSlot) continue
       const ctx = makeSatisfyContext()
-      ctx.visiting.add(`${newId}:${mainSlotIndex}`) // don't re-satisfy main slot
-      const res = satisfyInput(workflow, newId, extra.slotIndex, extra.type, nodeTypeMap, ctx)
+      ctx.visiting.add(`${newId}:${mainSlotIndex}`)
+      const res = satisfyInput(workflow, newId, i, s.type, nodeTypeMap, ctx)
       if (!res.ok) partial = true
     }
   }

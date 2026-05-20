@@ -101,9 +101,10 @@ export function satisfyInput(
 
     // Recursively satisfy the new node's required inputs at depth+1 so that
     // already-connected sources (e.g. CLIP from CheckpointLoaderSimple) are reused.
+    const reqInputs = src.requiredInputs ?? []
     ctx.depth++
-    for (const reqInput of src.requiredInputs ?? []) {
-      satisfyInput(workflow, newId, reqInput.slotIndex, reqInput.type, nodeTypeMap, ctx)
+    for (let i = 0; i < reqInputs.length; i++) {
+      satisfyInput(workflow, newId, i, reqInputs[i].type, nodeTypeMap, ctx)
     }
     ctx.depth--
 
