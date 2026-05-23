@@ -8,6 +8,7 @@ const renderError = ref<string | null>(null)
 const props = defineProps<{
   workflow: GraphWorkflow | null
   result: AnalysisResult | null
+  fileName: string | null
   selectedNodeId: number | null
   fixedNodeIds?: Set<number>
   fixedLinkIds?: Set<number>
@@ -62,7 +63,7 @@ const ROUND_R = 8
 // C_BODY / C_TITLE kept for reference but individual drawNode uses per-severity colors
 const C_TEXT = '#cccccc'
 const C_TITLE_TEXT = '#eeeeee'
-const C_BG = '#1e1e2e'
+const C_BG = '#151317'
 
 const TYPE_COLORS: Record<string, string> = {
   MODEL: '#c084fc',
@@ -143,7 +144,7 @@ function fitCamera(): void {
 
 // ─── Build scene ─────────────────────────────────────────────────────────────
 
-function buildScene(): void {
+function buildScene(fit = true): void {
   renderError.value = null
 
   if (!props.workflow) {
@@ -170,7 +171,9 @@ function buildScene(): void {
     // even in broken workflows where some nodes might be missing layout data.
     applyFallbackLayout(nodes, links)
 
-    fitCamera()
+    if (fit) {
+      fitCamera()
+    }
   } catch (err) {
     renderError.value = err instanceof Error ? err.message : String(err)
     nodes = []
@@ -309,16 +312,16 @@ function render(): void {
       path.bezierCurveTo(x1 + dx, y1, x2 - dx, y2, x2, y2)
 
       // Wide pulsing glow halo
-      ctx.shadowColor = '#22d3ee'
+      ctx.shadowColor = '#f0ff41'
       ctx.shadowBlur = 10 + 20 * pulse
-      ctx.strokeStyle = '#22d3ee'
+      ctx.strokeStyle = '#f0ff41'
       ctx.lineWidth = 10
       ctx.globalAlpha = 0.15 + 0.2 * pulse
       ctx.stroke(path)
 
       // Solid base line
       ctx.shadowBlur = 0
-      ctx.strokeStyle = '#67e8f9'
+      ctx.strokeStyle = '#f0ff41'
       ctx.lineWidth = 3.5
       ctx.globalAlpha = 1
       ctx.setLineDash([])
@@ -364,25 +367,25 @@ function drawNode(ctx: CanvasRenderingContext2D, node: WorkflowNode): void {
   const isNew = props.fixedNodeIds?.has(node.id) ?? false
 
   // Title bar color
-  const titleColor = isNew          ? '#0c3345'
-    : s === 'error'   ? '#7f1d1d'
-    : s === 'warning' ? '#713f12'
-    : muted           ? '#374151'
-    : '#14532d'
+  const titleColor = isNew          ? '#343808'
+    : s === 'error'   ? '#581c24'
+    : s === 'warning' ? '#422006'
+    : muted           ? '#27272a'
+    : '#222225'
 
   // Body color
-  const bodyColor = isNew           ? '#071e2b'
-    : s === 'error'   ? '#2a1515'
-    : s === 'warning' ? '#2a1f0a'
-    : muted           ? '#1f2937'
-    : '#1e2d22'
+  const bodyColor = isNew           ? '#161703'
+    : s === 'error'   ? '#1b0e11'
+    : s === 'warning' ? '#181102'
+    : muted           ? '#121214'
+    : '#0c0c0e'
 
   // Border color + width
-  const borderColor = isNew         ? '#22d3ee'
-    : s === 'error'   ? '#ef4444'
-    : s === 'warning' ? '#f59e0b'
-    : muted           ? '#4b5563'
-    : '#4ade80'
+  const borderColor = isNew         ? '#f0ff41'
+    : s === 'error'   ? '#f43f5e'
+    : s === 'warning' ? '#ff9f29'
+    : muted           ? '#3f3f46'
+    : '#2e2e33'
 
   const borderWidth = isNew ? 2.5 : s === 'error' ? 2.5 : s === 'warning' ? 2 : 1.5
 
@@ -414,9 +417,9 @@ function drawNode(ctx: CanvasRenderingContext2D, node: WorkflowNode): void {
   // ── Status border — always drawn for every node ──
   if (isNew) {
     const pulse = 0.5 + 0.5 * Math.sin(Date.now() / 400)
-    ctx.shadowColor = '#22d3ee'
+    ctx.shadowColor = '#f0ff41'
     ctx.shadowBlur = 8 + 18 * pulse
-    ctx.strokeStyle = '#22d3ee'
+    ctx.strokeStyle = '#f0ff41'
     ctx.lineWidth = borderWidth + 1.5 * pulse
     // Extra outer glow ring
     ctx.globalAlpha = 0.3 + 0.3 * pulse
@@ -427,7 +430,7 @@ function drawNode(ctx: CanvasRenderingContext2D, node: WorkflowNode): void {
   }
   ctx.strokeStyle = borderColor
   ctx.lineWidth = borderWidth
-  ctx.shadowColor = isNew ? '#22d3ee' : 'transparent'
+  ctx.shadowColor = isNew ? '#f0ff41' : 'transparent'
   ctx.shadowBlur = isNew ? 8 : 0
   ctx.beginPath()
   ctx.roundRect(x - 1, y - TITLE_H - 1, w + 2, h + TITLE_H + 2, ROUND_R + 1)
@@ -436,9 +439,9 @@ function drawNode(ctx: CanvasRenderingContext2D, node: WorkflowNode): void {
 
   // ── Selection ring ──
   if (node.id === props.selectedNodeId) {
-    ctx.strokeStyle = '#93c5fd'  // blue-300
+    ctx.strokeStyle = '#f0ff41'  // brand yellow
     ctx.lineWidth = 2.5
-    ctx.shadowColor = '#3b82f6'
+    ctx.shadowColor = '#f0ff41'  // brand yellow glow
     ctx.shadowBlur = 14
     ctx.beginPath()
     ctx.roundRect(x - 4, y - TITLE_H - 4, w + 8, h + TITLE_H + 8, ROUND_R + 3)
@@ -448,7 +451,7 @@ function drawNode(ctx: CanvasRenderingContext2D, node: WorkflowNode): void {
 
   // ── Title text ──
   ctx.fillStyle = C_TITLE_TEXT
-  ctx.font = 'bold 12px Inter, system-ui, sans-serif'
+  ctx.font = 'bold 12px Outfit, Inter, system-ui, sans-serif'
   ctx.textBaseline = 'middle'
   ctx.textAlign = 'left'
   ctx.fillText(node.type, x + 8, y - TITLE_H / 2, w - 36)
@@ -480,11 +483,11 @@ function drawNode(ctx: CanvasRenderingContext2D, node: WorkflowNode): void {
     const bw = ctx.measureText(badgeText).width + 8
     const bx = x + 4
     const by = y - TITLE_H + 4
-    ctx.fillStyle = '#22d3ee'
+    ctx.fillStyle = '#f0ff41'
     ctx.beginPath()
     ctx.roundRect(bx, by, bw, 13, 3)
     ctx.fill()
-    ctx.fillStyle = '#0a1a20'
+    ctx.fillStyle = '#151317'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
     ctx.fillText(badgeText, bx + bw / 2, by + 6.5)
@@ -683,9 +686,16 @@ onUnmounted(() => {
   document.removeEventListener('fullscreenchange', onFullscreenChange)
 })
 
-// Workflow changed: rebuild scene from scratch and re-fit camera.
+// Workflow changed: rebuild scene from scratch but do NOT auto-fit camera.
 watch(() => props.workflow, () => {
-  buildScene()
+  buildScene(false)
+})
+
+// File name changed: a new file was uploaded, auto-fit camera.
+watch(() => props.fileName, (newVal) => {
+  if (newVal) {
+    fitCamera()
+  }
 })
 
 // Only analysis result changed (e.g. server schema connected/disconnected):
@@ -731,16 +741,16 @@ watch(() => props.selectedNodeId, (newId) => {
     </div>
 
     <!-- Overlay controls -->
-    <div class="absolute top-2.5 right-2.5 flex gap-1.5 z-10 select-none">
+    <div class="absolute top-3.5 right-3.5 flex gap-2 z-10 select-none">
       <!-- Zoom bar -->
-      <div class="flex divide-x divide-gray-700 bg-gray-900/90 backdrop-blur-sm border border-gray-700 rounded-lg overflow-hidden">
+      <div class="flex divide-x divide-ink-700 bg-ink-900/80 backdrop-blur border border-ink-700/60 rounded-xl overflow-hidden shadow-lg">
         <button
-          class="px-2.5 py-1.5 text-gray-400 hover:text-white hover:bg-gray-700 transition-colors text-sm font-mono leading-none"
+          class="px-3.5 py-2 text-zinc-400 hover:text-brand-yellow hover:bg-ink-800/50 transition-colors text-sm font-mono font-bold leading-none cursor-pointer"
           title="Zoom out"
           @click="zoomOut"
         >−</button>
         <button
-          class="px-2 py-1.5 text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+          class="px-3 py-2 text-zinc-400 hover:text-brand-yellow hover:bg-ink-800/50 transition-colors cursor-pointer"
           title="Fit all nodes"
           @click="fitAll"
         >
@@ -749,7 +759,7 @@ watch(() => props.selectedNodeId, (newId) => {
           </svg>
         </button>
         <button
-          class="px-2.5 py-1.5 text-gray-400 hover:text-white hover:bg-gray-700 transition-colors text-sm font-mono leading-none"
+          class="px-3.5 py-2 text-zinc-400 hover:text-brand-yellow hover:bg-ink-800/50 transition-colors text-sm font-mono font-bold leading-none cursor-pointer"
           title="Zoom in"
           @click="zoomIn"
         >+</button>
@@ -757,7 +767,7 @@ watch(() => props.selectedNodeId, (newId) => {
 
       <!-- Fullscreen toggle -->
       <button
-        class="px-2 py-1.5 bg-gray-900/90 backdrop-blur-sm border border-gray-700 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+        class="px-3 py-2 bg-ink-900/80 backdrop-blur border border-ink-700/60 rounded-xl text-zinc-400 hover:text-brand-yellow hover:bg-ink-800/50 transition-colors shadow-lg cursor-pointer"
         :title="isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'"
         @click="toggleFullscreen"
       >

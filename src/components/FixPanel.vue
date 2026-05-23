@@ -73,18 +73,18 @@ function download(): void {
 </script>
 
 <template>
-  <div class="flex flex-col h-full bg-gray-950">
+  <div class="flex flex-col h-full bg-transparent">
     <!-- Header -->
-    <div class="flex-shrink-0 px-5 py-4 border-b border-gray-800">
-      <p class="text-sm font-bold text-gray-100 tracking-tight">Auto Fix</p>
-      <p class="text-xs text-gray-600 mt-1">Clean up broken link references</p>
+    <div class="flex-shrink-0 px-6 py-5 border-b border-ink-800 bg-ink-900/20">
+      <p class="text-sm font-bold text-zinc-100 tracking-tight font-display">Auto Fix</p>
+      <p class="text-xs text-zinc-500 mt-1">Clean up broken link references automatically</p>
     </div>
 
     <!-- Body -->
-    <div class="flex-1 min-h-0 overflow-y-auto px-5 py-5 flex flex-col gap-5">
+    <div class="flex-1 min-h-0 overflow-y-auto px-6 py-6 flex flex-col gap-6">
 
       <!-- Big circular Fix button, always centered -->
-      <div class="flex flex-col items-center justify-center gap-4 py-6">
+      <div class="flex flex-col items-center justify-center gap-4.5 py-6">
         <button
           class="fix-circle-btn"
           :class="{
@@ -98,29 +98,29 @@ function download(): void {
           <span class="fix-circle-label">{{ fixApplied ? '✓' : 'Fix' }}</span>
         </button>
         <!-- Status hint below button -->
-        <p v-if="!result" class="text-gray-700 text-xs text-center leading-relaxed">Upload a workflow<br>to enable fixing</p>
-        <p v-else-if="result.format !== 'graph'" class="text-gray-600 text-xs text-center">Graph format only</p>
+        <p v-if="!result" class="text-zinc-650 text-xs text-center leading-relaxed">Upload a workflow<br>to enable auto-fixing</p>
+        <p v-else-if="result.format !== 'graph'" class="text-zinc-600 text-xs text-center leading-relaxed">Automatic fixing is supported<br>for Graph format only</p>
         <template v-else-if="fixApplied">
-          <p class="text-xs text-center" style="color: #39ff14;">Fixed {{ fixChanges }} issue{{ fixChanges !== 1 ? 's' : '' }}</p>
-          <p v-if="fixPartial" class="text-yellow-400 text-xs text-center">Some issues could not be auto-fixed</p>
+          <p class="text-sm text-center font-semibold text-brand-yellow">Fixed {{ fixChanges }} issue{{ fixChanges !== 1 ? 's' : '' }}</p>
+          <p v-if="fixPartial" class="text-amber-500 text-xs text-center leading-relaxed">Some issues could not be fixed</p>
         </template>
-        <p v-else-if="fixableCount === 0" class="text-green-500 text-xs text-center">Nothing to fix</p>
-        <p v-else class="text-yellow-400 text-xs text-center">{{ fixableCount }} fixable issue{{ fixableCount !== 1 ? 's' : '' }} found</p>
+        <p v-else-if="fixableCount === 0" class="text-emerald-400 text-xs text-center font-medium">No issues require fixing</p>
+        <p v-else class="text-brand-yellow text-xs font-semibold text-center">{{ fixableCount }} fixable issue{{ fixableCount !== 1 ? 's' : '' }} found</p>
       </div>
 
       <!-- What got fixed (animated, shown only after fix) -->
-      <div v-if="fixApplied && fixBreakdown.length > 0" class="flex flex-col gap-2">
-        <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold px-0.5">What got fixed</p>
-        <div class="flex flex-col gap-1.5">
+      <div v-if="fixApplied && fixBreakdown.length > 0" class="flex flex-col gap-3">
+        <p class="text-xs text-zinc-500 uppercase tracking-widest font-bold font-display px-0.5">What got fixed</p>
+        <div class="flex flex-col gap-2">
           <div
             v-for="(item, idx) in fixBreakdown"
             :key="item.label"
-            class="fix-item flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-gray-900 border border-[#39ff14]/20"
+            class="fix-item flex items-center gap-3 px-3 py-2.5 rounded-xl bg-ink-800/20 border border-brand-yellow/15 shadow-sm"
             :style="{ animationDelay: `${idx * 90}ms` }"
           >
-            <span class="fix-check text-sm leading-none flex-shrink-0">✓</span>
-            <span class="text-gray-300 text-xs leading-relaxed flex-1 min-w-0">{{ item.label }}</span>
-            <span class="text-[#39ff14] text-xs font-bold tabular-nums flex-shrink-0">+{{ item.count }}</span>
+            <span class="fix-check text-sm leading-none flex-shrink-0 text-brand-yellow">✓</span>
+            <span class="text-zinc-350 text-xs leading-relaxed flex-1 min-w-0 font-medium">{{ item.label }}</span>
+            <span class="text-brand-yellow text-xs font-bold tabular-nums flex-shrink-0 bg-brand-yellow/5 px-2 py-0.5 rounded-md border border-brand-yellow/10">+{{ item.count }}</span>
           </div>
         </div>
       </div>
@@ -130,16 +130,16 @@ function download(): void {
     </div>
 
     <!-- Footer: export -->
-    <div class="flex-shrink-0 border-t border-gray-800 px-5 py-4">
+    <div class="flex-shrink-0 border-t border-ink-800 px-6 py-5 bg-ink-900/20">
       <button
-        class="w-full flex items-center justify-center gap-2 py-2 rounded-lg border text-xs font-semibold tracking-wide transition-all duration-150"
+        class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border text-sm font-semibold tracking-wide transition-all duration-200 cursor-pointer shadow-sm"
         :class="rawContent
-          ? 'border-[#39ff14] text-[#39ff14] hover:bg-[#39ff14]/10 cursor-pointer'
-          : 'border-gray-800 text-gray-700 cursor-not-allowed'"
+          ? 'border-brand-yellow/45 text-brand-yellow hover:bg-brand-yellow/10 hover:border-brand-yellow'
+          : 'border-ink-700 text-zinc-600 cursor-not-allowed'"
         :disabled="!rawContent"
         @click="download"
       >
-        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 3v13m0 0l-4-4m4 4l4-4" />
         </svg>
         Export fixed workflow
@@ -151,38 +151,46 @@ function download(): void {
 
 <style scoped>
 .fix-circle-btn {
-  width: 136px;
-  height: 136px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
-  border: 3px solid #39ff14;
-  background: radial-gradient(circle at 40% 35%, #0d2b0d, #050f05);
+  border: 3.5px solid #232025;
+  background: radial-gradient(circle at 40% 35%, #29252c, #151317);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+  transition: box-shadow 0.25s, transform 0.2s, border-color 0.25s, background 0.25s;
   position: relative;
   flex-shrink: 0;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
 }
 
 .fix-circle-label {
-  font-size: 2rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: #39ff14;
-  text-shadow: 0 0 12px #39ff14, 0 0 28px #39ff1480;
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: #5c5362;
   user-select: none;
   line-height: 1;
+  transition: color 0.25s;
 }
 
 .fix-circle-active {
-  box-shadow: 0 0 18px 4px #39ff1440, 0 0 6px 1px #39ff1466;
-  animation: fix-pulse 2s ease-in-out infinite;
+  border-color: #f0ff41;
+  background: #f0ff41;
+  animation: comfy-pulse 2s ease-in-out infinite;
+}
+
+.fix-circle-active .fix-circle-label {
+  color: #151317;
+  text-shadow: none;
 }
 
 .fix-circle-active:hover {
-  transform: scale(1.06);
-  box-shadow: 0 0 32px 8px #39ff1460, 0 0 10px 2px #39ff14aa;
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(240, 255, 65, 0.4);
 }
 
 .fix-circle-active:active {
@@ -190,25 +198,27 @@ function download(): void {
 }
 
 .fix-circle-done {
-  border-color: #39ff14;
-  box-shadow: 0 0 24px 6px #39ff1455;
+  border-color: #8d7fc5;
+  background: radial-gradient(circle at 40% 35%, #29252c, #19161a);
+  box-shadow: 0 0 24px 6px rgba(141, 127, 197, 0.25);
   cursor: default;
 }
 
+.fix-circle-done .fix-circle-label {
+  color: #8d7fc5;
+  text-shadow: 0 0 12px #8d7fc5, 0 0 28px rgba(141, 127, 197, 0.4);
+}
+
 .fix-circle-disabled {
-  border-color: #2a2a2a;
-  background: radial-gradient(circle at 40% 35%, #111, #080808);
+  border-color: #232025;
+  background: radial-gradient(circle at 40% 35%, #19161a, #151317);
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .fix-circle-disabled .fix-circle-label {
-  color: #333;
+  color: #353139;
   text-shadow: none;
-}
-
-@keyframes fix-pulse {
-  0%, 100% { box-shadow: 0 0 18px 4px #39ff1440, 0 0 6px 1px #39ff1466; }
-  50%       { box-shadow: 0 0 30px 8px #39ff1460, 0 0 10px 3px #39ff14aa; }
 }
 
 .fix-item {
@@ -216,19 +226,17 @@ function download(): void {
 }
 
 .fix-check {
-  color: #39ff14;
-  text-shadow: 0 0 8px #39ff14bb;
+  text-shadow: 0 0 8px rgba(240, 255, 65, 0.6);
   animation: fix-check-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 @keyframes fix-item-in {
-  from { opacity: 0; transform: translateX(-10px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fix-check-pop {
   from { opacity: 0; transform: scale(0.4); }
   to   { opacity: 1; transform: scale(1); }
 }
-
 </style>

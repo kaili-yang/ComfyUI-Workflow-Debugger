@@ -33,7 +33,8 @@ export function applyFallbackLayout(ns: WorkflowNode[], ls: WorkflowLink[]): voi
   const nodeMap = new Map(ns.map((n) => [n.id, n]))
   columns.forEach((col, ci) => {
     col.forEach((id, ri) => {
-      const n = nodeMap.get(id)!
+      const n = nodeMap.get(id)
+      if (!n) return
       if (!n.pos) n.pos = [ci * 280, ri * 160] as [number, number]
       if (!n.size) n.size = [210, 80] as [number, number]
     })

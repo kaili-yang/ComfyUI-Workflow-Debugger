@@ -8,5 +8,14 @@ export default defineConfig({
   server: {
     port: 5177,
     strictPort: true,
+    watch: {
+      ignored: [
+        '**/workflow/**',
+        '**/test data/**',
+        '**/temp/**',
+        '**/screenshots/**',
+        '**/dist/**',
+      ],
+    },
   },
 })

@@ -64,34 +64,34 @@ function severityIcon(s: Severity): string {
 
 function severityIconBg(s: Severity): string {
   return s === 'error'
-    ? 'bg-red-500 text-white'
+    ? 'bg-rose-500 text-white shadow-sm shadow-rose-950/40'
     : s === 'warning'
-      ? 'bg-yellow-500 text-gray-900'
-      : 'bg-blue-500 text-white'
+      ? 'bg-amber-500 text-black shadow-sm shadow-amber-950/40'
+      : 'bg-indigo-500 text-white shadow-sm shadow-indigo-950/40'
 }
 
 function severityBorder(s: Severity): string {
   return s === 'error'
-    ? 'border-red-700/40 hover:border-red-600/60'
+    ? 'border-rose-900/30 bg-rose-950/5 hover:border-rose-800/40'
     : s === 'warning'
-      ? 'border-yellow-700/40 hover:border-yellow-600/60'
-      : 'border-blue-700/40 hover:border-blue-600/60'
+      ? 'border-amber-900/30 bg-amber-950/5 hover:border-amber-800/40'
+      : 'border-indigo-900/30 bg-indigo-950/5 hover:border-indigo-800/40'
 }
 
 function severityExpandBg(s: Severity): string {
   return s === 'error'
-    ? 'border-red-900/40 bg-red-950/20'
+    ? 'border-rose-950 bg-rose-950/10'
     : s === 'warning'
-      ? 'border-yellow-900/40 bg-yellow-950/20'
-      : 'border-blue-900/40 bg-blue-950/20'
+      ? 'border-amber-950 bg-amber-950/10'
+      : 'border-indigo-950 bg-indigo-950/10'
 }
 
 function severityTag(s: Severity): string {
   return s === 'error'
-    ? 'bg-red-500/15 text-red-400 border border-red-500/25'
+    ? 'bg-rose-500/10 text-rose-400 border border-rose-500/15 text-[10px] font-bold tracking-wider'
     : s === 'warning'
-      ? 'bg-yellow-500/15 text-yellow-400 border border-yellow-500/25'
-      : 'bg-blue-500/15 text-blue-400 border border-blue-500/25'
+      ? 'bg-amber-500/10 text-amber-450 border border-amber-500/15 text-[10px] font-bold tracking-wider'
+      : 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/15 text-[10px] font-bold tracking-wider'
 }
 
 const verdictText = computed(() => {
@@ -103,9 +103,9 @@ const verdictText = computed(() => {
 
 const verdictStyle = computed(() => {
   if (!props.result) return ''
-  if (errors.value.length > 0) return 'text-red-400'
-  if (warnings.value.length > 0) return 'text-yellow-400'
-  return 'text-green-400'
+  if (errors.value.length > 0) return 'text-rose-400 font-display'
+  if (warnings.value.length > 0) return 'text-amber-400 font-display'
+  return 'text-emerald-450 font-display'
 })
 
 const verdictIcon = computed(() => {
@@ -117,108 +117,108 @@ const verdictIcon = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col h-full bg-gray-950 text-gray-100">
+  <div class="flex flex-col h-full bg-ink-900 text-zinc-100">
 
     <!-- Empty state -->
-    <div v-if="!result" class="h-full flex items-center justify-center">
-      <p class="text-gray-700 text-sm">Upload a workflow to see diagnostics</p>
+    <div v-if="!result" class="h-full flex items-center justify-center bg-ink-900/20">
+      <p class="text-zinc-650 text-sm font-semibold tracking-wide font-display">Upload a workflow to see diagnostics</p>
     </div>
 
     <template v-else>
       <!-- Summary bar -->
-      <div class="flex-shrink-0 flex items-center gap-4 px-6 py-3 border-b border-gray-800 bg-gray-950">
+      <div class="flex-shrink-0 flex items-center gap-5 px-6 py-4 border-b border-ink-800 bg-ink-900/40">
         <!-- Verdict -->
-        <div class="flex items-center gap-2">
-          <span class="text-base font-bold leading-none" :class="verdictStyle">{{ verdictIcon }}</span>
-          <span class="text-sm font-semibold" :class="verdictStyle">{{ verdictText }}</span>
+        <div class="flex items-center gap-2.5">
+          <span class="text-lg font-extrabold leading-none" :class="verdictStyle">{{ verdictIcon }}</span>
+          <span class="text-sm font-bold" :class="verdictStyle">{{ verdictText }}</span>
         </div>
 
-        <div class="w-px h-4 bg-gray-800" />
+        <div class="w-px h-4 bg-ink-800" />
 
         <!-- Stats chips -->
-        <div class="flex items-center gap-2 flex-wrap">
-          <span class="text-xs text-gray-500">
-            <span class="text-gray-300 font-semibold tabular-nums">{{ result.nodeCount }}</span> nodes
+        <div class="flex items-center gap-2.5 flex-wrap">
+          <span class="text-xs text-zinc-500">
+            <span class="text-zinc-300 font-semibold tabular-nums">{{ result.nodeCount }}</span> nodes
           </span>
-          <span v-if="result.format === 'graph'" class="text-xs text-gray-500">
-            <span class="text-gray-300 font-semibold tabular-nums">{{ result.linkCount }}</span> links
+          <span v-if="result.format === 'graph'" class="text-xs text-zinc-500">
+            <span class="text-zinc-300 font-semibold tabular-nums">{{ result.linkCount }}</span> links
           </span>
           <span
             v-if="errors.length > 0"
-            class="text-xs px-2 py-0.5 rounded-md font-medium"
+            class="text-xs px-2.5 py-0.5 rounded-full font-medium"
             :class="severityTag('error')"
           >{{ errors.length }} error{{ errors.length !== 1 ? 's' : '' }}</span>
           <span
             v-if="warnings.length > 0"
-            class="text-xs px-2 py-0.5 rounded-md font-medium"
+            class="text-xs px-2.5 py-0.5 rounded-full font-medium"
             :class="severityTag('warning')"
           >{{ warnings.length }} warning{{ warnings.length !== 1 ? 's' : '' }}</span>
           <span
             v-if="infos.length > 0"
-            class="text-xs px-2 py-0.5 rounded-md font-medium"
+            class="text-xs px-2.5 py-0.5 rounded-full font-medium"
             :class="severityTag('info')"
           >{{ infos.length }} info</span>
         </div>
 
-        <div class="ml-auto text-xs text-gray-700 font-mono">
+        <div class="ml-auto text-xs text-zinc-650 font-bold uppercase tracking-wider font-mono">
           {{ result.format === 'graph' ? 'Graph format' : result.format === 'api' ? 'API format' : 'Unknown format' }}
         </div>
       </div>
 
       <!-- Issues area -->
-      <div class="flex-1 min-h-0 overflow-y-auto px-6 py-4">
+      <div class="flex-1 min-h-0 overflow-y-auto px-6 py-5">
         <!-- No issues -->
-        <div v-if="orderedIssues.length === 0" class="h-full flex flex-col items-center justify-center gap-3">
-          <div class="w-12 h-12 bg-green-500/10 border border-green-700/30 rounded-full flex items-center justify-center">
-            <span class="text-green-400 font-bold">✓</span>
+        <div v-if="orderedIssues.length === 0" class="h-full flex flex-col items-center justify-center gap-3.5">
+          <div class="w-14 h-14 bg-emerald-500/10 border border-emerald-700/20 rounded-full flex items-center justify-center shadow-inner">
+            <span class="text-emerald-450 font-bold text-lg">✓</span>
           </div>
-          <p class="text-green-300 text-sm font-medium">No issues found</p>
-          <p class="text-gray-600 text-xs">All connections look valid</p>
+          <p class="text-emerald-400 text-sm font-semibold tracking-wide font-display">No issues found</p>
+          <p class="text-zinc-600 text-xs">All node connections look valid</p>
         </div>
 
         <!-- Issues grid -->
         <div
           v-else
-          class="grid gap-3"
+          class="grid gap-4"
           style="grid-template-columns: repeat(auto-fill, minmax(380px, 1fr))"
         >
           <div
             v-for="(issue, idx) in orderedIssues"
             :key="idx"
             :ref="(el) => setIssueEl(el as HTMLElement | null, idx)"
-            class="border rounded-lg overflow-hidden bg-gray-900 transition-colors"
-            :class="[severityBorder(issue.severity), selectedIndices.has(idx) ? 'ring-1 ring-blue-500/60 bg-gray-800' : '']"
+            class="border rounded-xl overflow-hidden bg-ink-800/20 transition-all duration-200"
+            :class="[severityBorder(issue.severity), selectedIndices.has(idx) ? 'ring-1 ring-brand-yellow/40 bg-ink-800/90 shadow-glow-yellow border-brand-yellow/30' : '']"
           >
             <!-- Card header -->
             <div
-              class="flex items-start gap-2.5 px-3 py-2.5 cursor-pointer"
+              class="flex items-start gap-3 px-4 py-3.5 cursor-pointer"
               @click="onIssueClick(issue, idx)"
             >
               <!-- Severity dot -->
               <div
-                class="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold"
+                class="w-5.5 h-5.5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold leading-none"
                 :class="severityIconBg(issue.severity)"
               >{{ severityIcon(issue.severity) }}</div>
 
               <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-1.5 mb-0.5 flex-wrap">
-                  <span class="text-xs font-semibold px-1.5 py-0.5 rounded uppercase tracking-wide" :class="severityTag(issue.severity)">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="px-2 py-0.5 rounded-full font-bold uppercase tracking-wider text-[9px]" :class="severityTag(issue.severity)">
                     {{ issue.severity }}
                   </span>
                   <span
                     v-if="issue.nodeType"
                     class="text-xs font-mono"
-                    :class="issue.nodeId !== undefined ? 'text-gray-500 hover:text-blue-400 cursor-pointer underline underline-offset-2 decoration-dotted' : 'text-gray-600'"
+                    :class="issue.nodeId !== undefined ? 'text-zinc-400 hover:text-brand-yellow cursor-pointer underline underline-offset-4 decoration-dotted decoration-zinc-700' : 'text-zinc-550'"
                     :title="issue.nodeId !== undefined ? 'Click to highlight in canvas' : undefined"
                     @click.stop="issue.nodeId !== undefined ? onNodeBadgeClick($event, issue) : undefined"
                   >{{ issue.nodeType }}<template v-if="issue.nodeId !== undefined"> #{{ issue.nodeId }}</template></span>
                 </div>
-                <p class="text-gray-200 text-xs leading-relaxed">{{ issue.message }}</p>
+                <p class="text-zinc-200 text-sm leading-relaxed">{{ issue.message }}</p>
               </div>
 
               <svg
                 v-if="issue.detail || issue.suggestion || issue.fixType"
-                class="w-3.5 h-3.5 text-gray-600 flex-shrink-0 mt-1 transition-transform duration-150"
+                class="w-4 h-4 text-zinc-650 flex-shrink-0 mt-1 transition-transform duration-150"
                 :class="expanded.has(idx) ? 'rotate-180' : ''"
                 fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
               >
@@ -229,21 +229,21 @@ const verdictIcon = computed(() => {
             <!-- Expandable detail + fix -->
             <div
               v-if="(issue.detail || issue.suggestion || issue.fixType) && expanded.has(idx)"
-              class="border-t px-3 py-2 flex flex-col gap-1.5"
+              class="border-t border-ink-900/40 px-4 py-3 flex flex-col gap-2.5"
               :class="severityExpandBg(issue.severity)"
             >
-              <div v-if="issue.detail" class="flex gap-2">
-                <span class="text-gray-500 text-xs font-semibold uppercase tracking-wide flex-shrink-0 mt-0.5">Detail</span>
-                <p class="text-gray-400 text-xs leading-relaxed">{{ issue.detail }}</p>
+              <div v-if="issue.detail" class="flex gap-2.5">
+                <span class="text-zinc-500 text-xs font-bold uppercase tracking-widest flex-shrink-0 mt-0.5 font-display">Detail</span>
+                <p class="text-zinc-400 text-xs leading-relaxed">{{ issue.detail }}</p>
               </div>
-              <div v-if="issue.suggestion || issue.fixType" class="flex items-start justify-between gap-3">
-                <div v-if="issue.suggestion" class="flex gap-2 flex-1 min-w-0">
-                  <span class="text-blue-500 text-xs font-semibold uppercase tracking-wide flex-shrink-0 mt-0.5">Fix</span>
-                  <p class="text-blue-300 text-xs leading-relaxed">{{ issue.suggestion }}</p>
+              <div v-if="issue.suggestion || issue.fixType" class="flex items-start justify-between gap-4">
+                <div v-if="issue.suggestion" class="flex gap-2.5 flex-1 min-w-0">
+                  <span class="text-brand-yellow text-xs font-bold uppercase tracking-widest flex-shrink-0 mt-0.5 font-display">Fix</span>
+                  <p class="text-zinc-300 text-xs leading-relaxed">{{ issue.suggestion }}</p>
                 </div>
                 <button
                   v-if="issue.fixable && issue.fixType"
-                  class="flex-shrink-0 px-2.5 py-1 rounded text-xs font-semibold border border-[#39ff14]/50 text-[#39ff14] hover:bg-[#39ff14]/10 hover:border-[#39ff14]/80 transition-colors duration-150 cursor-pointer"
+                  class="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold border border-brand-yellow/45 text-brand-yellow hover:bg-brand-yellow/10 hover:border-brand-yellow transition-all duration-150 cursor-pointer"
                   @click.stop="emit('fix', issue.fixType!)"
                 >Apply Fix</button>
               </div>
