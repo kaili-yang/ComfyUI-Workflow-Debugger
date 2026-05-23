@@ -92,10 +92,10 @@ function download(): void {
             'fix-circle-done': fixApplied,
             'fix-circle-disabled': !canFix && !fixApplied,
           }"
-          :disabled="!canFix"
-          @click="applyFix"
+          :disabled="!canFix && !fixApplied"
+          @click="fixApplied ? download() : applyFix()"
         >
-          <span class="fix-circle-label">{{ fixApplied ? '✓' : 'Fix' }}</span>
+          <span class="fix-circle-label">{{ fixApplied ? 'Export' : 'Fix' }}</span>
         </button>
         <!-- Status hint below button -->
         <p v-if="!result" class="text-zinc-650 text-xs text-center leading-relaxed">Upload a workflow<br>to enable auto-fixing</p>
@@ -198,15 +198,29 @@ function download(): void {
 }
 
 .fix-circle-done {
-  border-color: #8d7fc5;
-  background: radial-gradient(circle at 40% 35%, #29252c, #19161a);
-  box-shadow: 0 0 24px 6px rgba(141, 127, 197, 0.25);
-  cursor: default;
+  border-color: #f0ff41;
+  background: #f0ff41;
+  box-shadow: 0 0 24px 6px rgba(240, 255, 65, 0.35);
+  cursor: pointer;
+  animation: comfy-pulse 2s ease-in-out infinite;
 }
 
 .fix-circle-done .fix-circle-label {
-  color: #8d7fc5;
-  text-shadow: 0 0 12px #8d7fc5, 0 0 28px rgba(141, 127, 197, 0.4);
+  color: #151317;
+  text-shadow: none;
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.fix-circle-done:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 32px rgba(240, 255, 65, 0.5);
+}
+
+.fix-circle-done:active {
+  transform: scale(0.97);
 }
 
 .fix-circle-disabled {
