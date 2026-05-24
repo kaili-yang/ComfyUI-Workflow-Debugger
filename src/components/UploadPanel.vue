@@ -20,9 +20,9 @@ const features = [
   { label: 'Detect broken links & missing nodes', done: true },
   { label: 'Type mismatch & cycle detection', done: true },
   { label: 'Visual node graph with error highlights', done: true },
+  { label: 'Auto-fix common errors', done: true },
   { label: 'Improvement suggestions per node', done: false },
   { label: 'Node performance profiling', done: false },
-  { label: 'Auto-fix common errors', done: true },
 ]
 
 const isDragging = ref(false)
@@ -110,17 +110,25 @@ onUnmounted(() => document.removeEventListener('paste', onPaste))
 <template>
   <div class="flex flex-col h-full bg-transparent">
     <!-- Feature list -->
-    <div class="flex-shrink-0 px-6 py-6 border-b border-ink-800 flex flex-col gap-3.5">
-      <div v-for="item in features" :key="item.label" class="flex items-start gap-3">
-        <div class="mt-0.5 shrink-0">
-          <svg v-if="item.done" class="w-4 h-4 text-brand-yellow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+    <div class="flex-shrink-0 px-6 py-6 border-b border-ink-800 flex flex-col gap-1.5">
+      <div
+        v-for="item in features"
+        :key="item.label"
+        class="flex items-start gap-3 px-3 py-2 -mx-3 rounded-xl border border-transparent hover:border-brand-yellow/15 hover:bg-brand-yellow/[0.04] transition-all duration-200 group select-none cursor-default"
+      >
+        <div class="mt-0.5 shrink-0 transition-transform duration-200 group-hover:scale-110 group-hover:translate-x-0.5">
+          <svg
+            v-if="item.done"
+            class="w-4 h-4 text-brand-yellow transition-all duration-200 filter drop-shadow-[0_0_1px_rgba(240,255,65,0.2)] group-hover:drop-shadow-[0_0_6px_rgba(240,255,65,0.8)]"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"
+          >
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
           </svg>
-          <span v-else class="text-zinc-650 text-xs font-bold font-mono">○</span>
+          <span v-else class="text-zinc-650 text-xs font-bold font-mono transition-colors group-hover:text-brand-yellow/60">○</span>
         </div>
-        <div class="min-w-0">
-          <span class="text-sm text-zinc-350 leading-tight block">{{ item.label }}</span>
-          <span v-if="!item.done" class="text-[10px] text-zinc-500 font-semibold tracking-wide font-mono uppercase">Coming Soon</span>
+        <div class="min-w-0 transition-transform duration-200 group-hover:translate-x-0.5">
+          <span class="text-sm text-zinc-350 leading-tight block transition-colors group-hover:text-zinc-100 font-medium">{{ item.label }}</span>
+          <span v-if="!item.done" class="text-[10px] text-zinc-500 font-semibold tracking-wide font-mono uppercase mt-0.5 block transition-colors group-hover:text-brand-yellow/70">Coming Soon</span>
         </div>
       </div>
     </div>
@@ -129,11 +137,12 @@ onUnmounted(() => document.removeEventListener('paste', onPaste))
     <div class="flex-shrink-0 px-6 py-5 border-b border-ink-800 bg-ink-900/20">
       <!-- Header row with toggle -->
       <div class="flex items-center justify-between mb-3.5">
-        <p class="text-xs font-bold text-zinc-500 uppercase tracking-widest font-display">ComfyUI Server</p>
+        <h2 class="panel-header">ComfyUI Server</h2>
         <button
           class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-200 focus:outline-none cursor-pointer"
           :class="serverEnabled ? 'bg-brand-yellow' : 'bg-ink-800'"
           @click="toggleServer"
+          disabled
         >
           <span
             class="inline-block h-3.5 w-3.5 rounded-full bg-white shadow-sm transition-transform duration-200"

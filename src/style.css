@@ -21,6 +21,13 @@
   --color-plum-400: #8d7fc5;
   --color-plum-500: #6b5ca8;
   --color-plum-600: #49378b;
+
+  --text-xs: 0.9375rem;   /* Unified standard text size: 15px */
+  --text-sm: 0.9375rem;   /* Unified standard text size: 15px */
+  --text-base: 1.0625rem; /* 17px */
+  --text-lg: 1.25rem;     /* 20px */
+  --text-xl: 1.5rem;      /* 24px */
+  --text-2xl: 1.75rem;    /* 28px */
 }
 
 @layer base {
@@ -80,6 +87,16 @@
 
 .animate-comfy-pulse {
   animation: comfy-pulse 2s ease-in-out infinite;
+}
+
+/* Unified structural header styling */
+.panel-header {
+  font-family: var(--font-display);
+  font-size: var(--text-base) !important; /* 17px, larger than standard 15px text */
+  font-weight: 700 !important;
+  color: #f3f3f3 !important;
+  letter-spacing: -0.015em !important;
+  text-transform: none !important;
 }
 
 

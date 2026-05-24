@@ -76,7 +76,7 @@ function download(): void {
   <div class="flex flex-col h-full bg-transparent">
     <!-- Header -->
     <div class="flex-shrink-0 px-6 py-5 border-b border-ink-800 bg-ink-900/20">
-      <p class="text-sm font-bold text-zinc-100 tracking-tight font-display">Auto Fix</p>
+      <h2 class="panel-header">Auto Fix</h2>
       <p class="text-xs text-zinc-500 mt-1">Clean up broken link references automatically</p>
     </div>
 
