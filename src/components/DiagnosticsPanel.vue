@@ -67,7 +67,7 @@ function severityIconBg(s: Severity): string {
     ? 'bg-rose-500 text-white shadow-sm shadow-rose-950/40'
     : s === 'warning'
       ? 'bg-amber-500 text-black shadow-sm shadow-amber-950/40'
-      : 'bg-indigo-500 text-white shadow-sm shadow-indigo-950/40'
+      : 'bg-sky-500 text-white shadow-sm shadow-sky-950/40'
 }
 
 function severityBorder(s: Severity): string {
@@ -75,7 +75,7 @@ function severityBorder(s: Severity): string {
     ? 'border-rose-900/30 bg-rose-950/5 hover:border-rose-800/40'
     : s === 'warning'
       ? 'border-amber-900/30 bg-amber-950/5 hover:border-amber-800/40'
-      : 'border-indigo-900/30 bg-indigo-950/5 hover:border-indigo-800/40'
+      : 'border-sky-900/30 bg-sky-950/5 hover:border-sky-800/40'
 }
 
 function severityExpandBg(s: Severity): string {
@@ -83,7 +83,7 @@ function severityExpandBg(s: Severity): string {
     ? 'border-rose-950 bg-rose-950/10'
     : s === 'warning'
       ? 'border-amber-950 bg-amber-950/10'
-      : 'border-indigo-950 bg-indigo-950/10'
+      : 'border-sky-950 bg-sky-950/10'
 }
 
 function severityTag(s: Severity): string {
@@ -91,7 +91,7 @@ function severityTag(s: Severity): string {
     ? 'bg-rose-500/10 text-rose-400 border border-rose-500/15 text-[10px] font-bold tracking-wider'
     : s === 'warning'
       ? 'bg-amber-500/10 text-amber-450 border border-amber-500/15 text-[10px] font-bold tracking-wider'
-      : 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/15 text-[10px] font-bold tracking-wider'
+      : 'bg-sky-500/10 text-sky-400 border border-sky-500/15 text-[10px] font-bold tracking-wider'
 }
 
 const verdictText = computed(() => {
