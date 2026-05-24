@@ -251,11 +251,6 @@ function render(): void {
   }
 
   if (!nodes.length) {
-    ctx.fillStyle = 'rgba(100,116,139,0.35)'
-    ctx.font = '14px Inter, system-ui, sans-serif'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    ctx.fillText('Upload a workflow to visualize it', lw / 2, lh / 2)
     ctx.restore()
     return
   }
@@ -725,6 +720,14 @@ watch(() => props.selectedNodeId, (newId) => {
       class="block w-full h-full"
       :style="{ cursor: cursorStyle }"
     />
+
+    <!-- Empty state overlay -->
+    <div
+      v-if="!workflow"
+      class="absolute inset-0 flex items-center justify-center bg-ink-900/20 pointer-events-none select-none z-10"
+    >
+      <p class="text-zinc-650 text-sm font-semibold tracking-wide font-display">Upload a workflow to visualize it</p>
+    </div>
 
     <!-- Render error banner -->
     <div
