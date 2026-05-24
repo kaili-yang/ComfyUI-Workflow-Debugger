@@ -22,12 +22,12 @@
   --color-plum-500: #6b5ca8;
   --color-plum-600: #49378b;
 
-  --text-xs: 0.9375rem;   /* Unified standard text size: 15px */
-  --text-sm: 0.9375rem;   /* Unified standard text size: 15px */
-  --text-base: 1.0625rem; /* 17px */
-  --text-lg: 1.25rem;     /* 20px */
-  --text-xl: 1.5rem;      /* 24px */
-  --text-2xl: 1.75rem;    /* 28px */
+  --text-xs: 0.875rem;   /* Unified standard text size: 14px (reduced for better layout density) */
+  --text-sm: 0.875rem;   /* Unified standard text size: 14px (reduced for better layout density) */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.1875rem;  /* 19px */
+  --text-xl: 1.4375rem;  /* 23px */
+  --text-2xl: 1.6875rem; /* 27px */
 }
 
 @layer base {
@@ -97,6 +97,34 @@
   color: #f3f3f3 !important;
   letter-spacing: -0.015em !important;
   text-transform: none !important;
+}
+
+/* Unified step title subtitles */
+.step-title {
+  font-family: var(--font-display);
+  font-size: 1rem !important; /* 16px, larger than standard 14px text */
+  font-weight: 800 !important;
+  color: var(--color-brand-yellow) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  line-height: 1.2 !important;
+  opacity: 1 !important;
+  user-select: none;
+}
+
+/* Translucent glassmorphism capsule badge for absolute positioning */
+.step-title-absolute {
+  position: absolute;
+  top: 0.875rem;
+  left: 0.875rem;
+  z-index: 30;
+  background-color: rgba(21, 19, 23, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.45rem 0.8rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 

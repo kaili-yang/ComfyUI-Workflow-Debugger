@@ -204,6 +204,7 @@ onUnmounted(() => document.removeEventListener('paste', onPaste))
 
     <!-- Body -->
     <div class="flex-1 flex flex-col gap-4 p-6 min-h-[280px]">
+      <div class="step-title">Step 1: Upload a workflow</div>
 
       <!-- File loaded state -->
       <template v-if="props.fileName">

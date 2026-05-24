@@ -117,7 +117,12 @@ const verdictIcon = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col h-full bg-ink-900 text-zinc-100">
+  <div class="flex flex-col h-full bg-ink-900 text-zinc-100 relative">
+
+    <!-- Floating Step 3 Title -->
+    <div class="step-title step-title-absolute">
+      Step 3: Debug Info Panel
+    </div>
 
     <!-- Empty state -->
     <div v-if="!result" class="h-full flex items-center justify-center bg-ink-900/20">
@@ -126,7 +131,7 @@ const verdictIcon = computed(() => {
 
     <template v-else>
       <!-- Summary bar -->
-      <div class="flex-shrink-0 flex items-center gap-5 px-6 py-4 border-b border-ink-800 bg-ink-900/40">
+      <div class="flex-shrink-0 flex items-center gap-5 pl-[236px] pr-6 py-4 border-b border-ink-800 bg-ink-900/40">
         <!-- Verdict -->
         <div class="flex items-center gap-2.5">
           <span class="text-lg font-extrabold leading-none" :class="verdictStyle">{{ verdictIcon }}</span>

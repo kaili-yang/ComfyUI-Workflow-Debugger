@@ -721,6 +721,11 @@ watch(() => props.selectedNodeId, (newId) => {
       :style="{ cursor: cursorStyle }"
     />
 
+    <!-- Floating Step 2 Title -->
+    <div class="step-title step-title-absolute">
+      Step 2: Workflow Preview
+    </div>
+
     <!-- Empty state overlay -->
     <div
       v-if="!workflow"

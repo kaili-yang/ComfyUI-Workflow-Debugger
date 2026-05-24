@@ -82,6 +82,7 @@ function download(): void {
 
     <!-- Body -->
     <div class="flex-1 min-h-0 overflow-y-auto px-6 py-6 flex flex-col gap-6">
+      <div class="step-title">Step 4: Fix</div>
 
       <!-- Big circular Fix button, always centered -->
       <div class="flex flex-col items-center justify-center gap-4.5 py-6">
@@ -130,7 +131,8 @@ function download(): void {
     </div>
 
     <!-- Footer: export -->
-    <div class="flex-shrink-0 border-t border-ink-800 px-6 py-5 bg-ink-900/20">
+    <div class="flex-shrink-0 border-t border-ink-800 px-6 py-5 bg-ink-900/20 flex flex-col gap-3">
+      <div class="step-title">Step 5: Download</div>
       <button
         class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border text-sm font-semibold tracking-wide transition-all duration-200 cursor-pointer shadow-sm"
         :class="rawContent
