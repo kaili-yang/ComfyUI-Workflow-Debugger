@@ -2,6 +2,14 @@
 
 **https://comfy-workflow-debugger.netlify.app/**
 
+## 维护记录 (Maintenance Records)
+
+| 维护日期 | 维护人 | 维护内容 | 备注/状态 |
+| :--- | :--- | :--- | :--- |
+| 2026-05-25 | Antigravity | 同步 ComfyUI 后端与 ComfyUI_frontend 节点定义及类型 | 已同步且测试通过 |
+
+
+
 A free, browser-based tool that checks your ComfyUI workflow for problems and fixes them automatically — no ComfyUI installation required.
 
 ## Screenshots
