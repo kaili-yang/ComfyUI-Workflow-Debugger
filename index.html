@@ -4,13 +4,142 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ComfyUI Workflow Debugger</title>
+    <title>ComfyUI Workflow Debugger | Analyze and Fix ComfyUI Workflows Online</title>
+    
+    <!-- Meta SEO & GEO -->
+    <meta name="description" content="Offline static analysis tool & JSON fixer for ComfyUI workflows. Detect and auto-fix broken links, type mismatches, cycles, and missing nodes instantly without running models." />
+    <meta name="keywords" content="comfyui workflow debugger, comfyui json fixer, fix comfyui errors, comfyui missing nodes, comfyui connection error, comfyui workflow analysis" />
+    <meta name="author" content="Kaili Yang" />
+    <link rel="canonical" href="https://comfy-workflow-debugger.netlify.app/" />
+    
+    <!-- OpenGraph -->
+    <meta property="og:title" content="ComfyUI Workflow Debugger | Analyze and Fix ComfyUI Workflows Online" />
+    <meta property="og:description" content="An offline-first, browser-based static analysis tool to inspect and repair ComfyUI workflows. Fix broken links, type mismatches, and cycles with one click." />
+    <meta property="og:url" content="https://comfy-workflow-debugger.netlify.app/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://comfy-workflow-debugger.netlify.app/screenshots/warnings.png" />
+    
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ComfyUI Workflow Debugger | Analyze and Fix ComfyUI Workflows Online" />
+    <meta name="twitter:description" content="An offline-first, browser-based static analysis tool to inspect and repair ComfyUI workflows. Fix broken links, type mismatches, and cycles with one click." />
+    <meta name="twitter:image" content="https://comfy-workflow-debugger.netlify.app/screenshots/warnings.png" />
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- JSON-LD Structured Data Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://comfy-workflow-debugger.netlify.app/#website",
+          "url": "https://comfy-workflow-debugger.netlify.app/",
+          "name": "ComfyUI Workflow Debugger",
+          "description": "Offline static analysis tool & JSON fixer for ComfyUI workflows"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://comfy-workflow-debugger.netlify.app/#author",
+          "name": "Kaili Yang",
+          "url": "https://github.com/kaili-yang",
+          "jobTitle": "ComfyUI Team Member & Official Collaborator",
+          "description": "Active open source community contributor and heavy daily user of ComfyUI.",
+          "knowsAbout": ["ComfyUI", "Generative AI", "Machine Learning Workflows", "Web Development"]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://comfy-workflow-debugger.netlify.app/#application",
+          "name": "ComfyUI Workflow Debugger",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD"
+          },
+          "url": "https://comfy-workflow-debugger.netlify.app/",
+          "screenshot": "https://comfy-workflow-debugger.netlify.app/screenshots/warnings.png",
+          "author": {
+            "@id": "https://comfy-workflow-debugger.netlify.app/#author"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://comfy-workflow-debugger.netlify.app/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How to fix ComfyUI broken connections or 'Link not found' errors?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Upload your workflow JSON file into the ComfyUI Workflow Debugger. The tool instantly scans for missing nodes, broken wires, and type mismatches, and allows you to repair them automatically with a single click."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does this tool support ComfyUI API JSON format?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, ComfyUI Workflow Debugger fully supports both standard saved graphs and API format JSON workflows."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is my workflow JSON data sent to any server?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No, this is an offline-first browser tool. All parsing, diagnostics, and repairs are executed entirely inside your browser's local sandbox for 100% privacy."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
   </head>
   <body class="bg-gray-950 text-gray-100 antialiased selection:bg-orange-500/30 selection:text-orange-200">
-    <div id="app"></div>
+    <div id="app">
+      <!-- Static Pre-render SEO & GEO Content (Automatically replaced by Vue upon mount) -->
+      <header style="padding: 20px; text-align: center;">
+        <h1>ComfyUI Workflow Debugger</h1>
+        <p><strong>Optimize, analyze, and repair ComfyUI workflows instantly online.</strong></p>
+        <nav>
+          <a href="https://github.com/kaili-yang/ComfyUI-Workflow-Debugger" target="_blank">GitHub Repository</a>
+        </nav>
+      </header>
+      <main style="max-width: 800px; margin: 0 auto; padding: 20px;">
+        <section>
+          <h2>Offline Static Analysis & Auto-Fix Tool</h2>
+          <p>ComfyUI Workflow Debugger is a free, browser-based, offline-first developer tool that helps you diagnose and repair corrupted or broken ComfyUI workflow JSON files. No server setup or ComfyUI installation required.</p>
+        </section>
+        <section>
+          <h2>Core Features</h2>
+          <ul>
+            <li><strong>Detect Broken Connections</strong>: Identify wires that point to missing links or deleted nodes.</li>
+            <li><strong>Type Mismatches Diagnostic</strong>: Catch incompatible connections between slots.</li>
+            <li><strong>Invalid Parameter Values</strong>: Find null or out-of-range inputs before runtime.</li>
+            <li><strong>Missing Custom Nodes</strong>: List custom nodes in your JSON file not present in your server.</li>
+            <li><strong>One-Click Auto-Fix</strong>: Remove dangling connections, convert types, wire required inputs, and recover workflows instantly.</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Frequently Asked Questions</h2>
+          <h3>Q: How to fix ComfyUI broken connections?</h3>
+          <p>A: Drag and drop your workflow JSON into this tool. Review the diagnostics and click 'Fix All' to automatically repair invalid connections, restore file paths, and re-enable nodes.</p>
+          <h3>Q: Is my data safe?</h3>
+          <p>A: Yes. All static analysis is executed locally in your browser. No files are uploaded to any server.</p>
+        </section>
+        <footer style="margin-top: 40px; border-top: 1px solid #333; padding-top: 20px; text-align: center; font-size: 0.9em; color: #888;">
+          <p>Developed by <strong>Kaili Yang</strong> — ComfyUI Team Member, Official Collaborator & Open Source Community Contributor.</p>
+        </footer>
+      </main>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
