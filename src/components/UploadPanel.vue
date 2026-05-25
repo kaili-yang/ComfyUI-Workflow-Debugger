@@ -189,7 +189,7 @@ onUnmounted(() => document.removeEventListener('paste', onPaste))
           <span class="w-1.5 h-1.5 rounded-full bg-plum-500/80 flex-shrink-0" />
           <span class="text-xs text-plum-300/90 font-medium">Cached · {{ props.schemaNodeCount }} nodes · {{ formatCachedAt(props.cachedAt) }}</span>
         </template>
-        <span v-else class="text-xs text-zinc-500">Off — static analysis only</span>
+        <span v-else class="text-xs text-zinc-500">Off — static analysis only for now, dynamic analysis is coming.</span>
       </div>
     </div>
 

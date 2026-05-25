@@ -6,7 +6,7 @@
 
 | 维护日期 | 维护人 | 维护内容 | 备注/状态 |
 | :--- | :--- | :--- | :--- |
-| 2026-05-25 | Antigravity | 同步 ComfyUI 后端与 ComfyUI_frontend 节点定义及类型 | 已同步且测试通过 |
+| 2026-05-25 | Antigravity | 同步 ComfyUI 后端与 ComfyUI_frontend 节点定义及类型，更新 UploadPanel 静态分析提示文本 | 已同步且测试通过 |
 
 
 
