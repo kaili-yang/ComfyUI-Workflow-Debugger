@@ -942,8 +942,18 @@
       "IMAGE"
     ]
   },
+  "ComfyAndNode": {
+    "category": "utils/logic",
+    "inputs": {
+      "required": {},
+      "optional": {}
+    },
+    "outputs": [
+      "BOOLEAN"
+    ]
+  },
   "ComfyMathExpression": {
-    "category": "logic",
+    "category": "utils",
     "inputs": {
       "required": {
         "expression": "STRING"
@@ -953,6 +963,16 @@
     "outputs": [
       "FLOAT",
       "INT",
+      "BOOLEAN"
+    ]
+  },
+  "ComfyNotNode": {
+    "category": "utils/logic",
+    "inputs": {
+      "required": {},
+      "optional": {}
+    },
+    "outputs": [
       "BOOLEAN"
     ]
   },
@@ -969,8 +989,18 @@
       "INT"
     ]
   },
+  "ComfyOrNode": {
+    "category": "utils/logic",
+    "inputs": {
+      "required": {},
+      "optional": {}
+    },
+    "outputs": [
+      "BOOLEAN"
+    ]
+  },
   "ComfySwitchNode": {
-    "category": "logic",
+    "category": "utils/logic",
     "inputs": {
       "required": {
         "switch": "BOOLEAN"
@@ -1293,7 +1323,7 @@
     ]
   },
   "CreateList": {
-    "category": "logic",
+    "category": "utils",
     "inputs": {
       "required": {},
       "optional": {}
@@ -3929,7 +3959,7 @@
     ]
   },
   "LTXVAudioVAEDecode": {
-    "category": "audio",
+    "category": "latent/audio",
     "inputs": {
       "required": {
         "samples": "LATENT"
@@ -3941,7 +3971,7 @@
     ]
   },
   "LTXVAudioVAEEncode": {
-    "category": "audio",
+    "category": "latent/audio",
     "inputs": {
       "required": {
         "audio": "AUDIO"
@@ -3953,7 +3983,7 @@
     ]
   },
   "LTXVAudioVAELoader": {
-    "category": "audio",
+    "category": "loaders",
     "inputs": {
       "required": {
         "ckpt_name": "COMBO"
@@ -4537,7 +4567,7 @@
     ]
   },
   "LoadImageDataSetFromFolder": {
-    "category": "dataset",
+    "category": "image",
     "inputs": {
       "required": {
         "folder": "COMBO"
@@ -4571,7 +4601,7 @@
     "outputs": []
   },
   "LoadImageTextDataSetFromFolder": {
-    "category": "dataset",
+    "category": "image",
     "inputs": {
       "required": {
         "folder": "COMBO"
@@ -4593,6 +4623,16 @@
       "LATENT"
     ]
   },
+  "LoadMediaPipeFaceLandmarker": {
+    "category": "loaders",
+    "inputs": {
+      "required": {
+        "model_name": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
   "LoadMoGeModel": {
     "category": "loaders",
     "inputs": {
@@ -4604,7 +4644,7 @@
     "outputs": []
   },
   "LoadTrainingDataset": {
-    "category": "dataset",
+    "category": "training",
     "inputs": {
       "required": {
         "folder_name": "STRING"
@@ -5006,7 +5046,7 @@
     ]
   },
   "MakeTrainingDataset": {
-    "category": "dataset",
+    "category": "training",
     "inputs": {
       "required": {
         "images": "IMAGE",
@@ -5067,6 +5107,45 @@
         "mask": "MASK"
       },
       "optional": {}
+    },
+    "outputs": [
+      "IMAGE"
+    ]
+  },
+  "MediaPipeFaceLandmarker": {
+    "category": "image/detection",
+    "inputs": {
+      "required": {
+        "image": "IMAGE",
+        "detector_variant": "COMBO",
+        "num_faces": "INT",
+        "min_confidence": "FLOAT",
+        "missing_frame_fallback": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
+  "MediaPipeFaceMask": {
+    "category": "image/detection",
+    "inputs": {
+      "required": {},
+      "optional": {}
+    },
+    "outputs": [
+      "MASK"
+    ]
+  },
+  "MediaPipeFaceMeshVisualize": {
+    "category": "image/detection",
+    "inputs": {
+      "required": {
+        "thickness": "INT",
+        "point_size": "INT"
+      },
+      "optional": {
+        "image": "IMAGE"
+      }
     },
     "outputs": [
       "IMAGE"
@@ -5793,6 +5872,21 @@
     },
     "outputs": [
       "VIDEO"
+    ]
+  },
+  "OpenRouterLLMNode": {
+    "category": "api node/text/OpenRouter",
+    "inputs": {
+      "required": {
+        "prompt": "STRING",
+        "seed": "INT"
+      },
+      "optional": {
+        "system_prompt": "STRING"
+      }
+    },
+    "outputs": [
+      "STRING"
     ]
   },
   "OpticalFlowLoader": {
@@ -6680,7 +6774,7 @@
     "outputs": []
   },
   "ResolutionBucket": {
-    "category": "dataset",
+    "category": "training",
     "inputs": {
       "required": {
         "latents": "LATENT",
@@ -6775,6 +6869,24 @@
     "outputs": [
       "STRING"
     ]
+  },
+  "Rodin3D_Gen25_Image": {
+    "category": "api node/3d/Rodin",
+    "inputs": {
+      "required": {},
+      "optional": {}
+    },
+    "outputs": []
+  },
+  "Rodin3D_Gen25_Text": {
+    "category": "api node/3d/Rodin",
+    "inputs": {
+      "required": {
+        "prompt": "STRING"
+      },
+      "optional": {}
+    },
+    "outputs": []
   },
   "Rodin3D_Regular": {
     "category": "api node/3d/Rodin",
@@ -7418,8 +7530,19 @@
     },
     "outputs": []
   },
+  "SaveImageAdvanced": {
+    "category": "image",
+    "inputs": {
+      "required": {
+        "images": "IMAGE",
+        "filename_prefix": "STRING"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
   "SaveImageDataSetToFolder": {
-    "category": "dataset",
+    "category": "image",
     "inputs": {
       "required": {
         "images": "IMAGE",
@@ -7431,15 +7554,16 @@
     "outputs": []
   },
   "SaveImageTextDataSetToFolder": {
-    "category": "dataset",
+    "category": "image",
     "inputs": {
       "required": {
         "images": "IMAGE",
-        "texts": "STRING",
         "folder_name": "STRING",
         "filename_prefix": "STRING"
       },
-      "optional": {}
+      "optional": {
+        "texts": "STRING"
+      }
     },
     "outputs": []
   },
@@ -7477,7 +7601,7 @@
     "outputs": []
   },
   "SaveTrainingDataset": {
-    "category": "dataset",
+    "category": "training",
     "inputs": {
       "required": {
         "latents": "LATENT",
@@ -7588,7 +7712,7 @@
     ]
   },
   "ShuffleImageTextDataset": {
-    "category": "dataset/image",
+    "category": "image/batch",
     "inputs": {
       "required": {
         "images": "IMAGE",
@@ -8050,6 +8174,18 @@
     },
     "outputs": [
       "BOOLEAN"
+    ]
+  },
+  "StringFormat": {
+    "category": "text",
+    "inputs": {
+      "required": {
+        "f_string": "STRING"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "STRING"
     ]
   },
   "StringLength": {

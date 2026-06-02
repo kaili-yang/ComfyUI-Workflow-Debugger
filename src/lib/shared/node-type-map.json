@@ -8823,6 +8823,15 @@
         "requiredInputs": []
       },
       {
+        "class": "MediaPipeFaceMeshVisualize",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "thickness": null,
+          "point_size": null
+        },
+        "requiredInputs": []
+      },
+      {
         "class": "MoGeRender",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -12571,6 +12580,12 @@
         "widgetDefaults": {
           "channel": null
         },
+        "requiredInputs": []
+      },
+      {
+        "class": "MediaPipeFaceMask",
+        "outputSlot": 0,
+        "widgetDefaults": {},
         "requiredInputs": []
       },
       {
