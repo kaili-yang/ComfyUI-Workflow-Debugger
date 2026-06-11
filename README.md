@@ -8,8 +8,10 @@
 
 | Date | Maintainer | Description | Status/Notes |
 | :--- | :--- | :--- | :--- |
-| 2026-05-25 | Antigravity | Synchronized ComfyUI backend and ComfyUI_frontend node definitions and types, updated UploadPanel static analysis tooltip texts | Synchronized and verified |
+| 2026-06-10 | Antigravity | Synchronized ComfyUI backend node definitions and ComfyUI_frontend derived types (690 nodes, sourceMap 25 types, conversionMap 21 types) | Synchronized and verified |
 | 2026-06-03 | Antigravity | Synchronized ComfyUI backend node definitions and ComfyUI_frontend derived types (690 nodes, sourceMap 25 types, conversionMap 21 types) | Synchronized and verified |
+| 2026-05-25 | Antigravity | Synchronized ComfyUI backend and ComfyUI_frontend node definitions and types, updated UploadPanel static analysis tooltip texts | Synchronized and verified |
+
 
 **ComfyUI Workflow Debugger** is a free, offline-first browser tool built to solve your **broken ComfyUI workflows, graph load failures, and node connection errors**. If your ComfyUI workflow fails to execute, displays a red node, shows link type mismatches, or throws load errors, this tool instantly diagnoses and repairs your JSON files without needing a local ComfyUI installation.
 

@@ -8,8 +8,10 @@
 
 | 维护日期 | 维护人 | 维护内容 | 备注/状态 |
 | :--- | :--- | :--- | :--- |
-| 2026-05-25 | Antigravity | 同步 ComfyUI 后端与 ComfyUI_frontend 节点定义及类型，更新 UploadPanel 静态分析提示文本 | 已同步且测试通过 |
+| 2026-06-10 | Antigravity | 同步 ComfyUI 后端节点定义与 ComfyUI_frontend 派生类型（共 690 个节点，sourceMap 25 种类型，conversionMap 21 种类型） | 已同步且测试通过 |
 | 2026-06-03 | Antigravity | 同步 ComfyUI 后端节点定义与 ComfyUI_frontend 派生类型（共 690 个节点，sourceMap 25 种类型，conversionMap 21 种类型） | 已同步且测试通过 |
+| 2026-05-25 | Antigravity | 同步 ComfyUI 后端与 ComfyUI_frontend 节点定义及类型，更新 UploadPanel 静态分析提示文本 | 已同步且测试通过 |
+
 
 **ComfyUI Workflow Debugger** 是一款免费了的、离线优先的浏览器端工具，专门用于解决您的 **ComfyUI 工作流损坏、图表加载失败和节点连接报错**。如果您的 ComfyUI 工作流无法执行、显示红色未安装节点、出现连线类型不匹配，或者抛出加载错误，本工具可以在不需要本地安装 ComfyUI 的情况下，立即为您诊断并修复 JSON 文件。
 
