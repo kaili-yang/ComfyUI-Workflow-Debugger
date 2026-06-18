@@ -113,13 +113,13 @@
         {
           "class": "RemoveBackground",
           "inputSlot": "bg_removal_model",
-          "inputSlotIndex": 1,
+          "inputSlotIndex": 0,
           "outputSlot": 0,
           "extraInputs": [
             {
               "name": "image",
               "type": "IMAGE",
-              "slotIndex": 0
+              "slotIndex": 1
             }
           ]
         }
@@ -272,6 +272,32 @@
           "inputSlotIndex": 0,
           "outputSlot": 0,
           "extraInputs": []
+        },
+        {
+          "class": "TextEncodeBooguEdit",
+          "inputSlot": "clip",
+          "inputSlotIndex": 0,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "TextEncodeBooguEdit",
+          "inputSlot": "clip",
+          "inputSlotIndex": 0,
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            }
+          ]
         },
         {
           "class": "TextEncodeHunyuanVideo_ImageToVideo",
@@ -517,6 +543,42 @@
               "slotIndex": 2
             }
           ]
+        },
+        {
+          "class": "TripoSplatConditioning",
+          "inputSlot": "clip_vision",
+          "inputSlotIndex": 0,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            },
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "TripoSplatConditioning",
+          "inputSlot": "clip_vision",
+          "inputSlotIndex": 0,
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            },
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 2
+            }
+          ]
         }
       ],
       "LATENT": [
@@ -588,6 +650,24 @@
             {
               "name": "vae",
               "type": "VAE",
+              "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "TripoSplatConditioning",
+          "inputSlot": "clip_vision",
+          "inputSlotIndex": 0,
+          "outputSlot": 2,
+          "extraInputs": [
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            },
+            {
+              "name": "image",
+              "type": "IMAGE",
               "slotIndex": 2
             }
           ]
@@ -726,9 +806,58 @@
               "slotIndex": 1
             }
           ]
+        },
+        {
+          "class": "DualModelGuider",
+          "inputSlot": "positive",
+          "inputSlotIndex": 1,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "model",
+              "type": "MODEL",
+              "slotIndex": 0
+            }
+          ]
         }
       ],
       "LATENT": [
+        {
+          "class": "BerniniConditioning",
+          "inputSlot": "positive",
+          "inputSlotIndex": 0,
+          "outputSlot": 2,
+          "extraInputs": [
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "BerniniConditioning",
+          "inputSlot": "negative",
+          "inputSlotIndex": 1,
+          "outputSlot": 2,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 2
+            }
+          ]
+        },
         {
           "class": "HunyuanImageToVideo",
           "inputSlot": "positive",
@@ -1809,6 +1938,42 @@
               "slotIndex": 2
             }
           ]
+        },
+        {
+          "class": "TripoSplatConditioning",
+          "inputSlot": "image",
+          "inputSlotIndex": 2,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "clip_vision",
+              "type": "CLIP_VISION",
+              "slotIndex": 0
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "TripoSplatConditioning",
+          "inputSlot": "image",
+          "inputSlotIndex": 2,
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "clip_vision",
+              "type": "CLIP_VISION",
+              "slotIndex": 0
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            }
+          ]
         }
       ],
       "LATENT": [
@@ -2009,6 +2174,24 @@
           ]
         },
         {
+          "class": "TripoSplatConditioning",
+          "inputSlot": "image",
+          "inputSlotIndex": 2,
+          "outputSlot": 2,
+          "extraInputs": [
+            {
+              "name": "clip_vision",
+              "type": "CLIP_VISION",
+              "slotIndex": 0
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
           "class": "VAEEncode",
           "inputSlot": "pixels",
           "inputSlotIndex": 0,
@@ -2092,13 +2275,13 @@
         {
           "class": "RemoveBackground",
           "inputSlot": "image",
-          "inputSlotIndex": 0,
+          "inputSlotIndex": 1,
           "outputSlot": 0,
           "extraInputs": [
             {
               "name": "bg_removal_model",
               "type": "BACKGROUND_REMOVAL",
-              "slotIndex": 1
+              "slotIndex": 0
             }
           ]
         },
@@ -2758,6 +2941,19 @@
           ]
         },
         {
+          "class": "PiDConditioning",
+          "inputSlot": "latent",
+          "inputSlotIndex": 1,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
           "class": "ResolutionBucket",
           "inputSlot": "latents",
           "inputSlotIndex": 0,
@@ -2890,6 +3086,19 @@
       ],
       "IMAGE": [
         {
+          "class": "FluxEraseNode",
+          "inputSlot": "mask",
+          "inputSlotIndex": 1,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
           "class": "FluxProFillNode",
           "inputSlot": "mask",
           "inputSlotIndex": 1,
@@ -2924,6 +3133,19 @@
         },
         {
           "class": "RecraftImageInpaintingNode",
+          "inputSlot": "mask",
+          "inputSlotIndex": 1,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "TripoSplatPreprocessImage",
           "inputSlot": "mask",
           "inputSlotIndex": 1,
           "outputSlot": 0,
@@ -3037,6 +3259,19 @@
               "name": "negative",
               "type": "CONDITIONING",
               "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "DualModelGuider",
+          "inputSlot": "model",
+          "inputSlotIndex": 0,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 1
             }
           ]
         }
@@ -3218,6 +3453,42 @@
         }
       ],
       "CONDITIONING": [
+        {
+          "class": "BerniniConditioning",
+          "inputSlot": "vae",
+          "inputSlotIndex": 2,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "BerniniConditioning",
+          "inputSlot": "vae",
+          "inputSlotIndex": 2,
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
+            }
+          ]
+        },
         {
           "class": "HunyuanImageToVideo",
           "inputSlot": "vae",
@@ -3462,6 +3733,68 @@
               "name": "init_image",
               "type": "IMAGE",
               "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "TextEncodeBooguEdit",
+          "inputSlot": "vae",
+          "inputSlotIndex": 1,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "clip",
+              "type": "CLIP",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "TextEncodeBooguEdit",
+          "inputSlot": "vae",
+          "inputSlotIndex": 1,
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "clip",
+              "type": "CLIP",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "TripoSplatConditioning",
+          "inputSlot": "vae",
+          "inputSlotIndex": 1,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "clip_vision",
+              "type": "CLIP_VISION",
+              "slotIndex": 0
+            },
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "TripoSplatConditioning",
+          "inputSlot": "vae",
+          "inputSlotIndex": 1,
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "clip_vision",
+              "type": "CLIP_VISION",
+              "slotIndex": 0
+            },
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 2
             }
           ]
         },
@@ -4009,6 +4342,24 @@
               "name": "start_image",
               "type": "IMAGE",
               "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "BerniniConditioning",
+          "inputSlot": "vae",
+          "inputSlotIndex": 2,
+          "outputSlot": 2,
+          "extraInputs": [
+            {
+              "name": "positive",
+              "type": "CONDITIONING",
+              "slotIndex": 0
+            },
+            {
+              "name": "negative",
+              "type": "CONDITIONING",
+              "slotIndex": 1
             }
           ]
         },
@@ -4268,6 +4619,24 @@
               "name": "init_image",
               "type": "IMAGE",
               "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "TripoSplatConditioning",
+          "inputSlot": "vae",
+          "inputSlotIndex": 1,
+          "outputSlot": 2,
+          "extraInputs": [
+            {
+              "name": "clip_vision",
+              "type": "CLIP_VISION",
+              "slotIndex": 0
+            },
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 2
             }
           ]
         },
@@ -4588,6 +4957,19 @@
               "slotIndex": 2
             }
           ]
+        },
+        {
+          "class": "TripoSplatSamplingPreview",
+          "inputSlot": "vae",
+          "inputSlotIndex": 1,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "model",
+              "type": "MODEL",
+              "slotIndex": 0
+            }
+          ]
         }
       ],
       "VOXEL": [
@@ -4625,10 +5007,26 @@
       ],
       "IMAGE": [
         {
+          "class": "BriaTransparentVideoBackground",
+          "inputSlot": "video",
+          "inputSlotIndex": 0,
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
           "class": "GetVideoComponents",
           "inputSlot": "video",
           "inputSlotIndex": 0,
           "outputSlot": 0,
+          "extraInputs": []
+        }
+      ],
+      "MASK": [
+        {
+          "class": "BriaTransparentVideoBackground",
+          "inputSlot": "video",
+          "inputSlotIndex": 0,
+          "outputSlot": 1,
           "extraInputs": []
         }
       ]
@@ -5163,6 +5561,20 @@
         "outputSlot": 0,
         "widgetDefaults": {
           "stop_at_clip_layer": null
+        },
+        "requiredInputs": [
+          {
+            "name": "clip",
+            "type": "CLIP",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "SelectCLIPDevice",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "device": null
         },
         "requiredInputs": [
           {
@@ -6018,6 +6430,26 @@
         ]
       },
       {
+        "class": "PiDConditioning",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "latent_format": null,
+          "degrade_sigma": null
+        },
+        "requiredInputs": [
+          {
+            "name": "positive",
+            "type": "CONDITIONING",
+            "slotIndex": 0
+          },
+          {
+            "name": "latent",
+            "type": "LATENT",
+            "slotIndex": 1
+          }
+        ]
+      },
+      {
         "class": "ResolutionBucket",
         "outputSlot": 1,
         "widgetDefaults": {},
@@ -6047,6 +6479,46 @@
           {
             "name": "stage_c",
             "type": "LATENT",
+            "slotIndex": 1
+          }
+        ]
+      },
+      {
+        "class": "TextEncodeBooguEdit",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null,
+          "negative_prompt": null
+        },
+        "requiredInputs": [
+          {
+            "name": "clip",
+            "type": "CLIP",
+            "slotIndex": 0
+          },
+          {
+            "name": "vae",
+            "type": "VAE",
+            "slotIndex": 1
+          }
+        ]
+      },
+      {
+        "class": "TextEncodeBooguEdit",
+        "outputSlot": 1,
+        "widgetDefaults": {
+          "prompt": null,
+          "negative_prompt": null
+        },
+        "requiredInputs": [
+          {
+            "name": "clip",
+            "type": "CLIP",
+            "slotIndex": 0
+          },
+          {
+            "name": "vae",
+            "type": "VAE",
             "slotIndex": 1
           }
         ]
@@ -6088,6 +6560,60 @@
             "name": "clip_vision_output",
             "type": "CLIP_VISION_OUTPUT",
             "slotIndex": 1
+          }
+        ]
+      },
+      {
+        "class": "BerniniConditioning",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "width": null,
+          "height": null,
+          "length": null,
+          "batch_size": null
+        },
+        "requiredInputs": [
+          {
+            "name": "positive",
+            "type": "CONDITIONING",
+            "slotIndex": 0
+          },
+          {
+            "name": "negative",
+            "type": "CONDITIONING",
+            "slotIndex": 1
+          },
+          {
+            "name": "vae",
+            "type": "VAE",
+            "slotIndex": 2
+          }
+        ]
+      },
+      {
+        "class": "BerniniConditioning",
+        "outputSlot": 1,
+        "widgetDefaults": {
+          "width": null,
+          "height": null,
+          "length": null,
+          "batch_size": null
+        },
+        "requiredInputs": [
+          {
+            "name": "positive",
+            "type": "CONDITIONING",
+            "slotIndex": 0
+          },
+          {
+            "name": "negative",
+            "type": "CONDITIONING",
+            "slotIndex": 1
+          },
+          {
+            "name": "vae",
+            "type": "VAE",
+            "slotIndex": 2
           }
         ]
       },
@@ -6717,6 +7243,50 @@
         ]
       },
       {
+        "class": "TripoSplatConditioning",
+        "outputSlot": 0,
+        "widgetDefaults": {},
+        "requiredInputs": [
+          {
+            "name": "clip_vision",
+            "type": "CLIP_VISION",
+            "slotIndex": 0
+          },
+          {
+            "name": "vae",
+            "type": "VAE",
+            "slotIndex": 1
+          },
+          {
+            "name": "image",
+            "type": "IMAGE",
+            "slotIndex": 2
+          }
+        ]
+      },
+      {
+        "class": "TripoSplatConditioning",
+        "outputSlot": 1,
+        "widgetDefaults": {},
+        "requiredInputs": [
+          {
+            "name": "clip_vision",
+            "type": "CLIP_VISION",
+            "slotIndex": 0
+          },
+          {
+            "name": "vae",
+            "type": "VAE",
+            "slotIndex": 1
+          },
+          {
+            "name": "image",
+            "type": "IMAGE",
+            "slotIndex": 2
+          }
+        ]
+      },
+      {
         "class": "Wan22FunControlToVideo",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -7295,7 +7865,9 @@
           "batch_size": null,
           "pose_strength": null,
           "pose_start": null,
-          "pose_end": null
+          "pose_end": null,
+          "video_frame_offset": null,
+          "previous_frame_count": null
         },
         "requiredInputs": [
           {
@@ -7325,7 +7897,9 @@
           "batch_size": null,
           "pose_strength": null,
           "pose_start": null,
-          "pose_end": null
+          "pose_end": null,
+          "video_frame_offset": null,
+          "previous_frame_count": null
         },
         "requiredInputs": [
           {
@@ -8393,6 +8967,25 @@
         ]
       },
       {
+        "class": "DualModelGuider",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "cfg": null
+        },
+        "requiredInputs": [
+          {
+            "name": "model",
+            "type": "MODEL",
+            "slotIndex": 0
+          },
+          {
+            "name": "positive",
+            "type": "CONDITIONING",
+            "slotIndex": 1
+          }
+        ]
+      },
+      {
         "class": "CFGGuider",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -8486,6 +9079,12 @@
         "requiredInputs": []
       },
       {
+        "class": "BeebleSwitchXImageEdit",
+        "outputSlot": 0,
+        "widgetDefaults": {},
+        "requiredInputs": []
+      },
+      {
         "class": "ByteDanceImageNode",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -8515,6 +9114,12 @@
           "seed": null,
           "watermark": null
         },
+        "requiredInputs": []
+      },
+      {
+        "class": "DA3Render",
+        "outputSlot": 0,
+        "widgetDefaults": {},
         "requiredInputs": []
       },
       {
@@ -8731,6 +9336,17 @@
         "requiredInputs": []
       },
       {
+        "class": "IdeogramV4",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null,
+          "resolution": null,
+          "rendering_speed": null,
+          "seed": null
+        },
+        "requiredInputs": []
+      },
+      {
         "class": "KlingImageGenerationNode",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -8754,6 +9370,15 @@
           "resolution": null,
           "aspect_ratio": null,
           "series_amount": null
+        },
+        "requiredInputs": []
+      },
+      {
+        "class": "Krea2ImageNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null,
+          "seed": null
         },
         "requiredInputs": []
       },
@@ -8906,6 +9531,21 @@
         "requiredInputs": []
       },
       {
+        "class": "RenderSplat",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "width": null,
+          "height": null,
+          "frames": null,
+          "splat_scale": null,
+          "sharpen": null,
+          "headlight_shading": null,
+          "opacity_threshold": null,
+          "render_style": null
+        },
+        "requiredInputs": []
+      },
+      {
         "class": "ReveImageCreateNode",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -8933,6 +9573,26 @@
         "requiredInputs": []
       },
       {
+        "class": "SCAIL2ColoredMask",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "object_indices": null,
+          "sort_by": null,
+          "replacement_mode": null
+        },
+        "requiredInputs": []
+      },
+      {
+        "class": "SCAIL2ColoredMask",
+        "outputSlot": 1,
+        "widgetDefaults": {
+          "object_indices": null,
+          "sort_by": null,
+          "replacement_mode": null
+        },
+        "requiredInputs": []
+      },
+      {
         "class": "SDPoseDrawKeypoints",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -8942,7 +9602,8 @@
           "draw_feet": null,
           "stick_width": null,
           "face_point_size": null,
-          "score_threshold": null
+          "score_threshold": null,
+          "draw_head": null
         },
         "requiredInputs": []
       },
@@ -9020,6 +9681,20 @@
           {
             "name": "image",
             "type": "IMAGE",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "BriaTransparentVideoBackground",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "seed": null
+        },
+        "requiredInputs": [
+          {
+            "name": "video",
+            "type": "VIDEO",
             "slotIndex": 0
           }
         ]
@@ -9999,6 +10674,25 @@
         ]
       },
       {
+        "class": "FluxEraseNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "dilate_pixels": null
+        },
+        "requiredInputs": [
+          {
+            "name": "image",
+            "type": "IMAGE",
+            "slotIndex": 0
+          },
+          {
+            "name": "mask",
+            "type": "MASK",
+            "slotIndex": 1
+          }
+        ]
+      },
+      {
         "class": "FluxProFillNode",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -10017,6 +10711,26 @@
           {
             "name": "mask",
             "type": "MASK",
+            "slotIndex": 1
+          }
+        ]
+      },
+      {
+        "class": "FluxVTONode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null,
+          "seed": null
+        },
+        "requiredInputs": [
+          {
+            "name": "person",
+            "type": "IMAGE",
+            "slotIndex": 0
+          },
+          {
+            "name": "garment",
+            "type": "IMAGE",
             "slotIndex": 1
           }
         ]
@@ -10190,6 +10904,26 @@
           {
             "name": "vae",
             "type": "VAE",
+            "slotIndex": 1
+          }
+        ]
+      },
+      {
+        "class": "TripoSplatPreprocessImage",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "erode_radius": null,
+          "size": null
+        },
+        "requiredInputs": [
+          {
+            "name": "image",
+            "type": "IMAGE",
+            "slotIndex": 0
+          },
+          {
+            "name": "mask",
+            "type": "MASK",
             "slotIndex": 1
           }
         ]
@@ -11260,6 +11994,33 @@
         ]
       },
       {
+        "class": "BerniniConditioning",
+        "outputSlot": 2,
+        "widgetDefaults": {
+          "width": null,
+          "height": null,
+          "length": null,
+          "batch_size": null
+        },
+        "requiredInputs": [
+          {
+            "name": "positive",
+            "type": "CONDITIONING",
+            "slotIndex": 0
+          },
+          {
+            "name": "negative",
+            "type": "CONDITIONING",
+            "slotIndex": 1
+          },
+          {
+            "name": "vae",
+            "type": "VAE",
+            "slotIndex": 2
+          }
+        ]
+      },
+      {
         "class": "HunyuanRefinerLatent",
         "outputSlot": 2,
         "widgetDefaults": {
@@ -11619,6 +12380,28 @@
         ]
       },
       {
+        "class": "TripoSplatConditioning",
+        "outputSlot": 2,
+        "widgetDefaults": {},
+        "requiredInputs": [
+          {
+            "name": "clip_vision",
+            "type": "CLIP_VISION",
+            "slotIndex": 0
+          },
+          {
+            "name": "vae",
+            "type": "VAE",
+            "slotIndex": 1
+          },
+          {
+            "name": "image",
+            "type": "IMAGE",
+            "slotIndex": 2
+          }
+        ]
+      },
+      {
         "class": "VAEEncodeForInpaint",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -11923,7 +12706,9 @@
           "batch_size": null,
           "pose_strength": null,
           "pose_start": null,
-          "pose_end": null
+          "pose_end": null,
+          "video_frame_offset": null,
+          "previous_frame_count": null
         },
         "requiredInputs": [
           {
@@ -12557,6 +13342,12 @@
         "requiredInputs": []
       },
       {
+        "class": "BeebleSwitchXImageEdit",
+        "outputSlot": 1,
+        "widgetDefaults": {},
+        "requiredInputs": []
+      },
+      {
         "class": "Load3D",
         "outputSlot": 1,
         "widgetDefaults": {
@@ -12599,6 +13390,21 @@
         "requiredInputs": []
       },
       {
+        "class": "RenderSplat",
+        "outputSlot": 1,
+        "widgetDefaults": {
+          "width": null,
+          "height": null,
+          "frames": null,
+          "splat_scale": null,
+          "sharpen": null,
+          "headlight_shading": null,
+          "opacity_threshold": null,
+          "render_style": null
+        },
+        "requiredInputs": []
+      },
+      {
         "class": "SAM3_TrackToMask",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -12615,6 +13421,20 @@
           "height": null
         },
         "requiredInputs": []
+      },
+      {
+        "class": "BriaTransparentVideoBackground",
+        "outputSlot": 1,
+        "widgetDefaults": {
+          "seed": null
+        },
+        "requiredInputs": [
+          {
+            "name": "video",
+            "type": "VIDEO",
+            "slotIndex": 0
+          }
+        ]
       },
       {
         "class": "CropMask",
@@ -12802,13 +13622,13 @@
         "widgetDefaults": {},
         "requiredInputs": [
           {
-            "name": "image",
-            "type": "IMAGE",
+            "name": "bg_removal_model",
+            "type": "BACKGROUND_REMOVAL",
             "slotIndex": 0
           },
           {
-            "name": "bg_removal_model",
-            "type": "BACKGROUND_REMOVAL",
+            "name": "image",
+            "type": "IMAGE",
             "slotIndex": 1
           }
         ]
@@ -12906,6 +13726,19 @@
     ],
     "MESH": [
       {
+        "class": "DA3GeometryToMesh",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "batch_index": null,
+          "decimation": null,
+          "discontinuity_threshold": null,
+          "confidence_threshold": null,
+          "use_sky_mask": null,
+          "texture": null
+        },
+        "requiredInputs": []
+      },
+      {
         "class": "MoGePointMapToMesh",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -12913,6 +13746,20 @@
           "decimation": null,
           "discontinuity_threshold": null,
           "texture": null
+        },
+        "requiredInputs": []
+      },
+      {
+        "class": "SplatToMesh",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "resolution": null,
+          "kernel": null,
+          "smooth": null,
+          "level": null,
+          "min_component": null,
+          "min_opacity": null,
+          "color_sharpen": null
         },
         "requiredInputs": []
       },
@@ -13030,6 +13877,22 @@
         "outputSlot": 0,
         "widgetDefaults": {
           "strength": null
+        },
+        "requiredInputs": [
+          {
+            "name": "model",
+            "type": "MODEL",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "CFGOverride",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "cfg": null,
+          "start_percent": null,
+          "end_percent": null
         },
         "requiredInputs": [
           {
@@ -13434,6 +14297,20 @@
         ]
       },
       {
+        "class": "MultiGPU_WorkUnits",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "max_gpus": null
+        },
+        "requiredInputs": [
+          {
+            "name": "model",
+            "type": "MODEL",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
         "class": "NAGuidance",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -13522,6 +14399,20 @@
           "shift_y": null,
           "scale_t": null,
           "shift_t": null
+        },
+        "requiredInputs": [
+          {
+            "name": "model",
+            "type": "MODEL",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "SelectModelDevice",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "device": null
         },
         "requiredInputs": [
           {
@@ -13878,6 +14769,29 @@
           {
             "name": "empty_conditioning",
             "type": "CONDITIONING",
+            "slotIndex": 1
+          }
+        ]
+      },
+      {
+        "class": "TripoSplatSamplingPreview",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "octree_level": null,
+          "num_gaussians": null,
+          "yaw": null,
+          "pitch": null,
+          "point_size": null
+        },
+        "requiredInputs": [
+          {
+            "name": "model",
+            "type": "MODEL",
+            "slotIndex": 0
+          },
+          {
+            "name": "vae",
+            "type": "VAE",
             "slotIndex": 1
           }
         ]
@@ -14284,6 +15198,18 @@
         "requiredInputs": []
       },
       {
+        "class": "Ideogram4Scheduler",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "steps": null,
+          "width": null,
+          "height": null,
+          "mu": null,
+          "std": null
+        },
+        "requiredInputs": []
+      },
+      {
         "class": "KarrasScheduler",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -14580,9 +15506,35 @@
           "ckpt_name": null
         },
         "requiredInputs": []
+      },
+      {
+        "class": "SelectVAEDevice",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "device": null
+        },
+        "requiredInputs": [
+          {
+            "name": "vae",
+            "type": "VAE",
+            "slotIndex": 0
+          }
+        ]
       }
     ],
     "VIDEO": [
+      {
+        "class": "BeebleSwitchXVideoEdit",
+        "outputSlot": 0,
+        "widgetDefaults": {},
+        "requiredInputs": []
+      },
+      {
+        "class": "BeebleSwitchXVideoEdit",
+        "outputSlot": 1,
+        "widgetDefaults": {},
+        "requiredInputs": []
+      },
       {
         "class": "ByteDance2FirstLastFrameNode",
         "outputSlot": 0,
@@ -14951,6 +15903,35 @@
         ]
       },
       {
+        "class": "BriaVideoGreenScreen",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "green_shade": null,
+          "seed": null
+        },
+        "requiredInputs": [
+          {
+            "name": "video",
+            "type": "VIDEO",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "BriaVideoReplaceBackground",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "seed": null
+        },
+        "requiredInputs": [
+          {
+            "name": "video",
+            "type": "VIDEO",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
         "class": "ByteDanceImageReferenceNode",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -15274,6 +16255,22 @@
           {
             "name": "image",
             "type": "IMAGE",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "RunwayAleph2VideoToVideoNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null,
+          "seed": null,
+          "public_figure_threshold": null
+        },
+        "requiredInputs": [
+          {
+            "name": "video",
+            "type": "VIDEO",
             "slotIndex": 0
           }
         ]

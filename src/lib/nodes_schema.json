@@ -1,6 +1,6 @@
 {
   "APG": {
-    "category": "sampling/custom_sampling",
+    "category": "model/sampling/custom",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -15,7 +15,7 @@
     ]
   },
   "ARVideoI2V": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/autoregressive",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -49,7 +49,7 @@
     ]
   },
   "AlignYourStepsScheduler": {
-    "category": "sampling/schedulers",
+    "category": "model/sampling/schedulers",
     "inputs": {
       "required": {
         "model_type": "COMBO",
@@ -90,7 +90,7 @@
     ]
   },
   "AudioEncoderEncode": {
-    "category": "conditioning",
+    "category": "model/conditioning",
     "inputs": {
       "required": {
         "audio": "AUDIO"
@@ -100,7 +100,7 @@
     "outputs": []
   },
   "AudioEncoderLoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "audio_encoder_name": "COMBO"
@@ -143,7 +143,7 @@
     ]
   },
   "BasicGuider": {
-    "category": "sampling/guiders",
+    "category": "model/sampling/guiders",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -156,7 +156,7 @@
     ]
   },
   "BasicScheduler": {
-    "category": "sampling/schedulers",
+    "category": "model/sampling/schedulers",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -181,7 +181,7 @@
     ]
   },
   "BatchLatentsNode": {
-    "category": "latent",
+    "category": "model/latent/batch",
     "inputs": {
       "required": {},
       "optional": {}
@@ -200,8 +200,54 @@
       "MASK"
     ]
   },
+  "BeebleSwitchXImageEdit": {
+    "category": "partner/image/Beeble",
+    "inputs": {
+      "required": {},
+      "optional": {}
+    },
+    "outputs": [
+      "IMAGE",
+      "MASK"
+    ]
+  },
+  "BeebleSwitchXVideoEdit": {
+    "category": "partner/video/Beeble",
+    "inputs": {
+      "required": {},
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO",
+      "VIDEO"
+    ]
+  },
+  "BerniniConditioning": {
+    "category": "model/conditioning/bernini",
+    "inputs": {
+      "required": {
+        "positive": "CONDITIONING",
+        "negative": "CONDITIONING",
+        "vae": "VAE",
+        "width": "INT",
+        "height": "INT",
+        "length": "INT",
+        "batch_size": "INT"
+      },
+      "optional": {
+        "source_video": "IMAGE",
+        "reference_video": "IMAGE",
+        "ref_max_size": "INT"
+      }
+    },
+    "outputs": [
+      "CONDITIONING",
+      "CONDITIONING",
+      "LATENT"
+    ]
+  },
   "BetaSamplingScheduler": {
-    "category": "sampling/schedulers",
+    "category": "model/sampling/schedulers",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -216,7 +262,7 @@
     ]
   },
   "BriaImageEditNode": {
-    "category": "api node/image/Bria",
+    "category": "partner/image/Bria",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -238,7 +284,7 @@
     ]
   },
   "BriaRemoveImageBackground": {
-    "category": "api node/image/Bria",
+    "category": "partner/image/Bria",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -251,7 +297,7 @@
     ]
   },
   "BriaRemoveVideoBackground": {
-    "category": "api node/video/Bria",
+    "category": "partner/video/Bria",
     "inputs": {
       "required": {
         "video": "VIDEO",
@@ -264,8 +310,52 @@
       "VIDEO"
     ]
   },
+  "BriaTransparentVideoBackground": {
+    "category": "partner/video/Bria",
+    "inputs": {
+      "required": {
+        "video": "VIDEO",
+        "seed": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "IMAGE",
+      "MASK"
+    ]
+  },
+  "BriaVideoGreenScreen": {
+    "category": "partner/video/Bria",
+    "inputs": {
+      "required": {
+        "video": "VIDEO",
+        "green_shade": "COMBO",
+        "seed": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO"
+    ]
+  },
+  "BriaVideoReplaceBackground": {
+    "category": "partner/video/Bria",
+    "inputs": {
+      "required": {
+        "video": "VIDEO",
+        "seed": "INT"
+      },
+      "optional": {
+        "background_image": "IMAGE",
+        "background_video": "VIDEO"
+      }
+    },
+    "outputs": [
+      "VIDEO"
+    ]
+  },
   "ByteDance2FirstLastFrameNode": {
-    "category": "api node/video/ByteDance",
+    "category": "partner/video/ByteDance",
     "inputs": {
       "required": {
         "seed": "INT",
@@ -283,7 +373,7 @@
     ]
   },
   "ByteDance2ReferenceNode": {
-    "category": "api node/video/ByteDance",
+    "category": "partner/video/ByteDance",
     "inputs": {
       "required": {
         "seed": "INT",
@@ -296,7 +386,7 @@
     ]
   },
   "ByteDance2TextToVideoNode": {
-    "category": "api node/video/ByteDance",
+    "category": "partner/video/ByteDance",
     "inputs": {
       "required": {
         "seed": "INT",
@@ -309,7 +399,7 @@
     ]
   },
   "ByteDanceCreateImageAsset": {
-    "category": "api node/image/ByteDance",
+    "category": "partner/image/ByteDance",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -323,7 +413,7 @@
     ]
   },
   "ByteDanceCreateVideoAsset": {
-    "category": "api node/video/ByteDance",
+    "category": "partner/video/ByteDance",
     "inputs": {
       "required": {
         "video": "VIDEO",
@@ -337,7 +427,7 @@
     ]
   },
   "ByteDanceFirstLastFrameNode": {
-    "category": "api node/video/ByteDance",
+    "category": "partner/video/ByteDance",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -360,7 +450,7 @@
     ]
   },
   "ByteDanceImageNode": {
-    "category": "api node/image/ByteDance",
+    "category": "partner/image/ByteDance",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -380,7 +470,7 @@
     ]
   },
   "ByteDanceImageReferenceNode": {
-    "category": "api node/video/ByteDance",
+    "category": "partner/video/ByteDance",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -400,7 +490,7 @@
     ]
   },
   "ByteDanceImageToVideoNode": {
-    "category": "api node/video/ByteDance",
+    "category": "partner/video/ByteDance",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -422,7 +512,7 @@
     ]
   },
   "ByteDanceSeedNode": {
-    "category": "api node/text/ByteDance",
+    "category": "partner/text/ByteDance",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -437,7 +527,7 @@
     ]
   },
   "ByteDanceSeedreamNode": {
-    "category": "api node/image/ByteDance",
+    "category": "partner/image/ByteDance",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -460,7 +550,7 @@
     ]
   },
   "ByteDanceSeedreamNodeV2": {
-    "category": "api node/image/ByteDance",
+    "category": "partner/image/ByteDance",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -474,7 +564,7 @@
     ]
   },
   "ByteDanceTextToVideoNode": {
-    "category": "api node/video/ByteDance",
+    "category": "partner/video/ByteDance",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -495,7 +585,7 @@
     ]
   },
   "CFGGuider": {
-    "category": "sampling/guiders",
+    "category": "model/sampling/guiders",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -515,6 +605,23 @@
       "required": {
         "model": "MODEL",
         "strength": "FLOAT"
+      },
+      "optional": {
+        "pre_cfg": "BOOLEAN"
+      }
+    },
+    "outputs": [
+      "MODEL"
+    ]
+  },
+  "CFGOverride": {
+    "category": "model/sampling/guiders",
+    "inputs": {
+      "required": {
+        "model": "MODEL",
+        "cfg": "FLOAT",
+        "start_percent": "FLOAT",
+        "end_percent": "FLOAT"
       },
       "optional": {}
     },
@@ -551,7 +658,7 @@
     ]
   },
   "CLIPLoader": {
-    "category": "advanced/loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "clip_name": "COMBO",
@@ -566,7 +673,7 @@
     ]
   },
   "CLIPMergeAdd": {
-    "category": "advanced/model_merging",
+    "category": "model/merging",
     "inputs": {
       "required": {
         "clip1": "CLIP",
@@ -579,7 +686,7 @@
     ]
   },
   "CLIPMergeSimple": {
-    "category": "advanced/model_merging",
+    "category": "model/merging",
     "inputs": {
       "required": {
         "clip1": "CLIP",
@@ -593,7 +700,7 @@
     ]
   },
   "CLIPMergeSubtract": {
-    "category": "advanced/model_merging",
+    "category": "model/merging",
     "inputs": {
       "required": {
         "clip1": "CLIP",
@@ -607,7 +714,7 @@
     ]
   },
   "CLIPSave": {
-    "category": "advanced/model_merging",
+    "category": "model/merging",
     "inputs": {
       "required": {
         "clip": "CLIP",
@@ -618,7 +725,7 @@
     "outputs": []
   },
   "CLIPSetLastLayer": {
-    "category": "conditioning",
+    "category": "model/conditioning",
     "inputs": {
       "required": {
         "clip": "CLIP",
@@ -631,7 +738,7 @@
     ]
   },
   "CLIPTextEncode": {
-    "category": "conditioning",
+    "category": "model/conditioning",
     "inputs": {
       "required": {
         "text": "STRING",
@@ -658,7 +765,7 @@
     ]
   },
   "CLIPTextEncodeFlux": {
-    "category": "advanced/conditioning/flux",
+    "category": "model/conditioning/flux",
     "inputs": {
       "required": {
         "clip": "CLIP",
@@ -673,7 +780,7 @@
     ]
   },
   "CLIPTextEncodeHiDream": {
-    "category": "advanced/conditioning",
+    "category": "model/conditioning/hidream",
     "inputs": {
       "required": {
         "clip": "CLIP",
@@ -689,7 +796,7 @@
     ]
   },
   "CLIPTextEncodeHunyuanDiT": {
-    "category": "advanced/conditioning",
+    "category": "model/conditioning/hunyuan image",
     "inputs": {
       "required": {
         "clip": "CLIP",
@@ -703,7 +810,7 @@
     ]
   },
   "CLIPTextEncodeKandinsky5": {
-    "category": "advanced/conditioning/kandinsky5",
+    "category": "model/conditioning/kandinsky",
     "inputs": {
       "required": {
         "clip": "CLIP",
@@ -717,7 +824,7 @@
     ]
   },
   "CLIPTextEncodeLumina2": {
-    "category": "conditioning",
+    "category": "model/conditioning/lumina",
     "inputs": {
       "required": {
         "system_prompt": "COMBO",
@@ -731,7 +838,7 @@
     ]
   },
   "CLIPTextEncodePixArtAlpha": {
-    "category": "advanced/conditioning",
+    "category": "model/conditioning/pixart",
     "inputs": {
       "required": {
         "width": "INT",
@@ -746,7 +853,7 @@
     ]
   },
   "CLIPTextEncodeSD3": {
-    "category": "advanced/conditioning",
+    "category": "model/conditioning/stable diffusion",
     "inputs": {
       "required": {
         "clip": "CLIP",
@@ -762,7 +869,7 @@
     ]
   },
   "CLIPTextEncodeSDXL": {
-    "category": "advanced/conditioning",
+    "category": "model/conditioning/stable diffusion",
     "inputs": {
       "required": {
         "clip": "CLIP",
@@ -782,7 +889,7 @@
     ]
   },
   "CLIPTextEncodeSDXLRefiner": {
-    "category": "advanced/conditioning",
+    "category": "model/conditioning/stable diffusion",
     "inputs": {
       "required": {
         "ascore": "FLOAT",
@@ -798,7 +905,7 @@
     ]
   },
   "CLIPVisionEncode": {
-    "category": "conditioning",
+    "category": "model/conditioning",
     "inputs": {
       "required": {
         "clip_vision": "CLIP_VISION",
@@ -812,7 +919,7 @@
     ]
   },
   "CLIPVisionLoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "clip_name": "COMBO"
@@ -851,7 +958,7 @@
     ]
   },
   "CheckpointLoader": {
-    "category": "advanced/loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "config_name": "COMBO",
@@ -866,7 +973,7 @@
     ]
   },
   "CheckpointLoaderSimple": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "ckpt_name": "COMBO"
@@ -880,7 +987,7 @@
     ]
   },
   "CheckpointSave": {
-    "category": "advanced/model_merging",
+    "category": "model/merging",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -893,7 +1000,7 @@
     "outputs": []
   },
   "ChromaRadianceOptions": {
-    "category": "model_patches/chroma_radiance",
+    "category": "model/patch/chroma radiance",
     "inputs": {
       "required": {},
       "optional": {}
@@ -903,7 +1010,7 @@
     ]
   },
   "ClaudeNode": {
-    "category": "api node/text/Anthropic",
+    "category": "partner/text/Anthropic",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -918,7 +1025,7 @@
     ]
   },
   "ColorToRGBInt": {
-    "category": "utils",
+    "category": "utilities",
     "inputs": {
       "required": {},
       "optional": {}
@@ -943,7 +1050,7 @@
     ]
   },
   "ComfyAndNode": {
-    "category": "utils/logic",
+    "category": "utilities/logic",
     "inputs": {
       "required": {},
       "optional": {}
@@ -953,7 +1060,7 @@
     ]
   },
   "ComfyMathExpression": {
-    "category": "utils",
+    "category": "utilities",
     "inputs": {
       "required": {
         "expression": "STRING"
@@ -967,7 +1074,7 @@
     ]
   },
   "ComfyNotNode": {
-    "category": "utils/logic",
+    "category": "utilities/logic",
     "inputs": {
       "required": {},
       "optional": {}
@@ -977,7 +1084,7 @@
     ]
   },
   "ComfyNumberConvert": {
-    "category": "utils",
+    "category": "utilities",
     "inputs": {
       "required": {
         "value": "MULTITYPE"
@@ -990,7 +1097,7 @@
     ]
   },
   "ComfyOrNode": {
-    "category": "utils/logic",
+    "category": "utilities/logic",
     "inputs": {
       "required": {},
       "optional": {}
@@ -1000,7 +1107,7 @@
     ]
   },
   "ComfySwitchNode": {
-    "category": "utils/logic",
+    "category": "utilities/logic",
     "inputs": {
       "required": {
         "switch": "BOOLEAN"
@@ -1010,7 +1117,7 @@
     "outputs": []
   },
   "ConditioningAverage": {
-    "category": "conditioning",
+    "category": "model/conditioning/transform",
     "inputs": {
       "required": {
         "conditioning_to": "CONDITIONING",
@@ -1024,7 +1131,7 @@
     ]
   },
   "ConditioningCombine": {
-    "category": "conditioning",
+    "category": "model/conditioning/transform",
     "inputs": {
       "required": {
         "conditioning_1": "CONDITIONING",
@@ -1037,7 +1144,7 @@
     ]
   },
   "ConditioningConcat": {
-    "category": "conditioning",
+    "category": "model/conditioning/transform",
     "inputs": {
       "required": {
         "conditioning_to": "CONDITIONING",
@@ -1050,7 +1157,7 @@
     ]
   },
   "ConditioningSetArea": {
-    "category": "conditioning",
+    "category": "model/conditioning/transform",
     "inputs": {
       "required": {
         "conditioning": "CONDITIONING",
@@ -1067,7 +1174,7 @@
     ]
   },
   "ConditioningSetAreaPercentage": {
-    "category": "conditioning",
+    "category": "model/conditioning/transform",
     "inputs": {
       "required": {
         "conditioning": "CONDITIONING",
@@ -1084,7 +1191,7 @@
     ]
   },
   "ConditioningSetAreaPercentageVideo": {
-    "category": "conditioning",
+    "category": "model/conditioning/transform",
     "inputs": {
       "required": {
         "conditioning": "CONDITIONING",
@@ -1103,7 +1210,7 @@
     ]
   },
   "ConditioningSetAreaStrength": {
-    "category": "conditioning",
+    "category": "model/conditioning/transform",
     "inputs": {
       "required": {
         "conditioning": "CONDITIONING",
@@ -1116,7 +1223,7 @@
     ]
   },
   "ConditioningSetMask": {
-    "category": "conditioning",
+    "category": "model/conditioning/transform",
     "inputs": {
       "required": {
         "conditioning": "CONDITIONING",
@@ -1131,7 +1238,7 @@
     ]
   },
   "ConditioningSetTimestepRange": {
-    "category": "advanced/conditioning",
+    "category": "model/conditioning/transform",
     "inputs": {
       "required": {
         "conditioning": "CONDITIONING",
@@ -1145,7 +1252,7 @@
     ]
   },
   "ConditioningStableAudio": {
-    "category": "conditioning",
+    "category": "model/conditioning/stable audio",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -1161,7 +1268,7 @@
     ]
   },
   "ConditioningZeroOut": {
-    "category": "advanced/conditioning",
+    "category": "model/conditioning/transform",
     "inputs": {
       "required": {
         "conditioning": "CONDITIONING"
@@ -1173,7 +1280,7 @@
     ]
   },
   "ContextWindowsManual": {
-    "category": "model_patches",
+    "category": "model/patch",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -1196,7 +1303,7 @@
     ]
   },
   "ControlNetApply": {
-    "category": "conditioning/controlnet",
+    "category": "model/conditioning/controlnet",
     "inputs": {
       "required": {
         "conditioning": "CONDITIONING",
@@ -1211,7 +1318,7 @@
     ]
   },
   "ControlNetApplyAdvanced": {
-    "category": "conditioning/controlnet",
+    "category": "model/conditioning/controlnet",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -1232,7 +1339,7 @@
     ]
   },
   "ControlNetApplySD3": {
-    "category": "conditioning/controlnet",
+    "category": "model/conditioning/controlnet",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -1252,7 +1359,7 @@
     ]
   },
   "ControlNetInpaintingAliMamaApply": {
-    "category": "conditioning/controlnet",
+    "category": "model/conditioning/controlnet",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -1273,7 +1380,7 @@
     ]
   },
   "ControlNetLoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "control_net_name": "COMBO"
@@ -1285,7 +1392,7 @@
     ]
   },
   "CosmosImageToVideoLatent": {
-    "category": "conditioning/inpaint",
+    "category": "model/conditioning/cosmos",
     "inputs": {
       "required": {
         "vae": "VAE",
@@ -1304,7 +1411,7 @@
     ]
   },
   "CosmosPredict2ImageToVideoLatent": {
-    "category": "conditioning/inpaint",
+    "category": "model/conditioning/cosmos",
     "inputs": {
       "required": {
         "vae": "VAE",
@@ -1322,8 +1429,24 @@
       "LATENT"
     ]
   },
+  "CreateCameraInfo": {
+    "category": "3d",
+    "inputs": {
+      "required": {
+        "target_x": "FLOAT",
+        "target_y": "FLOAT",
+        "target_z": "FLOAT",
+        "roll": "FLOAT",
+        "fov": "FLOAT",
+        "zoom": "FLOAT",
+        "camera_type": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
   "CreateList": {
-    "category": "utils",
+    "category": "utilities",
     "inputs": {
       "required": {},
       "optional": {}
@@ -1338,7 +1461,8 @@
         "fps": "FLOAT"
       },
       "optional": {
-        "audio": "AUDIO"
+        "audio": "AUDIO",
+        "bit_depth": "INT"
       }
     },
     "outputs": [
@@ -1378,7 +1502,7 @@
     ]
   },
   "CurveEditor": {
-    "category": "utils",
+    "category": "utilities",
     "inputs": {
       "required": {},
       "optional": {}
@@ -1386,7 +1510,7 @@
     "outputs": []
   },
   "CustomCombo": {
-    "category": "utils",
+    "category": "utilities",
     "inputs": {
       "required": {
         "choice": "COMBO"
@@ -1398,8 +1522,47 @@
       "INT"
     ]
   },
+  "DA3GeometryToMesh": {
+    "category": "image/geometry estimation",
+    "inputs": {
+      "required": {
+        "batch_index": "INT",
+        "decimation": "INT",
+        "discontinuity_threshold": "FLOAT",
+        "confidence_threshold": "FLOAT",
+        "use_sky_mask": "BOOLEAN",
+        "texture": "BOOLEAN"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "MESH"
+    ]
+  },
+  "DA3Inference": {
+    "category": "image/geometry estimation",
+    "inputs": {
+      "required": {
+        "image": "IMAGE",
+        "resolution": "INT",
+        "resize_method": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
+  "DA3Render": {
+    "category": "image/geometry estimation",
+    "inputs": {
+      "required": {},
+      "optional": {}
+    },
+    "outputs": [
+      "IMAGE"
+    ]
+  },
   "DiffControlNetLoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -1426,7 +1589,7 @@
     ]
   },
   "DiffusersLoader": {
-    "category": "advanced/loaders/deprecated",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "model_path": "COMBO"
@@ -1440,7 +1603,7 @@
     ]
   },
   "DisableNoise": {
-    "category": "sampling/noise",
+    "category": "model/sampling/noise",
     "inputs": {
       "required": {},
       "optional": {}
@@ -1462,7 +1625,7 @@
     ]
   },
   "DualCFGGuider": {
-    "category": "sampling/guiders",
+    "category": "model/sampling/guiders",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -1480,7 +1643,7 @@
     ]
   },
   "DualCLIPLoader": {
-    "category": "advanced/loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "clip_name1": "COMBO",
@@ -1495,8 +1658,25 @@
       "CLIP"
     ]
   },
+  "DualModelGuider": {
+    "category": "model/sampling/guiders",
+    "inputs": {
+      "required": {
+        "model": "MODEL",
+        "positive": "CONDITIONING",
+        "cfg": "FLOAT"
+      },
+      "optional": {
+        "model_negative": "MODEL",
+        "negative": "CONDITIONING"
+      }
+    },
+    "outputs": [
+      "GUIDER"
+    ]
+  },
   "EasyCache": {
-    "category": "advanced/debug/model",
+    "category": "advanced/debug",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -1512,7 +1692,7 @@
     ]
   },
   "ElevenLabsAudioIsolation": {
-    "category": "api node/audio/ElevenLabs",
+    "category": "partner/audio/ElevenLabs",
     "inputs": {
       "required": {
         "audio": "AUDIO"
@@ -1524,7 +1704,7 @@
     ]
   },
   "ElevenLabsInstantVoiceClone": {
-    "category": "api node/audio/ElevenLabs",
+    "category": "partner/audio/ElevenLabs",
     "inputs": {
       "required": {
         "remove_background_noise": "BOOLEAN"
@@ -1534,7 +1714,7 @@
     "outputs": []
   },
   "ElevenLabsSpeechToSpeech": {
-    "category": "api node/audio/ElevenLabs",
+    "category": "partner/audio/ElevenLabs",
     "inputs": {
       "required": {
         "audio": "AUDIO",
@@ -1550,7 +1730,7 @@
     ]
   },
   "ElevenLabsSpeechToText": {
-    "category": "api node/audio/ElevenLabs",
+    "category": "partner/audio/ElevenLabs",
     "inputs": {
       "required": {
         "audio": "AUDIO",
@@ -1567,7 +1747,7 @@
     ]
   },
   "ElevenLabsTextToDialogue": {
-    "category": "api node/audio/ElevenLabs",
+    "category": "partner/audio/ElevenLabs",
     "inputs": {
       "required": {
         "stability": "FLOAT",
@@ -1584,7 +1764,7 @@
     ]
   },
   "ElevenLabsTextToSoundEffects": {
-    "category": "api node/audio/ElevenLabs",
+    "category": "partner/audio/ElevenLabs",
     "inputs": {
       "required": {
         "text": "STRING",
@@ -1597,7 +1777,7 @@
     ]
   },
   "ElevenLabsTextToSpeech": {
-    "category": "api node/audio/ElevenLabs",
+    "category": "partner/audio/ElevenLabs",
     "inputs": {
       "required": {
         "text": "STRING",
@@ -1614,7 +1794,7 @@
     ]
   },
   "ElevenLabsVoiceSelector": {
-    "category": "api node/audio/ElevenLabs",
+    "category": "partner/audio/ElevenLabs",
     "inputs": {
       "required": {
         "voice": "COMBO"
@@ -1624,7 +1804,7 @@
     "outputs": []
   },
   "EmptyARVideoLatent": {
-    "category": "latent/video",
+    "category": "model/latent/autoregressive",
     "inputs": {
       "required": {
         "width": "INT",
@@ -1639,7 +1819,7 @@
     ]
   },
   "EmptyAceStep1.5LatentAudio": {
-    "category": "latent/audio",
+    "category": "model/latent/ace",
     "inputs": {
       "required": {
         "seconds": "FLOAT",
@@ -1652,7 +1832,7 @@
     ]
   },
   "EmptyAceStepLatentAudio": {
-    "category": "latent/audio",
+    "category": "model/latent/ace",
     "inputs": {
       "required": {
         "seconds": "FLOAT",
@@ -1679,7 +1859,7 @@
     ]
   },
   "EmptyChromaRadianceLatentImage": {
-    "category": "latent/chroma_radiance",
+    "category": "model/latent/chroma radiance",
     "inputs": {
       "required": {},
       "optional": {}
@@ -1687,7 +1867,7 @@
     "outputs": []
   },
   "EmptyCosmosLatentVideo": {
-    "category": "latent/video",
+    "category": "model/latent/cosmos",
     "inputs": {
       "required": {
         "width": "INT",
@@ -1702,7 +1882,7 @@
     ]
   },
   "EmptyFlux2LatentImage": {
-    "category": "latent",
+    "category": "model/latent/flux",
     "inputs": {
       "required": {
         "width": "INT",
@@ -1716,7 +1896,7 @@
     ]
   },
   "EmptyHiDreamO1LatentImage": {
-    "category": "latent/image",
+    "category": "model/latent/hidream",
     "inputs": {
       "required": {},
       "optional": {}
@@ -1724,7 +1904,7 @@
     "outputs": []
   },
   "EmptyHunyuanImageLatent": {
-    "category": "latent",
+    "category": "model/latent/hunyuan image",
     "inputs": {
       "required": {
         "width": "INT",
@@ -1738,7 +1918,7 @@
     ]
   },
   "EmptyHunyuanLatentVideo": {
-    "category": "latent/video",
+    "category": "model/latent/hunyuan video",
     "inputs": {
       "required": {
         "width": "INT",
@@ -1768,7 +1948,7 @@
     ]
   },
   "EmptyLTXVLatentVideo": {
-    "category": "latent/video/ltxv",
+    "category": "model/latent/ltxv",
     "inputs": {
       "required": {
         "width": "INT",
@@ -1783,7 +1963,7 @@
     ]
   },
   "EmptyLatentAudio": {
-    "category": "latent/audio",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "seconds": "FLOAT",
@@ -1796,7 +1976,7 @@
     ]
   },
   "EmptyLatentHunyuan3Dv2": {
-    "category": "latent/3d",
+    "category": "model/latent/hunyuan 3d",
     "inputs": {
       "required": {
         "resolution": "INT",
@@ -1809,7 +1989,7 @@
     ]
   },
   "EmptyLatentImage": {
-    "category": "latent",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "width": "INT",
@@ -1823,7 +2003,7 @@
     ]
   },
   "EmptyMochiLatentVideo": {
-    "category": "latent/video",
+    "category": "model/latent/mochi",
     "inputs": {
       "required": {
         "width": "INT",
@@ -1838,7 +2018,7 @@
     ]
   },
   "EmptyQwenImageLayeredLatentImage": {
-    "category": "latent/qwen",
+    "category": "model/latent/qwen",
     "inputs": {
       "required": {
         "width": "INT",
@@ -1853,7 +2033,7 @@
     ]
   },
   "EmptySD3LatentImage": {
-    "category": "latent/sd3",
+    "category": "model/latent/stable diffusion",
     "inputs": {
       "required": {
         "width": "INT",
@@ -1867,7 +2047,7 @@
     ]
   },
   "Epsilon Scaling": {
-    "category": "model_patches/unet",
+    "category": "model/patch/unet",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -1880,7 +2060,7 @@
     ]
   },
   "ExponentialScheduler": {
-    "category": "sampling/schedulers",
+    "category": "model/sampling/schedulers",
     "inputs": {
       "required": {
         "steps": "INT",
@@ -1894,7 +2074,7 @@
     ]
   },
   "ExtendIntermediateSigmas": {
-    "category": "sampling/sigmas",
+    "category": "model/sampling/sigmas",
     "inputs": {
       "required": {
         "sigmas": "SIGMAS",
@@ -1925,8 +2105,16 @@
       "MASK"
     ]
   },
+  "File3DToSplat": {
+    "category": "3d/splat",
+    "inputs": {
+      "required": {},
+      "optional": {}
+    },
+    "outputs": []
+  },
   "FlipSigmas": {
-    "category": "sampling/sigmas",
+    "category": "model/sampling/sigmas",
     "inputs": {
       "required": {
         "sigmas": "SIGMAS"
@@ -1938,7 +2126,7 @@
     ]
   },
   "Flux2ImageNode": {
-    "category": "api node/image/BFL",
+    "category": "partner/image/BFL",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -1951,7 +2139,7 @@
     ]
   },
   "Flux2ProImageNode": {
-    "category": "api node/image/BFL",
+    "category": "partner/image/BFL",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -1969,7 +2157,7 @@
     ]
   },
   "Flux2Scheduler": {
-    "category": "sampling/schedulers",
+    "category": "model/sampling/schedulers",
     "inputs": {
       "required": {
         "steps": "INT",
@@ -1983,7 +2171,7 @@
     ]
   },
   "FluxDisableGuidance": {
-    "category": "advanced/conditioning/flux",
+    "category": "model/conditioning/flux",
     "inputs": {
       "required": {
         "conditioning": "CONDITIONING"
@@ -1994,8 +2182,24 @@
       "CONDITIONING"
     ]
   },
+  "FluxEraseNode": {
+    "category": "partner/image/BFL",
+    "inputs": {
+      "required": {
+        "image": "IMAGE",
+        "mask": "MASK",
+        "dilate_pixels": "INT"
+      },
+      "optional": {
+        "seed": "INT"
+      }
+    },
+    "outputs": [
+      "IMAGE"
+    ]
+  },
   "FluxGuidance": {
-    "category": "advanced/conditioning/flux",
+    "category": "model/conditioning/flux",
     "inputs": {
       "required": {
         "conditioning": "CONDITIONING",
@@ -2020,7 +2224,7 @@
     ]
   },
   "FluxKontextImageScale": {
-    "category": "advanced/conditioning/flux",
+    "category": "model/conditioning/flux",
     "inputs": {
       "required": {
         "image": "IMAGE"
@@ -2032,7 +2236,7 @@
     ]
   },
   "FluxKontextMultiReferenceLatentMethod": {
-    "category": "advanced/conditioning/flux",
+    "category": "model/conditioning/flux",
     "inputs": {
       "required": {
         "conditioning": "CONDITIONING",
@@ -2045,7 +2249,7 @@
     ]
   },
   "FluxKontextProImageNode": {
-    "category": "api node/image/BFL",
+    "category": "partner/image/BFL",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -2064,7 +2268,7 @@
     ]
   },
   "FluxProExpandNode": {
-    "category": "api node/image/BFL",
+    "category": "partner/image/BFL",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -2085,7 +2289,7 @@
     ]
   },
   "FluxProFillNode": {
-    "category": "api node/image/BFL",
+    "category": "partner/image/BFL",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -2103,7 +2307,7 @@
     ]
   },
   "FluxProUltraImageNode": {
-    "category": "api node/image/BFL",
+    "category": "partner/image/BFL",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -2116,6 +2320,21 @@
         "image_prompt": "IMAGE",
         "image_prompt_strength": "FLOAT"
       }
+    },
+    "outputs": [
+      "IMAGE"
+    ]
+  },
+  "FluxVTONode": {
+    "category": "partner/image/BFL",
+    "inputs": {
+      "required": {
+        "person": "IMAGE",
+        "garment": "IMAGE",
+        "prompt": "STRING",
+        "seed": "INT"
+      },
+      "optional": {}
     },
     "outputs": [
       "IMAGE"
@@ -2135,7 +2354,7 @@
     ]
   },
   "FrameInterpolationModelLoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "model_name": "COMBO"
@@ -2160,7 +2379,7 @@
     ]
   },
   "FreeU": {
-    "category": "model_patches/unet",
+    "category": "model/patch/unet",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -2176,7 +2395,7 @@
     ]
   },
   "FreeU_V2": {
-    "category": "model_patches/unet",
+    "category": "model/patch/unet",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -2192,7 +2411,7 @@
     ]
   },
   "GITSScheduler": {
-    "category": "sampling/schedulers",
+    "category": "model/sampling/schedulers",
     "inputs": {
       "required": {
         "coeff": "FLOAT",
@@ -2206,7 +2425,7 @@
     ]
   },
   "GLIGENLoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "gligen_name": "COMBO"
@@ -2218,7 +2437,7 @@
     ]
   },
   "GLIGENTextBoxApply": {
-    "category": "conditioning/gligen",
+    "category": "model/conditioning/gligen",
     "inputs": {
       "required": {
         "conditioning_to": "CONDITIONING",
@@ -2252,7 +2471,7 @@
     ]
   },
   "GeminiImage2Node": {
-    "category": "api node/image/Gemini",
+    "category": "partner/image/Gemini",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -2273,7 +2492,7 @@
     ]
   },
   "GeminiImageNode": {
-    "category": "api node/image/Gemini",
+    "category": "partner/image/Gemini",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -2293,7 +2512,7 @@
     ]
   },
   "GeminiInputFiles": {
-    "category": "api node/text/Gemini",
+    "category": "partner/text/Gemini",
     "inputs": {
       "required": {
         "file": "COMBO"
@@ -2303,7 +2522,7 @@
     "outputs": []
   },
   "GeminiNanoBanana2": {
-    "category": "api node/image/Gemini",
+    "category": "partner/image/Gemini",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -2326,7 +2545,7 @@
     ]
   },
   "GeminiNanoBanana2V2": {
-    "category": "api node/image/Gemini",
+    "category": "partner/image/Gemini",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -2334,7 +2553,9 @@
         "response_modalities": "COMBO"
       },
       "optional": {
-        "system_prompt": "STRING"
+        "system_prompt": "STRING",
+        "temperature": "FLOAT",
+        "top_p": "FLOAT"
       }
     },
     "outputs": [
@@ -2344,7 +2565,7 @@
     ]
   },
   "GeminiNode": {
-    "category": "api node/text/Gemini",
+    "category": "partner/text/Gemini",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -2362,8 +2583,23 @@
       "STRING"
     ]
   },
+  "GeminiNodeV2": {
+    "category": "partner/text/Gemini",
+    "inputs": {
+      "required": {
+        "prompt": "STRING",
+        "seed": "INT"
+      },
+      "optional": {
+        "system_prompt": "STRING"
+      }
+    },
+    "outputs": [
+      "STRING"
+    ]
+  },
   "GenerateTracks": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/move",
     "inputs": {
       "required": {
         "width": "INT",
@@ -2389,7 +2625,7 @@
     ]
   },
   "GetICLoRAParameters": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/ltxv",
     "inputs": {
       "required": {
         "iclora_model": "MODEL"
@@ -2412,6 +2648,16 @@
       "INT"
     ]
   },
+  "GetSplatCount": {
+    "category": "3d/splat",
+    "inputs": {
+      "required": {},
+      "optional": {}
+    },
+    "outputs": [
+      "INT"
+    ]
+  },
   "GetVideoComponents": {
     "category": "video",
     "inputs": {
@@ -2423,11 +2669,12 @@
     "outputs": [
       "IMAGE",
       "AUDIO",
-      "FLOAT"
+      "FLOAT",
+      "INT"
     ]
   },
   "GrokImageEditNode": {
-    "category": "api node/image/Grok",
+    "category": "partner/image/Grok",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -2446,7 +2693,7 @@
     ]
   },
   "GrokImageEditNodeV2": {
-    "category": "api node/image/Grok",
+    "category": "partner/image/Grok",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -2459,7 +2706,7 @@
     ]
   },
   "GrokImageNode": {
-    "category": "api node/image/Grok",
+    "category": "partner/image/Grok",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -2477,7 +2724,7 @@
     ]
   },
   "GrokVideoEditNode": {
-    "category": "api node/video/Grok",
+    "category": "partner/video/Grok",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -2492,7 +2739,7 @@
     ]
   },
   "GrokVideoExtendNode": {
-    "category": "api node/video/Grok",
+    "category": "partner/video/Grok",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -2506,7 +2753,7 @@
     ]
   },
   "GrokVideoNode": {
-    "category": "api node/video/Grok",
+    "category": "partner/video/Grok",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -2525,7 +2772,7 @@
     ]
   },
   "GrokVideoReferenceNode": {
-    "category": "api node/video/Grok",
+    "category": "partner/video/Grok",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -2552,7 +2799,7 @@
     ]
   },
   "HappyHorseImageToVideoApi": {
-    "category": "api node/video/Wan",
+    "category": "partner/video/Wan",
     "inputs": {
       "required": {
         "first_frame": "IMAGE",
@@ -2566,7 +2813,7 @@
     ]
   },
   "HappyHorseReferenceVideoApi": {
-    "category": "api node/video/Wan",
+    "category": "partner/video/Wan",
     "inputs": {
       "required": {
         "seed": "INT",
@@ -2579,7 +2826,7 @@
     ]
   },
   "HappyHorseTextToVideoApi": {
-    "category": "api node/video/Wan",
+    "category": "partner/video/Wan",
     "inputs": {
       "required": {
         "seed": "INT",
@@ -2592,7 +2839,7 @@
     ]
   },
   "HappyHorseVideoEditApi": {
-    "category": "api node/video/Wan",
+    "category": "partner/video/Wan",
     "inputs": {
       "required": {
         "video": "VIDEO",
@@ -2606,7 +2853,7 @@
     ]
   },
   "HiDreamO1PatchSeamSmoothing": {
-    "category": "advanced/model",
+    "category": "model/patch/hidream",
     "inputs": {
       "required": {},
       "optional": {}
@@ -2616,7 +2863,7 @@
     ]
   },
   "HiDreamO1ReferenceImages": {
-    "category": "conditioning/image",
+    "category": "model/conditioning/hidream",
     "inputs": {
       "required": {},
       "optional": {}
@@ -2627,7 +2874,7 @@
     ]
   },
   "HitPawGeneralImageEnhance": {
-    "category": "api node/image/HitPaw",
+    "category": "partner/image/HitPaw",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -2642,7 +2889,7 @@
     ]
   },
   "HitPawVideoEnhance": {
-    "category": "api node/video/HitPaw",
+    "category": "partner/video/HitPaw",
     "inputs": {
       "required": {
         "video": "VIDEO"
@@ -2654,7 +2901,7 @@
     ]
   },
   "Hunyuan3Dv2Conditioning": {
-    "category": "conditioning/3d_models",
+    "category": "model/conditioning/hunyuan 3d",
     "inputs": {
       "required": {
         "clip_vision_output": "CLIP_VISION_OUTPUT"
@@ -2667,7 +2914,7 @@
     ]
   },
   "Hunyuan3Dv2ConditioningMultiView": {
-    "category": "conditioning/3d_models",
+    "category": "model/conditioning/hunyuan 3d",
     "inputs": {
       "required": {},
       "optional": {
@@ -2683,7 +2930,7 @@
     ]
   },
   "HunyuanImageToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/hunyuan video",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -2704,7 +2951,7 @@
     ]
   },
   "HunyuanRefinerLatent": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/hunyuan video",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -2721,7 +2968,7 @@
     ]
   },
   "HunyuanVideo15ImageToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/hunyuan video",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -2744,7 +2991,7 @@
     ]
   },
   "HunyuanVideo15LatentUpscaleWithModel": {
-    "category": "latent",
+    "category": "model/latent/hunyhuan video",
     "inputs": {
       "required": {
         "model": "LATENT_UPSCALE_MODEL",
@@ -2761,7 +3008,7 @@
     ]
   },
   "HunyuanVideo15SuperResolution": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/hunyuan video",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -2782,7 +3029,7 @@
     ]
   },
   "HyperTile": {
-    "category": "model_patches/unet",
+    "category": "model/patch/unet",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -2798,7 +3045,7 @@
     ]
   },
   "HypernetworkLoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -2811,8 +3058,24 @@
       "MODEL"
     ]
   },
+  "Ideogram4Scheduler": {
+    "category": "model/sampling/schedulers",
+    "inputs": {
+      "required": {
+        "steps": "INT",
+        "width": "INT",
+        "height": "INT",
+        "mu": "FLOAT",
+        "std": "FLOAT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "SIGMAS"
+    ]
+  },
   "IdeogramV1": {
-    "category": "api node/image/Ideogram",
+    "category": "partner/image/Ideogram",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -2831,7 +3094,7 @@
     ]
   },
   "IdeogramV2": {
-    "category": "api node/image/Ideogram",
+    "category": "partner/image/Ideogram",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -2852,7 +3115,7 @@
     ]
   },
   "IdeogramV3": {
-    "category": "api node/image/Ideogram",
+    "category": "partner/image/Ideogram",
     "inputs": {
       "required": {
         "prompt": "STRING"
@@ -2869,6 +3132,21 @@
         "character_image": "IMAGE",
         "character_mask": "MASK"
       }
+    },
+    "outputs": [
+      "IMAGE"
+    ]
+  },
+  "IdeogramV4": {
+    "category": "partner/image/Ideogram",
+    "inputs": {
+      "required": {
+        "prompt": "STRING",
+        "resolution": "COMBO",
+        "rendering_speed": "COMBO",
+        "seed": "INT"
+      },
+      "optional": {}
     },
     "outputs": [
       "IMAGE"
@@ -3028,7 +3306,7 @@
     ]
   },
   "ImageHistogram": {
-    "category": "utils",
+    "category": "utilities",
     "inputs": {
       "required": {
         "image": "IMAGE"
@@ -3065,7 +3343,7 @@
     ]
   },
   "ImageOnlyCheckpointLoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "ckpt_name": "COMBO"
@@ -3079,7 +3357,7 @@
     ]
   },
   "ImageOnlyCheckpointSave": {
-    "category": "advanced/model_merging",
+    "category": "model/merging",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -3283,7 +3561,7 @@
     ]
   },
   "InpaintModelConditioning": {
-    "category": "conditioning/inpaint",
+    "category": "model/conditioning",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -3302,7 +3580,7 @@
     ]
   },
   "InstructPixToPixConditioning": {
-    "category": "conditioning/instructpix2pix",
+    "category": "model/conditioning/instructpix2pix",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -3370,7 +3648,7 @@
     ]
   },
   "KSampler": {
-    "category": "sampling",
+    "category": "model/sampling",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -3394,7 +3672,7 @@
     ]
   },
   "KSamplerAdvanced": {
-    "category": "sampling",
+    "category": "model/sampling",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -3421,7 +3699,7 @@
     ]
   },
   "KSamplerSelect": {
-    "category": "sampling/samplers",
+    "category": "model/sampling/samplers",
     "inputs": {
       "required": {
         "sampler_name": "COMBO"
@@ -3433,7 +3711,7 @@
     ]
   },
   "Kandinsky5ImageToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/kandinsky",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -3456,7 +3734,7 @@
     ]
   },
   "KarrasScheduler": {
-    "category": "sampling/schedulers",
+    "category": "model/sampling/schedulers",
     "inputs": {
       "required": {
         "steps": "INT",
@@ -3471,7 +3749,7 @@
     ]
   },
   "KlingAvatarNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -3488,7 +3766,7 @@
     ]
   },
   "KlingCameraControlI2VNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "start_frame": "IMAGE",
@@ -3506,7 +3784,7 @@
     ]
   },
   "KlingCameraControlT2VNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -3523,7 +3801,7 @@
     ]
   },
   "KlingCameraControls": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "camera_control_type": "COMBO",
@@ -3539,7 +3817,7 @@
     "outputs": []
   },
   "KlingDualCharacterVideoEffectNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "image_left": "IMAGE",
@@ -3557,7 +3835,7 @@
     ]
   },
   "KlingFirstLastFrameNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -3574,7 +3852,7 @@
     ]
   },
   "KlingImage2VideoNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "start_frame": "IMAGE",
@@ -3595,7 +3873,7 @@
     ]
   },
   "KlingImageGenerationNode": {
-    "category": "api node/image/Kling",
+    "category": "partner/image/Kling",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -3617,7 +3895,7 @@
     ]
   },
   "KlingImageToVideoWithAudio": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "model_name": "COMBO",
@@ -3634,7 +3912,7 @@
     ]
   },
   "KlingLipSyncAudioToVideoNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "video": "VIDEO",
@@ -3650,7 +3928,7 @@
     ]
   },
   "KlingLipSyncTextToVideoNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "video": "VIDEO",
@@ -3667,7 +3945,7 @@
     ]
   },
   "KlingMotionControl": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -3686,7 +3964,7 @@
     ]
   },
   "KlingOmniProEditVideoNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "model_name": "COMBO",
@@ -3705,7 +3983,7 @@
     ]
   },
   "KlingOmniProFirstLastFrameNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "model_name": "COMBO",
@@ -3726,7 +4004,7 @@
     ]
   },
   "KlingOmniProImageNode": {
-    "category": "api node/image/Kling",
+    "category": "partner/image/Kling",
     "inputs": {
       "required": {
         "model_name": "COMBO",
@@ -3745,7 +4023,7 @@
     ]
   },
   "KlingOmniProImageToVideoNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "model_name": "COMBO",
@@ -3765,7 +4043,7 @@
     ]
   },
   "KlingOmniProTextToVideoNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "model_name": "COMBO",
@@ -3784,7 +4062,7 @@
     ]
   },
   "KlingOmniProVideoToVideoNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "model_name": "COMBO",
@@ -3805,7 +4083,7 @@
     ]
   },
   "KlingSingleImageVideoEffectNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -3822,7 +4100,7 @@
     ]
   },
   "KlingStartEndFrameNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "start_frame": "IMAGE",
@@ -3842,7 +4120,7 @@
     ]
   },
   "KlingTextToVideoNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -3860,7 +4138,7 @@
     ]
   },
   "KlingTextToVideoWithAudio": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "model_name": "COMBO",
@@ -3877,7 +4155,7 @@
     ]
   },
   "KlingVideoExtendNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -3894,7 +4172,7 @@
     ]
   },
   "KlingVideoNode": {
-    "category": "api node/video/Kling",
+    "category": "partner/video/Kling",
     "inputs": {
       "required": {
         "generate_audio": "BOOLEAN",
@@ -3909,7 +4187,7 @@
     ]
   },
   "KlingVirtualTryOnNode": {
-    "category": "api node/image/Kling",
+    "category": "partner/image/Kling",
     "inputs": {
       "required": {
         "human_image": "IMAGE",
@@ -3922,8 +4200,32 @@
       "IMAGE"
     ]
   },
+  "Krea2ImageNode": {
+    "category": "partner/image/Krea",
+    "inputs": {
+      "required": {
+        "prompt": "STRING",
+        "seed": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "IMAGE"
+    ]
+  },
+  "Krea2StyleReferenceNode": {
+    "category": "partner/image/Krea",
+    "inputs": {
+      "required": {
+        "image": "IMAGE",
+        "strength": "FLOAT"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
   "LTXAVTextEncoderLoader": {
-    "category": "advanced/loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "text_encoder": "COMBO",
@@ -3937,7 +4239,7 @@
     ]
   },
   "LTXVAddGuide": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/ltxv",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -3959,7 +4261,7 @@
     ]
   },
   "LTXVAudioVAEDecode": {
-    "category": "latent/audio",
+    "category": "model/latent/ltxv",
     "inputs": {
       "required": {
         "samples": "LATENT"
@@ -3971,7 +4273,7 @@
     ]
   },
   "LTXVAudioVAEEncode": {
-    "category": "latent/audio",
+    "category": "model/latent/ltxv",
     "inputs": {
       "required": {
         "audio": "AUDIO"
@@ -3983,7 +4285,7 @@
     ]
   },
   "LTXVAudioVAELoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "ckpt_name": "COMBO"
@@ -3995,7 +4297,7 @@
     ]
   },
   "LTXVConcatAVLatent": {
-    "category": "latent/video/ltxv",
+    "category": "model/latent/ltxv",
     "inputs": {
       "required": {
         "video_latent": "LATENT",
@@ -4008,7 +4310,7 @@
     ]
   },
   "LTXVConditioning": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/ltxv",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -4023,7 +4325,7 @@
     ]
   },
   "LTXVCropGuides": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/ltxv",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -4039,7 +4341,7 @@
     ]
   },
   "LTXVEmptyLatentAudio": {
-    "category": "latent/audio",
+    "category": "model/latent/ltxv",
     "inputs": {
       "required": {
         "frames_number": "INT",
@@ -4053,7 +4355,7 @@
     ]
   },
   "LTXVImgToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/ltxv",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -4075,7 +4377,7 @@
     ]
   },
   "LTXVImgToVideoInplace": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/ltxv",
     "inputs": {
       "required": {
         "vae": "VAE",
@@ -4091,7 +4393,7 @@
     ]
   },
   "LTXVLatentUpsampler": {
-    "category": "latent/video",
+    "category": "model/latent/ltxv",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -4117,7 +4419,7 @@
     ]
   },
   "LTXVReferenceAudio": {
-    "category": "conditioning/audio",
+    "category": "model/conditioning/ltxv",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -4137,7 +4439,7 @@
     ]
   },
   "LTXVScheduler": {
-    "category": "sampling/schedulers",
+    "category": "model/sampling/schedulers",
     "inputs": {
       "required": {
         "steps": "INT",
@@ -4153,7 +4455,7 @@
     ]
   },
   "LTXVSeparateAVLatent": {
-    "category": "latent/video/ltxv",
+    "category": "model/latent/ltxv",
     "inputs": {
       "required": {
         "av_latent": "LATENT"
@@ -4166,7 +4468,7 @@
     ]
   },
   "LaplaceScheduler": {
-    "category": "sampling/schedulers",
+    "category": "model/sampling/schedulers",
     "inputs": {
       "required": {
         "steps": "INT",
@@ -4182,7 +4484,7 @@
     ]
   },
   "LatentAdd": {
-    "category": "latent/advanced",
+    "category": "model/latent/advanced",
     "inputs": {
       "required": {
         "samples1": "LATENT",
@@ -4195,7 +4497,7 @@
     ]
   },
   "LatentApplyOperation": {
-    "category": "latent/advanced/operations",
+    "category": "model/latent/advanced/operations",
     "inputs": {
       "required": {
         "samples": "LATENT"
@@ -4207,7 +4509,7 @@
     ]
   },
   "LatentApplyOperationCFG": {
-    "category": "latent/advanced/operations",
+    "category": "model/latent/advanced/operations",
     "inputs": {
       "required": {
         "model": "MODEL"
@@ -4219,7 +4521,7 @@
     ]
   },
   "LatentBatch": {
-    "category": "latent/batch",
+    "category": "model/latent/batch",
     "inputs": {
       "required": {
         "samples1": "LATENT",
@@ -4232,7 +4534,7 @@
     ]
   },
   "LatentBatchSeedBehavior": {
-    "category": "latent/advanced",
+    "category": "model/latent/advanced",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -4259,7 +4561,7 @@
     ]
   },
   "LatentComposite": {
-    "category": "latent",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "samples_to": "LATENT",
@@ -4275,7 +4577,7 @@
     ]
   },
   "LatentCompositeMasked": {
-    "category": "latent",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "destination": "LATENT",
@@ -4293,7 +4595,7 @@
     ]
   },
   "LatentConcat": {
-    "category": "latent/advanced",
+    "category": "model/latent/advanced",
     "inputs": {
       "required": {
         "samples1": "LATENT",
@@ -4307,7 +4609,7 @@
     ]
   },
   "LatentCrop": {
-    "category": "latent/transform",
+    "category": "model/latent/transform",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -4323,7 +4625,7 @@
     ]
   },
   "LatentCut": {
-    "category": "latent/advanced",
+    "category": "model/latent/advanced",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -4338,7 +4640,7 @@
     ]
   },
   "LatentCutToBatch": {
-    "category": "latent/advanced",
+    "category": "model/latent/advanced",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -4352,7 +4654,7 @@
     ]
   },
   "LatentFlip": {
-    "category": "latent/transform",
+    "category": "model/latent/transform",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -4365,7 +4667,7 @@
     ]
   },
   "LatentFromBatch": {
-    "category": "latent/batch",
+    "category": "model/latent/batch",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -4379,7 +4681,7 @@
     ]
   },
   "LatentInterpolate": {
-    "category": "latent/advanced",
+    "category": "model/latent/advanced",
     "inputs": {
       "required": {
         "samples1": "LATENT",
@@ -4393,7 +4695,7 @@
     ]
   },
   "LatentMultiply": {
-    "category": "latent/advanced",
+    "category": "model/latent/advanced",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -4406,7 +4708,7 @@
     ]
   },
   "LatentOperationSharpen": {
-    "category": "latent/advanced/operations",
+    "category": "model/latent/advanced/operations",
     "inputs": {
       "required": {
         "sharpen_radius": "INT",
@@ -4418,7 +4720,7 @@
     "outputs": []
   },
   "LatentOperationTonemapReinhard": {
-    "category": "latent/advanced/operations",
+    "category": "model/latent/advanced/operations",
     "inputs": {
       "required": {
         "multiplier": "FLOAT"
@@ -4428,7 +4730,7 @@
     "outputs": []
   },
   "LatentRotate": {
-    "category": "latent/transform",
+    "category": "model/latent/transform",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -4441,7 +4743,7 @@
     ]
   },
   "LatentSubtract": {
-    "category": "latent/advanced",
+    "category": "model/latent/advanced",
     "inputs": {
       "required": {
         "samples1": "LATENT",
@@ -4454,7 +4756,7 @@
     ]
   },
   "LatentUpscale": {
-    "category": "latent",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -4470,7 +4772,7 @@
     ]
   },
   "LatentUpscaleBy": {
-    "category": "latent",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -4484,7 +4786,7 @@
     ]
   },
   "LatentUpscaleModelLoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "model_name": "COMBO"
@@ -4496,7 +4798,7 @@
     ]
   },
   "LazyCache": {
-    "category": "advanced/debug/model",
+    "category": "advanced/debug",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -4542,7 +4844,7 @@
     ]
   },
   "LoadBackgroundRemovalModel": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "bg_removal_name": "COMBO"
@@ -4552,6 +4854,17 @@
     "outputs": [
       "BACKGROUND_REMOVAL"
     ]
+  },
+  "LoadDA3Model": {
+    "category": "model/loaders",
+    "inputs": {
+      "required": {
+        "model_name": "COMBO",
+        "weight_dtype": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": []
   },
   "LoadImage": {
     "category": "image",
@@ -4624,7 +4937,7 @@
     ]
   },
   "LoadMediaPipeFaceLandmarker": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "model_name": "COMBO"
@@ -4634,7 +4947,7 @@
     "outputs": []
   },
   "LoadMoGeModel": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "model_name": "COMBO"
@@ -4644,7 +4957,7 @@
     "outputs": []
   },
   "LoadTrainingDataset": {
-    "category": "training",
+    "category": "model/training",
     "inputs": {
       "required": {
         "folder_name": "STRING"
@@ -4669,7 +4982,7 @@
     ]
   },
   "LoraLoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -4686,7 +4999,7 @@
     ]
   },
   "LoraLoaderBypass": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -4731,7 +5044,7 @@
     ]
   },
   "LoraModelLoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -4761,7 +5074,7 @@
     "outputs": []
   },
   "LossGraphNode": {
-    "category": "training",
+    "category": "model/training",
     "inputs": {
       "required": {
         "filename_prefix": "STRING"
@@ -4771,7 +5084,7 @@
     "outputs": []
   },
   "LotusConditioning": {
-    "category": "conditioning/lotus",
+    "category": "model/conditioning/lotus",
     "inputs": {
       "required": {},
       "optional": {}
@@ -4781,7 +5094,7 @@
     ]
   },
   "LtxvApiImageToVideo": {
-    "category": "api node/video/LTXV",
+    "category": "partner/video/LTXV",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -4800,7 +5113,7 @@
     ]
   },
   "LtxvApiTextToVideo": {
-    "category": "api node/video/LTXV",
+    "category": "partner/video/LTXV",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -4818,7 +5131,7 @@
     ]
   },
   "LumaConceptsNode": {
-    "category": "api node/video/Luma",
+    "category": "partner/video/Luma",
     "inputs": {
       "required": {
         "concept1": "COMBO",
@@ -4831,7 +5144,7 @@
     "outputs": []
   },
   "LumaImageEditNode2": {
-    "category": "api node/image/Luma",
+    "category": "partner/image/Luma",
     "inputs": {
       "required": {
         "source": "IMAGE",
@@ -4845,7 +5158,7 @@
     ]
   },
   "LumaImageModifyNode": {
-    "category": "api node/image/Luma",
+    "category": "partner/image/Luma",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -4861,7 +5174,7 @@
     ]
   },
   "LumaImageNode": {
-    "category": "api node/image/Luma",
+    "category": "partner/image/Luma",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -4880,7 +5193,7 @@
     ]
   },
   "LumaImageNode2": {
-    "category": "api node/image/Luma",
+    "category": "partner/image/Luma",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -4893,7 +5206,7 @@
     ]
   },
   "LumaImageToVideoNode": {
-    "category": "api node/video/Luma",
+    "category": "partner/video/Luma",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -4913,7 +5226,7 @@
     ]
   },
   "LumaReferenceNode": {
-    "category": "api node/image/Luma",
+    "category": "partner/image/Luma",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -4924,7 +5237,7 @@
     "outputs": []
   },
   "LumaVideoNode": {
-    "category": "api node/video/Luma",
+    "category": "partner/video/Luma",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -4942,7 +5255,7 @@
     ]
   },
   "MagnificImageRelightNode": {
-    "category": "api node/image/Magnific",
+    "category": "partner/image/Magnific",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -4962,7 +5275,7 @@
     ]
   },
   "MagnificImageSkinEnhancerNode": {
-    "category": "api node/image/Magnific",
+    "category": "partner/image/Magnific",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -4976,7 +5289,7 @@
     ]
   },
   "MagnificImageStyleTransferNode": {
-    "category": "api node/image/Magnific",
+    "category": "partner/image/Magnific",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -4995,7 +5308,7 @@
     ]
   },
   "MagnificImageUpscalerCreativeNode": {
-    "category": "api node/image/Magnific",
+    "category": "partner/image/Magnific",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -5016,7 +5329,7 @@
     ]
   },
   "MagnificImageUpscalerPreciseV2Node": {
-    "category": "api node/image/Magnific",
+    "category": "partner/image/Magnific",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -5046,7 +5359,7 @@
     ]
   },
   "MakeTrainingDataset": {
-    "category": "training",
+    "category": "model/training",
     "inputs": {
       "required": {
         "images": "IMAGE",
@@ -5151,8 +5464,16 @@
       "IMAGE"
     ]
   },
+  "MergeSplat": {
+    "category": "3d/splat",
+    "inputs": {
+      "required": {},
+      "optional": {}
+    },
+    "outputs": []
+  },
   "MeshyAnimateModelNode": {
-    "category": "api node/3d/Meshy",
+    "category": "partner/3d/Meshy",
     "inputs": {
       "required": {
         "action_id": "INT"
@@ -5164,7 +5485,7 @@
     ]
   },
   "MeshyImageToModelNode": {
-    "category": "api node/3d/Meshy",
+    "category": "partner/3d/Meshy",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -5180,7 +5501,7 @@
     ]
   },
   "MeshyMultiImageToModelNode": {
-    "category": "api node/3d/Meshy",
+    "category": "partner/3d/Meshy",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -5195,7 +5516,7 @@
     ]
   },
   "MeshyRefineNode": {
-    "category": "api node/3d/Meshy",
+    "category": "partner/3d/Meshy",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -5211,7 +5532,7 @@
     ]
   },
   "MeshyRigModelNode": {
-    "category": "api node/3d/Meshy",
+    "category": "partner/3d/Meshy",
     "inputs": {
       "required": {
         "height_meters": "FLOAT"
@@ -5225,7 +5546,7 @@
     ]
   },
   "MeshyTextToModelNode": {
-    "category": "api node/3d/Meshy",
+    "category": "partner/3d/Meshy",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -5242,7 +5563,7 @@
     ]
   },
   "MeshyTextureNode": {
-    "category": "api node/3d/Meshy",
+    "category": "partner/3d/Meshy",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -5259,7 +5580,7 @@
     ]
   },
   "MinimaxHailuoVideoNode": {
-    "category": "api node/video/MiniMax",
+    "category": "partner/video/MiniMax",
     "inputs": {
       "required": {
         "prompt_text": "STRING"
@@ -5277,7 +5598,7 @@
     ]
   },
   "MinimaxImageToVideoNode": {
-    "category": "api node/video/MiniMax",
+    "category": "partner/video/MiniMax",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -5293,7 +5614,7 @@
     ]
   },
   "MinimaxTextToVideoNode": {
-    "category": "api node/video/MiniMax",
+    "category": "partner/video/MiniMax",
     "inputs": {
       "required": {
         "prompt_text": "STRING",
@@ -5308,7 +5629,7 @@
     ]
   },
   "MoGeInference": {
-    "category": "image/geometry_estimation",
+    "category": "image/geometry estimation",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -5323,7 +5644,7 @@
     "outputs": []
   },
   "MoGePanoramaInference": {
-    "category": "image/geometry_estimation",
+    "category": "image/geometry estimation",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -5337,7 +5658,7 @@
     "outputs": []
   },
   "MoGePointMapToMesh": {
-    "category": "image/geometry_estimation",
+    "category": "image/geometry estimation",
     "inputs": {
       "required": {
         "batch_index": "INT",
@@ -5352,7 +5673,7 @@
     ]
   },
   "MoGeRender": {
-    "category": "image/geometry_estimation",
+    "category": "image/geometry estimation",
     "inputs": {
       "required": {
         "output": "COMBO"
@@ -5364,7 +5685,7 @@
     ]
   },
   "ModelComputeDtype": {
-    "category": "advanced/debug/model",
+    "category": "advanced/debug",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -5377,7 +5698,7 @@
     ]
   },
   "ModelMergeAdd": {
-    "category": "advanced/model_merging",
+    "category": "model/merging",
     "inputs": {
       "required": {
         "model1": "MODEL",
@@ -5390,7 +5711,7 @@
     ]
   },
   "ModelMergeAuraflow": {
-    "category": "advanced/model_merging/model_specific",
+    "category": "model/merging/model specific",
     "inputs": {
       "required": {},
       "optional": {}
@@ -5398,7 +5719,7 @@
     "outputs": []
   },
   "ModelMergeBlocks": {
-    "category": "advanced/model_merging",
+    "category": "model/merging",
     "inputs": {
       "required": {
         "model1": "MODEL",
@@ -5414,7 +5735,7 @@
     ]
   },
   "ModelMergeCosmos14B": {
-    "category": "advanced/model_merging/model_specific",
+    "category": "model/merging/model specific",
     "inputs": {
       "required": {},
       "optional": {}
@@ -5422,7 +5743,7 @@
     "outputs": []
   },
   "ModelMergeCosmos7B": {
-    "category": "advanced/model_merging/model_specific",
+    "category": "model/merging/model specific",
     "inputs": {
       "required": {},
       "optional": {}
@@ -5430,7 +5751,7 @@
     "outputs": []
   },
   "ModelMergeCosmosPredict2_14B": {
-    "category": "advanced/model_merging/model_specific",
+    "category": "model/merging/model specific",
     "inputs": {
       "required": {},
       "optional": {}
@@ -5438,7 +5759,7 @@
     "outputs": []
   },
   "ModelMergeCosmosPredict2_2B": {
-    "category": "advanced/model_merging/model_specific",
+    "category": "model/merging/model specific",
     "inputs": {
       "required": {},
       "optional": {}
@@ -5446,7 +5767,7 @@
     "outputs": []
   },
   "ModelMergeFlux1": {
-    "category": "advanced/model_merging/model_specific",
+    "category": "model/merging/model specific",
     "inputs": {
       "required": {},
       "optional": {}
@@ -5454,7 +5775,7 @@
     "outputs": []
   },
   "ModelMergeLTXV": {
-    "category": "advanced/model_merging/model_specific",
+    "category": "model/merging/model specific",
     "inputs": {
       "required": {},
       "optional": {}
@@ -5462,7 +5783,7 @@
     "outputs": []
   },
   "ModelMergeMochiPreview": {
-    "category": "advanced/model_merging/model_specific",
+    "category": "model/merging/model specific",
     "inputs": {
       "required": {},
       "optional": {}
@@ -5470,7 +5791,7 @@
     "outputs": []
   },
   "ModelMergeQwenImage": {
-    "category": "advanced/model_merging/model_specific",
+    "category": "model/merging/model specific",
     "inputs": {
       "required": {},
       "optional": {}
@@ -5478,7 +5799,7 @@
     "outputs": []
   },
   "ModelMergeSD1": {
-    "category": "advanced/model_merging/model_specific",
+    "category": "model/merging/model specific",
     "inputs": {
       "required": {},
       "optional": {}
@@ -5486,7 +5807,7 @@
     "outputs": []
   },
   "ModelMergeSD2": {
-    "category": "advanced/model_merging/model_specific",
+    "category": "model/merging/model specific",
     "inputs": {
       "required": {},
       "optional": {}
@@ -5494,7 +5815,7 @@
     "outputs": []
   },
   "ModelMergeSD35_Large": {
-    "category": "advanced/model_merging/model_specific",
+    "category": "model/merging/model specific",
     "inputs": {
       "required": {},
       "optional": {}
@@ -5502,7 +5823,7 @@
     "outputs": []
   },
   "ModelMergeSD3_2B": {
-    "category": "advanced/model_merging/model_specific",
+    "category": "model/merging/model specific",
     "inputs": {
       "required": {},
       "optional": {}
@@ -5510,7 +5831,7 @@
     "outputs": []
   },
   "ModelMergeSDXL": {
-    "category": "advanced/model_merging/model_specific",
+    "category": "model/merging/model specific",
     "inputs": {
       "required": {},
       "optional": {}
@@ -5518,7 +5839,7 @@
     "outputs": []
   },
   "ModelMergeSimple": {
-    "category": "advanced/model_merging",
+    "category": "model/merging",
     "inputs": {
       "required": {
         "model1": "MODEL",
@@ -5532,7 +5853,7 @@
     ]
   },
   "ModelMergeSubtract": {
-    "category": "advanced/model_merging",
+    "category": "model/merging",
     "inputs": {
       "required": {
         "model1": "MODEL",
@@ -5546,7 +5867,7 @@
     ]
   },
   "ModelMergeWAN2_1": {
-    "category": "advanced/model_merging/model_specific",
+    "category": "model/merging/model specific",
     "inputs": {
       "required": {},
       "optional": {}
@@ -5554,7 +5875,7 @@
     "outputs": []
   },
   "ModelNoiseScale": {
-    "category": "advanced/model",
+    "category": "model/patch",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -5567,7 +5888,7 @@
     ]
   },
   "ModelPatchLoader": {
-    "category": "advanced/loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "name": "COMBO"
@@ -5579,7 +5900,7 @@
     ]
   },
   "ModelSamplingAuraFlow": {
-    "category": "",
+    "category": "model/patch",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -5590,7 +5911,7 @@
     "outputs": []
   },
   "ModelSamplingContinuousEDM": {
-    "category": "advanced/model",
+    "category": "model/patch",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -5605,7 +5926,7 @@
     ]
   },
   "ModelSamplingContinuousV": {
-    "category": "advanced/model",
+    "category": "model/patch",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -5620,7 +5941,7 @@
     ]
   },
   "ModelSamplingDiscrete": {
-    "category": "advanced/model",
+    "category": "model/patch",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -5634,7 +5955,7 @@
     ]
   },
   "ModelSamplingFlux": {
-    "category": "advanced/model",
+    "category": "model/patch/flux",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -5650,7 +5971,7 @@
     ]
   },
   "ModelSamplingLTXV": {
-    "category": "advanced/model",
+    "category": "model/patch/ltxv",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -5666,7 +5987,7 @@
     ]
   },
   "ModelSamplingSD3": {
-    "category": "advanced/model",
+    "category": "model/patch/stable diffusion",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -5679,7 +6000,7 @@
     ]
   },
   "ModelSamplingStableCascade": {
-    "category": "advanced/model",
+    "category": "model/patch/stable cascade",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -5692,7 +6013,7 @@
     ]
   },
   "ModelSave": {
-    "category": "advanced/model_merging",
+    "category": "model/merging",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -5716,6 +6037,19 @@
       "IMAGE"
     ]
   },
+  "MultiGPU_WorkUnits": {
+    "category": "advanced/multigpu",
+    "inputs": {
+      "required": {
+        "model": "MODEL",
+        "max_gpus": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "MODEL"
+    ]
+  },
   "NAGuidance": {
     "category": "advanced/guidance",
     "inputs": {
@@ -5732,7 +6066,7 @@
     ]
   },
   "NormalizeVideoLatentStart": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning",
     "inputs": {
       "required": {
         "latent": "LATENT",
@@ -5746,7 +6080,7 @@
     ]
   },
   "OpenAIChatConfig": {
-    "category": "api node/text/OpenAI",
+    "category": "partner/text/OpenAI",
     "inputs": {
       "required": {
         "truncation": "COMBO"
@@ -5759,7 +6093,7 @@
     "outputs": []
   },
   "OpenAIChatNode": {
-    "category": "api node/text/OpenAI",
+    "category": "partner/text/OpenAI",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -5775,7 +6109,7 @@
     ]
   },
   "OpenAIDalle2": {
-    "category": "api node/image/OpenAI",
+    "category": "partner/image/OpenAI",
     "inputs": {
       "required": {
         "prompt": "STRING"
@@ -5793,7 +6127,7 @@
     ]
   },
   "OpenAIDalle3": {
-    "category": "api node/image/OpenAI",
+    "category": "partner/image/OpenAI",
     "inputs": {
       "required": {
         "prompt": "STRING"
@@ -5810,7 +6144,7 @@
     ]
   },
   "OpenAIGPTImage1": {
-    "category": "api node/image/OpenAI",
+    "category": "partner/image/OpenAI",
     "inputs": {
       "required": {
         "prompt": "STRING"
@@ -5833,7 +6167,7 @@
     ]
   },
   "OpenAIGPTImageNodeV2": {
-    "category": "api node/image/OpenAI",
+    "category": "partner/image/OpenAI",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -5847,7 +6181,7 @@
     ]
   },
   "OpenAIInputFiles": {
-    "category": "api node/text/OpenAI",
+    "category": "partner/text/OpenAI",
     "inputs": {
       "required": {
         "file": "COMBO"
@@ -5857,7 +6191,7 @@
     "outputs": []
   },
   "OpenAIVideoSora2": {
-    "category": "api node/video/Sora",
+    "category": "partner/video/Sora",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -5875,7 +6209,7 @@
     ]
   },
   "OpenRouterLLMNode": {
-    "category": "api node/text/OpenRouter",
+    "category": "partner/text/OpenRouter",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -5890,7 +6224,7 @@
     ]
   },
   "OpticalFlowLoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "model_name": "COMBO"
@@ -5900,7 +6234,7 @@
     "outputs": []
   },
   "OptimalStepsScheduler": {
-    "category": "sampling/schedulers",
+    "category": "model/sampling/schedulers",
     "inputs": {
       "required": {
         "model_type": "COMBO",
@@ -5931,7 +6265,7 @@
     ]
   },
   "PatchModelAddDownscale": {
-    "category": "model_patches/unet",
+    "category": "model/patch/unet",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -5981,7 +6315,7 @@
     ]
   },
   "PerturbedAttentionGuidance": {
-    "category": "model_patches/unet",
+    "category": "model/patch/unet",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -6017,8 +6351,23 @@
     },
     "outputs": []
   },
+  "PiDConditioning": {
+    "category": "model/conditioning",
+    "inputs": {
+      "required": {
+        "positive": "CONDITIONING",
+        "latent": "LATENT",
+        "latent_format": "COMBO",
+        "degrade_sigma": "FLOAT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "CONDITIONING"
+    ]
+  },
   "PixverseImageToVideoNode": {
-    "category": "api node/video/PixVerse",
+    "category": "partner/video/PixVerse",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -6037,7 +6386,7 @@
     ]
   },
   "PixverseTemplateNode": {
-    "category": "api node/video/PixVerse",
+    "category": "partner/video/PixVerse",
     "inputs": {
       "required": {
         "template": "COMBO"
@@ -6047,7 +6396,7 @@
     "outputs": []
   },
   "PixverseTextToVideoNode": {
-    "category": "api node/video/PixVerse",
+    "category": "partner/video/PixVerse",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -6066,7 +6415,7 @@
     ]
   },
   "PixverseTransitionVideoNode": {
-    "category": "api node/video/PixVerse",
+    "category": "partner/video/PixVerse",
     "inputs": {
       "required": {
         "first_frame": "IMAGE",
@@ -6086,7 +6435,7 @@
     ]
   },
   "PolyexponentialScheduler": {
-    "category": "sampling/schedulers",
+    "category": "model/sampling/schedulers",
     "inputs": {
       "required": {
         "steps": "INT",
@@ -6127,8 +6476,23 @@
     },
     "outputs": []
   },
+  "Preview3DAdvanced": {
+    "category": "3d",
+    "inputs": {
+      "required": {
+        "model_3d": "MULTITYPE",
+        "width": "INT",
+        "height": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "INT",
+      "INT"
+    ]
+  },
   "PreviewAny": {
-    "category": "utils",
+    "category": "utilities",
     "inputs": {
       "required": {
         "source": "ANY"
@@ -6149,6 +6513,21 @@
     },
     "outputs": []
   },
+  "PreviewGaussianSplat": {
+    "category": "3d",
+    "inputs": {
+      "required": {
+        "model_3d": "MULTITYPE",
+        "width": "INT",
+        "height": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "INT",
+      "INT"
+    ]
+  },
   "PreviewImage": {
     "category": "",
     "inputs": {
@@ -6159,8 +6538,23 @@
     },
     "outputs": []
   },
+  "PreviewPointCloud": {
+    "category": "3d",
+    "inputs": {
+      "required": {
+        "model_3d": "MULTITYPE",
+        "width": "INT",
+        "height": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "INT",
+      "INT"
+    ]
+  },
   "PrimitiveBoolean": {
-    "category": "utils/primitive",
+    "category": "utilities/primitive",
     "inputs": {
       "required": {
         "value": "BOOLEAN"
@@ -6172,7 +6566,7 @@
     ]
   },
   "PrimitiveBoundingBox": {
-    "category": "utils/primitive",
+    "category": "utilities/primitive",
     "inputs": {
       "required": {
         "x": "INT",
@@ -6185,7 +6579,7 @@
     "outputs": []
   },
   "PrimitiveFloat": {
-    "category": "utils/primitive",
+    "category": "utilities/primitive",
     "inputs": {
       "required": {
         "value": "FLOAT"
@@ -6197,7 +6591,7 @@
     ]
   },
   "PrimitiveInt": {
-    "category": "utils/primitive",
+    "category": "utilities/primitive",
     "inputs": {
       "required": {
         "value": "INT"
@@ -6209,7 +6603,7 @@
     ]
   },
   "PrimitiveString": {
-    "category": "utils/primitive",
+    "category": "utilities/primitive",
     "inputs": {
       "required": {
         "value": "STRING"
@@ -6221,7 +6615,7 @@
     ]
   },
   "PrimitiveStringMultiline": {
-    "category": "utils/primitive",
+    "category": "utilities/primitive",
     "inputs": {
       "required": {
         "value": "STRING"
@@ -6233,7 +6627,7 @@
     ]
   },
   "QuadrupleCLIPLoader": {
-    "category": "advanced/loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "clip_name1": "COMBO",
@@ -6248,7 +6642,7 @@
     ]
   },
   "QuiverImageToSVGNode": {
-    "category": "api node/image/Quiver",
+    "category": "partner/image/Quiver",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -6260,7 +6654,7 @@
     "outputs": []
   },
   "QuiverTextToSVGNode": {
-    "category": "api node/image/Quiver",
+    "category": "partner/image/Quiver",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -6273,7 +6667,7 @@
     "outputs": []
   },
   "QwenImageDiffsynthControlnet": {
-    "category": "advanced/loaders/qwen",
+    "category": "model/patch/qwen",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -6305,7 +6699,7 @@
     "outputs": []
   },
   "RandomNoise": {
-    "category": "sampling/noise",
+    "category": "model/sampling/noise",
     "inputs": {
       "required": {
         "noise_seed": "INT"
@@ -6330,7 +6724,7 @@
     ]
   },
   "RebatchLatents": {
-    "category": "latent/batch",
+    "category": "model/latent/batch",
     "inputs": {
       "required": {
         "latents": "LATENT",
@@ -6353,7 +6747,7 @@
     ]
   },
   "RecraftColorRGB": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "r": "INT",
@@ -6365,7 +6759,7 @@
     "outputs": []
   },
   "RecraftControls": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {},
       "optional": {}
@@ -6373,7 +6767,7 @@
     "outputs": []
   },
   "RecraftCreateStyleNode": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "style": "COMBO"
@@ -6385,7 +6779,7 @@
     ]
   },
   "RecraftCreativeUpscaleNode": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "image": "IMAGE"
@@ -6397,7 +6791,7 @@
     ]
   },
   "RecraftCrispUpscaleNode": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "image": "IMAGE"
@@ -6409,7 +6803,7 @@
     ]
   },
   "RecraftImageInpaintingNode": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -6427,7 +6821,7 @@
     ]
   },
   "RecraftImageToImageNode": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -6445,7 +6839,7 @@
     ]
   },
   "RecraftRemoveBackgroundNode": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "image": "IMAGE"
@@ -6458,7 +6852,7 @@
     ]
   },
   "RecraftReplaceBackgroundNode": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -6475,7 +6869,7 @@
     ]
   },
   "RecraftStyleV3DigitalIllustration": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "substyle": "COMBO"
@@ -6485,7 +6879,7 @@
     "outputs": []
   },
   "RecraftStyleV3InfiniteStyleLibrary": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "style_id": "STRING"
@@ -6495,7 +6889,7 @@
     "outputs": []
   },
   "RecraftStyleV3LogoRaster": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "substyle": "COMBO"
@@ -6505,7 +6899,7 @@
     "outputs": []
   },
   "RecraftStyleV3RealisticImage": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "substyle": "COMBO"
@@ -6515,7 +6909,7 @@
     "outputs": []
   },
   "RecraftTextToImageNode": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -6532,7 +6926,7 @@
     ]
   },
   "RecraftTextToVectorNode": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -6548,7 +6942,7 @@
     "outputs": []
   },
   "RecraftV4TextToImageNode": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -6563,7 +6957,7 @@
     ]
   },
   "RecraftV4TextToVectorNode": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -6576,7 +6970,7 @@
     "outputs": []
   },
   "RecraftVectorizeImageNode": {
-    "category": "api node/image/Recraft",
+    "category": "partner/image/Recraft",
     "inputs": {
       "required": {
         "image": "IMAGE"
@@ -6586,7 +6980,7 @@
     "outputs": []
   },
   "ReferenceLatent": {
-    "category": "advanced/conditioning/edit_models",
+    "category": "model/conditioning",
     "inputs": {
       "required": {
         "conditioning": "CONDITIONING"
@@ -6600,7 +6994,7 @@
     ]
   },
   "ReferenceTimbreAudio": {
-    "category": "advanced/conditioning/audio",
+    "category": "model/conditioning",
     "inputs": {
       "required": {
         "conditioning": "CONDITIONING"
@@ -6670,8 +7064,8 @@
     "category": "image/background removal",
     "inputs": {
       "required": {
-        "image": "IMAGE",
-        "bg_removal_model": "BACKGROUND_REMOVAL"
+        "bg_removal_model": "BACKGROUND_REMOVAL",
+        "image": "IMAGE"
       },
       "optional": {}
     },
@@ -6679,8 +7073,30 @@
       "MASK"
     ]
   },
+  "RenderSplat": {
+    "category": "3d/splat",
+    "inputs": {
+      "required": {
+        "width": "INT",
+        "height": "INT",
+        "frames": "INT",
+        "splat_scale": "FLOAT",
+        "sharpen": "FLOAT",
+        "headlight_shading": "FLOAT",
+        "opacity_threshold": "FLOAT",
+        "render_style": "COMBO"
+      },
+      "optional": {
+        "bg_image": "IMAGE"
+      }
+    },
+    "outputs": [
+      "IMAGE",
+      "MASK"
+    ]
+  },
   "RenormCFG": {
-    "category": "advanced/model",
+    "category": "model/patch",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -6707,7 +7123,7 @@
     ]
   },
   "RepeatLatentBatch": {
-    "category": "latent/batch",
+    "category": "model/latent/batch",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -6720,7 +7136,7 @@
     ]
   },
   "ReplaceVideoLatentFrames": {
-    "category": "latent/batch",
+    "category": "model/latent/batch",
     "inputs": {
       "required": {
         "destination": "LATENT",
@@ -6735,7 +7151,7 @@
     ]
   },
   "RescaleCFG": {
-    "category": "advanced/model",
+    "category": "model/patch",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -6774,7 +7190,7 @@
     "outputs": []
   },
   "ResolutionBucket": {
-    "category": "training",
+    "category": "model/training",
     "inputs": {
       "required": {
         "latents": "LATENT",
@@ -6788,7 +7204,7 @@
     ]
   },
   "ResolutionSelector": {
-    "category": "utils",
+    "category": "utilities",
     "inputs": {
       "required": {
         "aspect_ratio": "COMBO",
@@ -6802,7 +7218,7 @@
     ]
   },
   "ReveImageCreateNode": {
-    "category": "api node/image/Reve",
+    "category": "partner/image/Reve",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -6815,7 +7231,7 @@
     ]
   },
   "ReveImageEditNode": {
-    "category": "api node/image/Reve",
+    "category": "partner/image/Reve",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -6829,7 +7245,7 @@
     ]
   },
   "ReveImageRemixNode": {
-    "category": "api node/image/Reve",
+    "category": "partner/image/Reve",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -6842,7 +7258,7 @@
     ]
   },
   "Rodin3D_Detail": {
-    "category": "api node/3d/Rodin",
+    "category": "partner/3d/Rodin",
     "inputs": {
       "required": {
         "Images": "IMAGE"
@@ -6854,7 +7270,7 @@
     ]
   },
   "Rodin3D_Gen2": {
-    "category": "api node/3d/Rodin",
+    "category": "partner/3d/Rodin",
     "inputs": {
       "required": {
         "Images": "IMAGE",
@@ -6871,7 +7287,7 @@
     ]
   },
   "Rodin3D_Gen25_Image": {
-    "category": "api node/3d/Rodin",
+    "category": "partner/3d/Rodin",
     "inputs": {
       "required": {},
       "optional": {}
@@ -6879,7 +7295,7 @@
     "outputs": []
   },
   "Rodin3D_Gen25_Text": {
-    "category": "api node/3d/Rodin",
+    "category": "partner/3d/Rodin",
     "inputs": {
       "required": {
         "prompt": "STRING"
@@ -6889,7 +7305,7 @@
     "outputs": []
   },
   "Rodin3D_Regular": {
-    "category": "api node/3d/Rodin",
+    "category": "partner/3d/Rodin",
     "inputs": {
       "required": {
         "Images": "IMAGE"
@@ -6901,7 +7317,7 @@
     ]
   },
   "Rodin3D_Sketch": {
-    "category": "api node/3d/Rodin",
+    "category": "partner/3d/Rodin",
     "inputs": {
       "required": {
         "Images": "IMAGE"
@@ -6915,7 +7331,7 @@
     ]
   },
   "Rodin3D_Smooth": {
-    "category": "api node/3d/Rodin",
+    "category": "partner/3d/Rodin",
     "inputs": {
       "required": {
         "Images": "IMAGE"
@@ -6926,8 +7342,43 @@
       "STRING"
     ]
   },
+  "RunwayAleph2KeyframeNode": {
+    "category": "partner/video/Runway",
+    "inputs": {
+      "required": {
+        "image": "IMAGE"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
+  "RunwayAleph2PromptImageNode": {
+    "category": "partner/video/Runway",
+    "inputs": {
+      "required": {
+        "image": "IMAGE"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
+  "RunwayAleph2VideoToVideoNode": {
+    "category": "partner/video/Runway",
+    "inputs": {
+      "required": {
+        "prompt": "STRING",
+        "video": "VIDEO",
+        "seed": "INT",
+        "public_figure_threshold": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO"
+    ]
+  },
   "RunwayFirstLastFrameNode": {
-    "category": "api node/video/Runway",
+    "category": "partner/video/Runway",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -6944,7 +7395,7 @@
     ]
   },
   "RunwayImageToVideoNodeGen3a": {
-    "category": "api node/video/Runway",
+    "category": "partner/video/Runway",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -6960,7 +7411,7 @@
     ]
   },
   "RunwayImageToVideoNodeGen4": {
-    "category": "api node/video/Runway",
+    "category": "partner/video/Runway",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -6976,7 +7427,7 @@
     ]
   },
   "RunwayTextToImageNode": {
-    "category": "api node/image/Runway",
+    "category": "partner/image/Runway",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -7052,6 +7503,23 @@
     },
     "outputs": []
   },
+  "SCAIL2ColoredMask": {
+    "category": "model/conditioning/wan/scail",
+    "inputs": {
+      "required": {
+        "object_indices": "STRING",
+        "sort_by": "COMBO",
+        "replacement_mode": "BOOLEAN"
+      },
+      "optional": {
+        "ref_track_data": "MULTITYPE"
+      }
+    },
+    "outputs": [
+      "IMAGE",
+      "IMAGE"
+    ]
+  },
   "SDPoseDrawKeypoints": {
     "category": "image/detection",
     "inputs": {
@@ -7062,7 +7530,8 @@
         "draw_feet": "BOOLEAN",
         "stick_width": "INT",
         "face_point_size": "INT",
-        "score_threshold": "FLOAT"
+        "score_threshold": "FLOAT",
+        "draw_head": "BOOLEAN"
       },
       "optional": {}
     },
@@ -7095,7 +7564,7 @@
     "outputs": []
   },
   "SDTurboScheduler": {
-    "category": "sampling/schedulers",
+    "category": "model/sampling/schedulers",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -7109,7 +7578,7 @@
     ]
   },
   "SD_4XUpscale_Conditioning": {
-    "category": "conditioning/upscale_diffusion",
+    "category": "model/conditioning/stable diffusion upscaler",
     "inputs": {
       "required": {
         "images": "IMAGE",
@@ -7135,7 +7604,7 @@
     "outputs": []
   },
   "SV3D_Conditioning": {
-    "category": "conditioning/3d_models",
+    "category": "model/conditioning/stable video 3d",
     "inputs": {
       "required": {
         "clip_vision": "CLIP_VISION",
@@ -7155,7 +7624,7 @@
     ]
   },
   "SVD_img2vid_Conditioning": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/stable video",
     "inputs": {
       "required": {
         "clip_vision": "CLIP_VISION",
@@ -7177,7 +7646,7 @@
     ]
   },
   "SamplerARVideo": {
-    "category": "sampling/samplers",
+    "category": "model/sampling/samplers",
     "inputs": {
       "required": {
         "num_frame_per_block": "INT"
@@ -7189,7 +7658,7 @@
     ]
   },
   "SamplerCustom": {
-    "category": "sampling/custom_sampling",
+    "category": "model/sampling/custom",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -7210,7 +7679,7 @@
     ]
   },
   "SamplerCustomAdvanced": {
-    "category": "sampling/custom_sampling",
+    "category": "model/sampling/custom",
     "inputs": {
       "required": {
         "noise": "NOISE",
@@ -7227,7 +7696,7 @@
     ]
   },
   "SamplerDPMAdaptative": {
-    "category": "sampling/samplers",
+    "category": "model/sampling/samplers",
     "inputs": {
       "required": {
         "order": "INT",
@@ -7248,7 +7717,7 @@
     ]
   },
   "SamplerDPMPP_2M_SDE": {
-    "category": "sampling/samplers",
+    "category": "model/sampling/samplers",
     "inputs": {
       "required": {
         "solver_type": "COMBO",
@@ -7263,7 +7732,7 @@
     ]
   },
   "SamplerDPMPP_2S_Ancestral": {
-    "category": "sampling/samplers",
+    "category": "model/sampling/samplers",
     "inputs": {
       "required": {
         "eta": "FLOAT",
@@ -7276,7 +7745,7 @@
     ]
   },
   "SamplerDPMPP_3M_SDE": {
-    "category": "sampling/samplers",
+    "category": "model/sampling/samplers",
     "inputs": {
       "required": {
         "eta": "FLOAT",
@@ -7290,7 +7759,7 @@
     ]
   },
   "SamplerDPMPP_SDE": {
-    "category": "sampling/samplers",
+    "category": "model/sampling/samplers",
     "inputs": {
       "required": {
         "eta": "FLOAT",
@@ -7305,7 +7774,7 @@
     ]
   },
   "SamplerER_SDE": {
-    "category": "sampling/samplers",
+    "category": "model/sampling/samplers",
     "inputs": {
       "required": {
         "solver_type": "COMBO",
@@ -7320,7 +7789,7 @@
     ]
   },
   "SamplerEulerAncestral": {
-    "category": "sampling/samplers",
+    "category": "model/sampling/samplers",
     "inputs": {
       "required": {
         "eta": "FLOAT",
@@ -7333,7 +7802,7 @@
     ]
   },
   "SamplerEulerAncestralCFGPP": {
-    "category": "sampling/samplers",
+    "category": "model/sampling/samplers",
     "inputs": {
       "required": {
         "eta": "FLOAT",
@@ -7358,7 +7827,7 @@
     ]
   },
   "SamplerLCM": {
-    "category": "sampling/samplers",
+    "category": "model/sampling/samplers",
     "inputs": {
       "required": {
         "s_noise": "FLOAT",
@@ -7372,7 +7841,7 @@
     ]
   },
   "SamplerLCMUpscale": {
-    "category": "sampling/samplers",
+    "category": "model/sampling/samplers",
     "inputs": {
       "required": {
         "scale_ratio": "FLOAT",
@@ -7386,7 +7855,7 @@
     ]
   },
   "SamplerLMS": {
-    "category": "sampling/samplers",
+    "category": "model/sampling/samplers",
     "inputs": {
       "required": {
         "order": "INT"
@@ -7398,7 +7867,7 @@
     ]
   },
   "SamplerSASolver": {
-    "category": "sampling/samplers",
+    "category": "model/sampling/samplers",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -7418,7 +7887,7 @@
     ]
   },
   "SamplerSEEDS2": {
-    "category": "sampling/samplers",
+    "category": "model/sampling/samplers",
     "inputs": {
       "required": {
         "solver_type": "COMBO",
@@ -7433,7 +7902,7 @@
     ]
   },
   "SamplingPercentToSigma": {
-    "category": "sampling/sigmas",
+    "category": "model/sampling/sigmas",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -7475,6 +7944,17 @@
     "outputs": []
   },
   "SaveAudio": {
+    "category": "audio",
+    "inputs": {
+      "required": {
+        "audio": "AUDIO",
+        "filename_prefix": "STRING"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
+  "SaveAudioAdvanced": {
     "category": "audio",
     "inputs": {
       "required": {
@@ -7547,7 +8027,8 @@
       "required": {
         "images": "IMAGE",
         "folder_name": "STRING",
-        "filename_prefix": "STRING"
+        "filename_prefix": "STRING",
+        "mode": "COMBO"
       },
       "optional": {}
     },
@@ -7559,7 +8040,8 @@
       "required": {
         "images": "IMAGE",
         "folder_name": "STRING",
-        "filename_prefix": "STRING"
+        "filename_prefix": "STRING",
+        "mode": "COMBO"
       },
       "optional": {
         "texts": "STRING"
@@ -7579,7 +8061,7 @@
     "outputs": []
   },
   "SaveLoRA": {
-    "category": "advanced/model_merging",
+    "category": "model/merging",
     "inputs": {
       "required": {
         "prefix": "STRING"
@@ -7601,7 +8083,7 @@
     "outputs": []
   },
   "SaveTrainingDataset": {
-    "category": "training",
+    "category": "model/training",
     "inputs": {
       "required": {
         "latents": "LATENT",
@@ -7641,7 +8123,7 @@
     "outputs": []
   },
   "ScaleROPE": {
-    "category": "advanced/model_patches",
+    "category": "model/patch",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -7656,6 +8138,45 @@
     },
     "outputs": [
       "MODEL"
+    ]
+  },
+  "SelectCLIPDevice": {
+    "category": "advanced/multigpu",
+    "inputs": {
+      "required": {
+        "clip": "CLIP",
+        "device": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "CLIP"
+    ]
+  },
+  "SelectModelDevice": {
+    "category": "advanced/multigpu",
+    "inputs": {
+      "required": {
+        "model": "MODEL",
+        "device": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "MODEL"
+    ]
+  },
+  "SelectVAEDevice": {
+    "category": "advanced/multigpu",
+    "inputs": {
+      "required": {
+        "vae": "VAE",
+        "device": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VAE"
     ]
   },
   "SelfAttentionGuidance": {
@@ -7673,7 +8194,7 @@
     ]
   },
   "SetFirstSigma": {
-    "category": "sampling/sigmas",
+    "category": "model/sampling/sigmas",
     "inputs": {
       "required": {
         "sigmas": "SIGMAS",
@@ -7686,7 +8207,7 @@
     ]
   },
   "SetLatentNoiseMask": {
-    "category": "latent/inpaint",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -7699,7 +8220,7 @@
     ]
   },
   "SetUnionControlNetType": {
-    "category": "conditioning/controlnet",
+    "category": "model/conditioning/controlnet",
     "inputs": {
       "required": {
         "control_net": "CONTROL_NET",
@@ -7791,7 +8312,7 @@
     ]
   },
   "SoniloTextToMusic": {
-    "category": "api node/audio/Sonilo",
+    "category": "partner/audio/Sonilo",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -7805,7 +8326,7 @@
     ]
   },
   "SoniloVideoToMusic": {
-    "category": "api node/audio/Sonilo",
+    "category": "partner/audio/Sonilo",
     "inputs": {
       "required": {
         "video": "VIDEO",
@@ -7816,6 +8337,34 @@
     },
     "outputs": [
       "AUDIO"
+    ]
+  },
+  "SplatToFile3D": {
+    "category": "3d/splat",
+    "inputs": {
+      "required": {
+        "format": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
+  "SplatToMesh": {
+    "category": "3d/splat",
+    "inputs": {
+      "required": {
+        "resolution": "INT",
+        "kernel": "INT",
+        "smooth": "INT",
+        "level": "FLOAT",
+        "min_component": "INT",
+        "min_opacity": "FLOAT",
+        "color_sharpen": "FLOAT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "MESH"
     ]
   },
   "SplitAudioChannels": {
@@ -7860,7 +8409,7 @@
     ]
   },
   "SplitSigmas": {
-    "category": "sampling/sigmas",
+    "category": "model/sampling/sigmas",
     "inputs": {
       "required": {
         "sigmas": "SIGMAS",
@@ -7874,7 +8423,7 @@
     ]
   },
   "SplitSigmasDenoise": {
-    "category": "sampling/sigmas",
+    "category": "model/sampling/sigmas",
     "inputs": {
       "required": {
         "sigmas": "SIGMAS",
@@ -7888,7 +8437,7 @@
     ]
   },
   "StabilityAudioInpaint": {
-    "category": "api node/audio/Stability AI",
+    "category": "partner/audio/Stability AI",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -7908,7 +8457,7 @@
     ]
   },
   "StabilityAudioToAudio": {
-    "category": "api node/audio/Stability AI",
+    "category": "partner/audio/Stability AI",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -7927,7 +8476,7 @@
     ]
   },
   "StabilityStableImageSD_3_5Node": {
-    "category": "api node/image/Stability AI",
+    "category": "partner/image/Stability AI",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -7948,7 +8497,7 @@
     ]
   },
   "StabilityStableImageUltraNode": {
-    "category": "api node/image/Stability AI",
+    "category": "partner/image/Stability AI",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -7967,7 +8516,7 @@
     ]
   },
   "StabilityTextToAudio": {
-    "category": "api node/audio/Stability AI",
+    "category": "partner/audio/Stability AI",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -7984,7 +8533,7 @@
     ]
   },
   "StabilityUpscaleConservativeNode": {
-    "category": "api node/image/Stability AI",
+    "category": "partner/image/Stability AI",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -8001,7 +8550,7 @@
     ]
   },
   "StabilityUpscaleCreativeNode": {
-    "category": "api node/image/Stability AI",
+    "category": "partner/image/Stability AI",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -8019,7 +8568,7 @@
     ]
   },
   "StabilityUpscaleFastNode": {
-    "category": "api node/image/Stability AI",
+    "category": "partner/image/Stability AI",
     "inputs": {
       "required": {
         "image": "IMAGE"
@@ -8031,7 +8580,7 @@
     ]
   },
   "StableCascade_EmptyLatentImage": {
-    "category": "latent/stable_cascade",
+    "category": "model/latent/stable cascade",
     "inputs": {
       "required": {
         "width": "INT",
@@ -8047,7 +8596,7 @@
     ]
   },
   "StableCascade_StageB_Conditioning": {
-    "category": "conditioning/stable_cascade",
+    "category": "model/conditioning/stable cascade",
     "inputs": {
       "required": {
         "conditioning": "CONDITIONING",
@@ -8060,7 +8609,7 @@
     ]
   },
   "StableCascade_StageC_VAEEncode": {
-    "category": "latent/stable_cascade",
+    "category": "model/latent/stable cascade",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -8090,7 +8639,7 @@
     ]
   },
   "StableZero123_Conditioning": {
-    "category": "conditioning/3d_models",
+    "category": "model/conditioning/stable zero123",
     "inputs": {
       "required": {
         "clip_vision": "CLIP_VISION",
@@ -8111,7 +8660,7 @@
     ]
   },
   "StableZero123_Conditioning_Batched": {
-    "category": "conditioning/3d_models",
+    "category": "model/conditioning/stable zero123",
     "inputs": {
       "required": {
         "clip_vision": "CLIP_VISION",
@@ -8242,7 +8791,7 @@
     ]
   },
   "StyleModelApply": {
-    "category": "conditioning/style_model",
+    "category": "model/conditioning",
     "inputs": {
       "required": {
         "conditioning": "CONDITIONING",
@@ -8258,7 +8807,7 @@
     ]
   },
   "StyleModelLoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "style_model_name": "COMBO"
@@ -8296,7 +8845,7 @@
     ]
   },
   "TemporalScoreRescaling": {
-    "category": "model_patches/unet",
+    "category": "model/patch/unet",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -8310,7 +8859,7 @@
     ]
   },
   "Tencent3DPartNode": {
-    "category": "api node/3d/Tencent",
+    "category": "partner/3d/Tencent",
     "inputs": {
       "required": {
         "model_3d": "MULTITYPE",
@@ -8321,7 +8870,7 @@
     "outputs": []
   },
   "Tencent3DTextureEditNode": {
-    "category": "api node/3d/Tencent",
+    "category": "partner/3d/Tencent",
     "inputs": {
       "required": {
         "model_3d": "MULTITYPE",
@@ -8335,7 +8884,7 @@
     ]
   },
   "TencentImageToModelNode": {
-    "category": "api node/3d/Tencent",
+    "category": "partner/3d/Tencent",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -8358,7 +8907,7 @@
     ]
   },
   "TencentModelTo3DUVNode": {
-    "category": "api node/3d/Tencent",
+    "category": "partner/3d/Tencent",
     "inputs": {
       "required": {
         "model_3d": "MULTITYPE",
@@ -8371,7 +8920,7 @@
     ]
   },
   "TencentSmartTopologyNode": {
-    "category": "api node/3d/Tencent",
+    "category": "partner/3d/Tencent",
     "inputs": {
       "required": {
         "model_3d": "MULTITYPE",
@@ -8384,7 +8933,7 @@
     "outputs": []
   },
   "TencentTextToModelNode": {
-    "category": "api node/3d/Tencent",
+    "category": "partner/3d/Tencent",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -8400,7 +8949,7 @@
     ]
   },
   "TextEncodeAceStepAudio": {
-    "category": "conditioning",
+    "category": "model/conditioning/ace",
     "inputs": {
       "required": {
         "clip": "CLIP",
@@ -8415,7 +8964,7 @@
     ]
   },
   "TextEncodeAceStepAudio1.5": {
-    "category": "conditioning",
+    "category": "model/conditioning/ace",
     "inputs": {
       "required": {
         "clip": "CLIP",
@@ -8440,8 +8989,24 @@
       "CONDITIONING"
     ]
   },
+  "TextEncodeBooguEdit": {
+    "category": "model/conditioning/boogu",
+    "inputs": {
+      "required": {
+        "clip": "CLIP",
+        "prompt": "STRING",
+        "negative_prompt": "STRING",
+        "vae": "VAE"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "CONDITIONING",
+      "CONDITIONING"
+    ]
+  },
   "TextEncodeHunyuanVideo_ImageToVideo": {
-    "category": "advanced/conditioning",
+    "category": "model/conditioning/hunyuan video",
     "inputs": {
       "required": {
         "clip": "CLIP",
@@ -8456,7 +9021,7 @@
     ]
   },
   "TextEncodeQwenImageEdit": {
-    "category": "advanced/conditioning",
+    "category": "model/conditioning/qwen image",
     "inputs": {
       "required": {
         "clip": "CLIP",
@@ -8472,7 +9037,7 @@
     ]
   },
   "TextEncodeQwenImageEditPlus": {
-    "category": "advanced/conditioning",
+    "category": "model/conditioning/qwen image",
     "inputs": {
       "required": {
         "clip": "CLIP",
@@ -8490,7 +9055,7 @@
     ]
   },
   "TextEncodeZImageOmni": {
-    "category": "advanced/conditioning",
+    "category": "model/conditioning/z-image",
     "inputs": {
       "required": {
         "clip": "CLIP",
@@ -8551,7 +9116,7 @@
     ]
   },
   "TomePatchModel": {
-    "category": "model_patches/unet",
+    "category": "model/patch/unet",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -8564,7 +9129,7 @@
     ]
   },
   "TopazImageEnhance": {
-    "category": "api node/image/Topaz",
+    "category": "partner/image/Topaz",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -8589,7 +9154,7 @@
     ]
   },
   "TopazVideoEnhance": {
-    "category": "api node/video/Topaz",
+    "category": "partner/video/Topaz",
     "inputs": {
       "required": {
         "video": "VIDEO",
@@ -8613,7 +9178,7 @@
     ]
   },
   "TopazVideoEnhanceV2": {
-    "category": "api node/video/Topaz",
+    "category": "partner/video/Topaz",
     "inputs": {
       "required": {
         "video": "VIDEO"
@@ -8640,7 +9205,7 @@
     ]
   },
   "TrainLoraNode": {
-    "category": "training",
+    "category": "model/training",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -8671,6 +9236,24 @@
       "INT"
     ]
   },
+  "TransformSplat": {
+    "category": "3d/splat",
+    "inputs": {
+      "required": {
+        "translate_x": "FLOAT",
+        "translate_y": "FLOAT",
+        "translate_z": "FLOAT",
+        "rotate_x": "FLOAT",
+        "rotate_y": "FLOAT",
+        "rotate_z": "FLOAT",
+        "scale_x": "FLOAT",
+        "scale_y": "FLOAT",
+        "scale_z": "FLOAT"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
   "TrimAudioDuration": {
     "category": "audio",
     "inputs": {
@@ -8686,7 +9269,7 @@
     ]
   },
   "TrimVideoLatent": {
-    "category": "latent/video",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -8699,7 +9282,7 @@
     ]
   },
   "TripleCLIPLoader": {
-    "category": "advanced/loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "clip_name1": "COMBO",
@@ -8713,7 +9296,7 @@
     ]
   },
   "TripoConversionNode": {
-    "category": "api node/3d/Tripo",
+    "category": "partner/3d/Tripo",
     "inputs": {
       "required": {
         "format": "COMBO"
@@ -8741,7 +9324,7 @@
     "outputs": []
   },
   "TripoImageToModelNode": {
-    "category": "api node/3d/Tripo",
+    "category": "partner/3d/Tripo",
     "inputs": {
       "required": {
         "image": "IMAGE"
@@ -8765,8 +9348,18 @@
       "STRING"
     ]
   },
+  "TripoImportModelNode": {
+    "category": "partner/3d/Tripo",
+    "inputs": {
+      "required": {
+        "model_3d": "MULTITYPE"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
   "TripoMultiviewToModelNode": {
-    "category": "api node/3d/Tripo",
+    "category": "partner/3d/Tripo",
     "inputs": {
       "required": {
         "image": "IMAGE"
@@ -8792,8 +9385,53 @@
       "STRING"
     ]
   },
+  "TripoP1ImageToModelNode": {
+    "category": "partner/3d/Tripo",
+    "inputs": {
+      "required": {
+        "image": "IMAGE"
+      },
+      "optional": {
+        "enable_image_autofix": "BOOLEAN"
+      }
+    },
+    "outputs": [
+      "STRING"
+    ]
+  },
+  "TripoP1MultiviewToModelNode": {
+    "category": "partner/3d/Tripo",
+    "inputs": {
+      "required": {
+        "image": "IMAGE"
+      },
+      "optional": {
+        "image_left": "IMAGE",
+        "image_back": "IMAGE",
+        "image_right": "IMAGE"
+      }
+    },
+    "outputs": [
+      "STRING"
+    ]
+  },
+  "TripoP1TextToModelNode": {
+    "category": "partner/3d/Tripo",
+    "inputs": {
+      "required": {
+        "prompt": "STRING"
+      },
+      "optional": {
+        "negative_prompt": "STRING",
+        "image_seed": "INT"
+      }
+    },
+    "outputs": [
+      "STRING"
+    ]
+  },
   "TripoRefineNode": {
-    "category": "api node/3d/Tripo",
+    "category": "partner/3d/Tripo",
     "inputs": {
       "required": {},
       "optional": {}
@@ -8803,7 +9441,7 @@
     ]
   },
   "TripoRetargetNode": {
-    "category": "api node/3d/Tripo",
+    "category": "partner/3d/Tripo",
     "inputs": {
       "required": {
         "animation": "COMBO"
@@ -8815,7 +9453,7 @@
     ]
   },
   "TripoRigNode": {
-    "category": "api node/3d/Tripo",
+    "category": "partner/3d/Tripo",
     "inputs": {
       "required": {},
       "optional": {}
@@ -8824,8 +9462,57 @@
       "STRING"
     ]
   },
+  "TripoSplatConditioning": {
+    "category": "model/conditioning/triposplat",
+    "inputs": {
+      "required": {
+        "clip_vision": "CLIP_VISION",
+        "vae": "VAE",
+        "image": "IMAGE"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "CONDITIONING",
+      "CONDITIONING",
+      "LATENT"
+    ]
+  },
+  "TripoSplatPreprocessImage": {
+    "category": "model/conditioning/triposplat",
+    "inputs": {
+      "required": {
+        "image": "IMAGE",
+        "mask": "MASK",
+        "erode_radius": "INT",
+        "size": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "IMAGE"
+    ]
+  },
+  "TripoSplatSamplingPreview": {
+    "category": "3d/latent",
+    "inputs": {
+      "required": {
+        "model": "MODEL",
+        "vae": "VAE",
+        "octree_level": "INT",
+        "num_gaussians": "INT",
+        "yaw": "FLOAT",
+        "pitch": "FLOAT",
+        "point_size": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "MODEL"
+    ]
+  },
   "TripoTextToModelNode": {
-    "category": "api node/3d/Tripo",
+    "category": "partner/3d/Tripo",
     "inputs": {
       "required": {
         "prompt": "STRING"
@@ -8850,7 +9537,7 @@
     ]
   },
   "TripoTextureNode": {
-    "category": "api node/3d/Tripo",
+    "category": "partner/3d/Tripo",
     "inputs": {
       "required": {},
       "optional": {
@@ -8858,7 +9545,8 @@
         "pbr": "BOOLEAN",
         "texture_seed": "INT",
         "texture_quality": "COMBO",
-        "texture_alignment": "COMBO"
+        "texture_alignment": "COMBO",
+        "texture_prompt": "STRING"
       }
     },
     "outputs": [
@@ -8866,7 +9554,7 @@
     ]
   },
   "UNETLoader": {
-    "category": "advanced/loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "unet_name": "COMBO",
@@ -8927,7 +9615,7 @@
     ]
   },
   "USOStyleReference": {
-    "category": "advanced/model_patches/flux",
+    "category": "model/patch/flux",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -8941,7 +9629,7 @@
     ]
   },
   "UpscaleModelLoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "model_name": "COMBO"
@@ -8953,7 +9641,7 @@
     ]
   },
   "VAEDecode": {
-    "category": "latent",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -8966,7 +9654,7 @@
     ]
   },
   "VAEDecodeAudio": {
-    "category": "latent/audio",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -8979,7 +9667,7 @@
     ]
   },
   "VAEDecodeAudioTiled": {
-    "category": "latent/audio",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -8994,7 +9682,7 @@
     ]
   },
   "VAEDecodeHunyuan3D": {
-    "category": "latent/3d",
+    "category": "model/latent/hunyuan 3d",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -9025,8 +9713,21 @@
       "IMAGE"
     ]
   },
+  "VAEDecodeTripoSplat": {
+    "category": "3d/latent",
+    "inputs": {
+      "required": {
+        "samples": "LATENT",
+        "vae": "VAE",
+        "num_gaussians": "INT",
+        "seed": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
   "VAEEncode": {
-    "category": "latent",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "pixels": "IMAGE",
@@ -9039,7 +9740,7 @@
     ]
   },
   "VAEEncodeAudio": {
-    "category": "latent/audio",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "audio": "AUDIO",
@@ -9052,7 +9753,7 @@
     ]
   },
   "VAEEncodeForInpaint": {
-    "category": "latent/inpaint",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "pixels": "IMAGE",
@@ -9084,7 +9785,7 @@
     ]
   },
   "VAELoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "vae_name": "COMBO"
@@ -9096,7 +9797,7 @@
     ]
   },
   "VAESave": {
-    "category": "advanced/model_merging",
+    "category": "model/merging",
     "inputs": {
       "required": {
         "vae": "VAE",
@@ -9107,7 +9808,7 @@
     "outputs": []
   },
   "VOIDInpaintConditioning": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/void",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -9142,7 +9843,7 @@
     ]
   },
   "VOIDSampler": {
-    "category": "sampling/samplers",
+    "category": "model/sampling/samplers",
     "inputs": {
       "required": {},
       "optional": {}
@@ -9152,7 +9853,7 @@
     ]
   },
   "VOIDWarpedNoise": {
-    "category": "latent/video",
+    "category": "model/latent/void",
     "inputs": {
       "required": {
         "video": "IMAGE",
@@ -9168,7 +9869,7 @@
     ]
   },
   "VOIDWarpedNoiseSource": {
-    "category": "sampling/noise",
+    "category": "model/latent/void",
     "inputs": {
       "required": {
         "warped_noise": "LATENT"
@@ -9180,7 +9881,7 @@
     ]
   },
   "VPScheduler": {
-    "category": "sampling/schedulers",
+    "category": "model/sampling/schedulers",
     "inputs": {
       "required": {
         "steps": "INT",
@@ -9195,7 +9896,7 @@
     ]
   },
   "Veo3FirstLastFrameNode": {
-    "category": "api node/video/Veo",
+    "category": "partner/video/Veo",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -9216,7 +9917,7 @@
     ]
   },
   "Veo3VideoGenerationNode": {
-    "category": "api node/video/Veo",
+    "category": "partner/video/Veo",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -9239,7 +9940,7 @@
     ]
   },
   "VeoVideoGenerationNode": {
-    "category": "api node/video/Veo",
+    "category": "partner/video/Veo",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -9275,7 +9976,7 @@
     ]
   },
   "VideoLinearCFGGuidance": {
-    "category": "sampling/guiders",
+    "category": "model/sampling/guiders",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -9288,7 +9989,7 @@
     ]
   },
   "VideoTriangleCFGGuidance": {
-    "category": "sampling/guiders",
+    "category": "model/sampling/guiders",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -9301,7 +10002,7 @@
     ]
   },
   "Vidu2ImageToVideoNode": {
-    "category": "api node/video/Vidu",
+    "category": "partner/video/Vidu",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -9319,7 +10020,7 @@
     ]
   },
   "Vidu2ReferenceVideoNode": {
-    "category": "api node/video/Vidu",
+    "category": "partner/video/Vidu",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -9338,7 +10039,7 @@
     ]
   },
   "Vidu2StartEndToVideoNode": {
-    "category": "api node/video/Vidu",
+    "category": "partner/video/Vidu",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -9357,7 +10058,7 @@
     ]
   },
   "Vidu2TextToVideoNode": {
-    "category": "api node/video/Vidu",
+    "category": "partner/video/Vidu",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -9375,7 +10076,7 @@
     ]
   },
   "Vidu3ImageToVideoNode": {
-    "category": "api node/video/Vidu",
+    "category": "partner/video/Vidu",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -9389,7 +10090,7 @@
     ]
   },
   "Vidu3StartEndToVideoNode": {
-    "category": "api node/video/Vidu",
+    "category": "partner/video/Vidu",
     "inputs": {
       "required": {
         "first_frame": "IMAGE",
@@ -9404,7 +10105,7 @@
     ]
   },
   "Vidu3TextToVideoNode": {
-    "category": "api node/video/Vidu",
+    "category": "partner/video/Vidu",
     "inputs": {
       "required": {
         "prompt": "STRING",
@@ -9417,7 +10118,7 @@
     ]
   },
   "ViduExtendVideoNode": {
-    "category": "api node/video/Vidu",
+    "category": "partner/video/Vidu",
     "inputs": {
       "required": {
         "video": "VIDEO",
@@ -9433,7 +10134,7 @@
     ]
   },
   "ViduImageToVideoNode": {
-    "category": "api node/video/Vidu",
+    "category": "partner/video/Vidu",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -9452,7 +10153,7 @@
     ]
   },
   "ViduMultiFrameVideoNode": {
-    "category": "api node/video/Vidu",
+    "category": "partner/video/Vidu",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -9467,7 +10168,7 @@
     ]
   },
   "ViduReferenceVideoNode": {
-    "category": "api node/video/Vidu",
+    "category": "partner/video/Vidu",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -9487,7 +10188,7 @@
     ]
   },
   "ViduStartEndToVideoNode": {
-    "category": "api node/video/Vidu",
+    "category": "partner/video/Vidu",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -9507,7 +10208,7 @@
     ]
   },
   "ViduTextToVideoNode": {
-    "category": "api node/video/Vidu",
+    "category": "partner/video/Vidu",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -9553,7 +10254,7 @@
     ]
   },
   "Wan22FunControlToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/fun control",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -9576,7 +10277,7 @@
     ]
   },
   "Wan22ImageToVideoLatent": {
-    "category": "conditioning/inpaint",
+    "category": "model/conditioning/wan",
     "inputs": {
       "required": {
         "vae": "VAE",
@@ -9594,7 +10295,7 @@
     ]
   },
   "Wan2ImageToVideoApi": {
-    "category": "api node/video/Wan",
+    "category": "partner/video/Wan",
     "inputs": {
       "required": {
         "first_frame": "IMAGE",
@@ -9612,7 +10313,7 @@
     ]
   },
   "Wan2ReferenceVideoApi": {
-    "category": "api node/video/Wan",
+    "category": "partner/video/Wan",
     "inputs": {
       "required": {
         "seed": "INT",
@@ -9625,7 +10326,7 @@
     ]
   },
   "Wan2TextToVideoApi": {
-    "category": "api node/video/Wan",
+    "category": "partner/video/Wan",
     "inputs": {
       "required": {
         "seed": "INT",
@@ -9641,7 +10342,7 @@
     ]
   },
   "Wan2VideoContinuationApi": {
-    "category": "api node/video/Wan",
+    "category": "partner/video/Wan",
     "inputs": {
       "required": {
         "first_clip": "VIDEO",
@@ -9658,7 +10359,7 @@
     ]
   },
   "Wan2VideoEditApi": {
-    "category": "api node/video/Wan",
+    "category": "partner/video/Wan",
     "inputs": {
       "required": {
         "video": "VIDEO",
@@ -9673,7 +10374,7 @@
     ]
   },
   "WanAnimateToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/animate",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -9706,7 +10407,7 @@
     ]
   },
   "WanCameraEmbedding": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/camera",
     "inputs": {
       "required": {
         "camera_pose": "COMBO",
@@ -9730,7 +10431,7 @@
     ]
   },
   "WanCameraImageToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/camera",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -9754,7 +10455,7 @@
     ]
   },
   "WanDancerEncodeAudio": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/dancer",
     "inputs": {
       "required": {
         "audio": "AUDIO",
@@ -9802,7 +10503,7 @@
     ]
   },
   "WanDancerVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/dancer",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -9826,7 +10527,7 @@
     ]
   },
   "WanFirstLastFrameToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -9851,7 +10552,7 @@
     ]
   },
   "WanFunControlToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/fun control",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -9875,7 +10576,7 @@
     ]
   },
   "WanFunInpaintToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/fun inpaint",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -9899,7 +10600,7 @@
     ]
   },
   "WanHuMoImageToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/humo",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -9921,7 +10622,7 @@
     ]
   },
   "WanImageToImageApi": {
-    "category": "api node/image/Wan",
+    "category": "partner/image/Wan",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -9939,7 +10640,7 @@
     ]
   },
   "WanImageToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -9962,7 +10663,7 @@
     ]
   },
   "WanImageToVideoApi": {
-    "category": "api node/video/Wan",
+    "category": "partner/video/Wan",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -9986,7 +10687,7 @@
     ]
   },
   "WanInfiniteTalkToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/infinite talk",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -10014,7 +10715,7 @@
     ]
   },
   "WanMoveConcatTrack": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/move",
     "inputs": {
       "required": {},
       "optional": {}
@@ -10022,7 +10723,7 @@
     "outputs": []
   },
   "WanMoveTrackToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/move",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -10046,7 +10747,7 @@
     ]
   },
   "WanMoveTracksFromCoords": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/move",
     "inputs": {
       "required": {},
       "optional": {
@@ -10059,7 +10760,7 @@
     ]
   },
   "WanMoveVisualizeTracks": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/move",
     "inputs": {
       "required": {
         "images": "IMAGE",
@@ -10075,7 +10776,7 @@
     ]
   },
   "WanPhantomSubjectToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/phantom subject",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -10098,7 +10799,7 @@
     ]
   },
   "WanReferenceVideoApi": {
-    "category": "api node/video/Wan",
+    "category": "partner/video/Wan",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -10117,7 +10818,7 @@
     ]
   },
   "WanSCAILToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/scail",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -10129,22 +10830,29 @@
         "batch_size": "INT",
         "pose_strength": "FLOAT",
         "pose_start": "FLOAT",
-        "pose_end": "FLOAT"
+        "pose_end": "FLOAT",
+        "video_frame_offset": "INT",
+        "previous_frame_count": "INT"
       },
       "optional": {
-        "clip_vision_output": "CLIP_VISION_OUTPUT",
+        "pose_video": "IMAGE",
+        "pose_video_mask": "IMAGE",
+        "replacement_mode": "BOOLEAN",
         "reference_image": "IMAGE",
-        "pose_video": "IMAGE"
+        "reference_image_mask": "IMAGE",
+        "clip_vision_output": "CLIP_VISION_OUTPUT",
+        "previous_frames": "IMAGE"
       }
     },
     "outputs": [
       "CONDITIONING",
       "CONDITIONING",
-      "LATENT"
+      "LATENT",
+      "INT"
     ]
   },
   "WanSoundImageToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/sound",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -10168,7 +10876,7 @@
     ]
   },
   "WanSoundImageToVideoExtend": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/sound",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -10189,7 +10897,7 @@
     ]
   },
   "WanTextToImageApi": {
-    "category": "api node/image/Wan",
+    "category": "partner/image/Wan",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -10209,7 +10917,7 @@
     ]
   },
   "WanTextToVideoApi": {
-    "category": "api node/video/Wan",
+    "category": "partner/video/Wan",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -10232,7 +10940,7 @@
     ]
   },
   "WanTrackToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/move",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -10258,7 +10966,7 @@
     ]
   },
   "WanVaceToVideo": {
-    "category": "conditioning/video_models",
+    "category": "model/conditioning/wan/vace",
     "inputs": {
       "required": {
         "positive": "CONDITIONING",
@@ -10284,7 +10992,7 @@
     ]
   },
   "WavespeedFlashVSRNode": {
-    "category": "api node/video/WaveSpeed",
+    "category": "partner/video/WaveSpeed",
     "inputs": {
       "required": {
         "video": "VIDEO",
@@ -10297,7 +11005,7 @@
     ]
   },
   "WavespeedImageUpscaleNode": {
-    "category": "api node/image/WaveSpeed",
+    "category": "partner/image/WaveSpeed",
     "inputs": {
       "required": {
         "model": "COMBO",
@@ -10326,7 +11034,7 @@
     ]
   },
   "ZImageFunControlnet": {
-    "category": "advanced/loaders/zimage",
+    "category": "model/patch/z-image",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -10343,7 +11051,7 @@
     "outputs": []
   },
   "unCLIPCheckpointLoader": {
-    "category": "loaders",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "ckpt_name": "COMBO"
@@ -10358,7 +11066,7 @@
     ]
   },
   "unCLIPConditioning": {
-    "category": "conditioning",
+    "category": "model/conditioning",
     "inputs": {
       "required": {
         "conditioning": "CONDITIONING",
