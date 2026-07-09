@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 260" fill="none" role="img" aria-label="Example ComfyUI workflow minimap">
+  <rect width="480" height="260" rx="12" fill="#151317"/>
+  <!-- faint grid -->
+  <g stroke="#232025" stroke-width="1">
+    <path d="M40 0v260M80 0v260M120 0v260M160 0v260M200 0v260M240 0v260M280 0v260M320 0v260M360 0v260M400 0v260M440 0v260"/>
+    <path d="M0 40h480M0 80h480M0 120h480M0 160h480M0 200h480M0 240h480"/>
+  </g>
+
+  <!-- wires -->
+  <g fill="none" stroke="#5c5362" stroke-width="2" stroke-linecap="round">
+    <path d="M88 78 C120 78, 120 98, 148 98"/>
+    <path d="M88 138 C120 138, 120 118, 148 118"/>
+    <path d="M212 108 C240 108, 240 88, 268 88"/>
+    <path d="M212 108 C240 108, 240 148, 268 148"/>
+    <path d="M332 98 C360 98, 360 118, 388 118"/>
+    <path d="M332 158 C360 158, 360 138, 388 138"/>
+  </g>
+
+  <!-- nodes: header + body, minimap style -->
+  <!-- LoadImage -->
+  <g>
+    <rect x="28" y="52" width="60" height="44" rx="4" fill="#29252c" stroke="#353139"/>
+    <rect x="28" y="52" width="60" height="12" rx="4" fill="#3d7a4a"/>
+    <rect x="28" y="60" width="60" height="4" fill="#3d7a4a"/>
+  </g>
+  <!-- CLIPText -->
+  <g>
+    <rect x="28" y="116" width="60" height="44" rx="4" fill="#29252c" stroke="#353139"/>
+    <rect x="28" y="116" width="60" height="12" rx="4" fill="#6b5ca8"/>
+    <rect x="28" y="124" width="60" height="4" fill="#6b5ca8"/>
+  </g>
+  <!-- Checkpoint -->
+  <g>
+    <rect x="148" y="80" width="64" height="56" rx="4" fill="#29252c" stroke="#353139"/>
+    <rect x="148" y="80" width="64" height="12" rx="4" fill="#2a5f9e"/>
+    <rect x="148" y="88" width="64" height="4" fill="#2a5f9e"/>
+  </g>
+  <!-- KSampler -->
+  <g>
+    <rect x="268" y="60" width="64" height="56" rx="4" fill="#29252c" stroke="#f0ff41" stroke-opacity="0.45"/>
+    <rect x="268" y="60" width="64" height="12" rx="4" fill="#8a8218"/>
+    <rect x="268" y="68" width="64" height="4" fill="#8a8218"/>
+  </g>
+  <!-- VAEDecode -->
+  <g>
+    <rect x="268" y="132" width="64" height="48" rx="4" fill="#29252c" stroke="#353139"/>
+    <rect x="268" y="132" width="64" height="12" rx="4" fill="#8d5a2b"/>
+    <rect x="268" y="140" width="64" height="4" fill="#8d5a2b"/>
+  </g>
+  <!-- SaveImage -->
+  <g>
+    <rect x="388" y="100" width="60" height="52" rx="4" fill="#29252c" stroke="#353139"/>
+    <rect x="388" y="100" width="60" height="12" rx="4" fill="#3d7a4a"/>
+    <rect x="388" y="108" width="60" height="4" fill="#3d7a4a"/>
+  </g>
+
+  <!-- minimap viewport frame hint -->
+  <rect x="16" y="36" width="448" height="188" rx="8" stroke="#f0ff41" stroke-opacity="0.18" stroke-width="1.5" stroke-dasharray="6 4"/>
+</svg>

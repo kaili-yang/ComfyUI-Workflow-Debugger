@@ -729,9 +729,20 @@ watch(() => props.selectedNodeId, (newId) => {
     <!-- Empty state overlay -->
     <div
       v-if="!workflow"
-      class="absolute inset-0 flex items-center justify-center bg-ink-900/20 pointer-events-none select-none z-10"
+      class="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-ink-900/20 pointer-events-none select-none z-10 px-6"
     >
       <p class="text-zinc-650 text-sm font-semibold tracking-wide font-display">Upload a workflow to visualize it</p>
+      <div class="w-full max-w-md rounded-xl border border-ink-700/70 bg-ink-900/60 p-2 shadow-lg opacity-80">
+        <img
+          src="/workflow-minimap.svg"
+          alt="Example workflow minimap preview"
+          class="w-full h-auto rounded-lg opacity-90"
+          draggable="false"
+        />
+        <p class="mt-2 text-center text-[11px] text-zinc-600 font-medium tracking-wide">
+          Your node graph will appear here — like a ComfyUI minimap
+        </p>
+      </div>
     </div>
 
     <!-- Render error banner -->
