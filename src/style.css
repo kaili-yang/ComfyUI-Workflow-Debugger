@@ -194,4 +194,78 @@
   border-color: #19161a;
 }
 
+/* Step 1–5 highlight: flowing light band around the frame (tour only) */
+@property --cwd-tour-sweep {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes cwd-tour-border-flow {
+  to {
+    --cwd-tour-sweep: 360deg;
+  }
+}
+
+#tour-step-1.driver-active-element,
+#tour-step-2.driver-active-element,
+#tour-step-3.driver-active-element,
+#tour-step-4.driver-active-element,
+#tour-step-5.driver-active-element {
+  position: relative !important;
+  --cwd-tour-sweep: 0deg;
+  animation: cwd-tour-border-flow 2.2s linear infinite;
+}
+
+#tour-step-1.driver-active-element::after,
+#tour-step-2.driver-active-element::after,
+#tour-step-3.driver-active-element::after,
+#tour-step-4.driver-active-element::after,
+#tour-step-5.driver-active-element::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  border-radius: 12px;
+  padding: 2px;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--cwd-tour-sweep),
+    transparent 0deg,
+    transparent 300deg,
+    rgba(240, 255, 65, 0.12) 318deg,
+    #f0ff41 338deg,
+    #ffffff 348deg,
+    #f0ff41 355deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #tour-step-1.driver-active-element,
+  #tour-step-2.driver-active-element,
+  #tour-step-3.driver-active-element,
+  #tour-step-4.driver-active-element,
+  #tour-step-5.driver-active-element {
+    animation: none;
+  }
+
+  #tour-step-1.driver-active-element::after,
+  #tour-step-2.driver-active-element::after,
+  #tour-step-3.driver-active-element::after,
+  #tour-step-4.driver-active-element::after,
+  #tour-step-5.driver-active-element::after {
+    background: transparent;
+    box-shadow: inset 0 0 0 2px #f0ff41;
+    padding: 0;
+    -webkit-mask: none;
+    mask: none;
+  }
+}
+
 
