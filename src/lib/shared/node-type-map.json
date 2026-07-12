@@ -2967,6 +2967,32 @@
           ]
         },
         {
+          "class": "SeedVR2Conditioning",
+          "inputSlot": "vae_conditioning",
+          "inputSlotIndex": 1,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "model",
+              "type": "MODEL",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "SeedVR2Conditioning",
+          "inputSlot": "vae_conditioning",
+          "inputSlotIndex": 1,
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "model",
+              "type": "MODEL",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
           "class": "StableCascade_StageB_Conditioning",
           "inputSlot": "stage_c",
           "inputSlotIndex": 1,
@@ -3216,6 +3242,34 @@
             {
               "name": "clip",
               "type": "CLIP",
+              "slotIndex": 1
+            }
+          ]
+        }
+      ],
+      "CONDITIONING": [
+        {
+          "class": "SeedVR2Conditioning",
+          "inputSlot": "model",
+          "inputSlotIndex": 0,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "vae_conditioning",
+              "type": "LATENT",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "SeedVR2Conditioning",
+          "inputSlot": "model",
+          "inputSlotIndex": 0,
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "vae_conditioning",
+              "type": "LATENT",
               "slotIndex": 1
             }
           ]
@@ -5064,6 +5118,19 @@
   "sourceMap": {
     "AUDIO": [
       {
+        "class": "ByteDanceSeedAudio",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "text_prompt": null,
+          "sample_rate": null,
+          "speech_rate": null,
+          "loudness_rate": null,
+          "pitch_rate": null,
+          "seed": null
+        },
+        "requiredInputs": []
+      },
+      {
         "class": "ElevenLabsTextToDialogue",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -5224,6 +5291,76 @@
           {
             "name": "samples",
             "type": "LATENT",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "PreviewAudio",
+        "outputSlot": 0,
+        "widgetDefaults": {},
+        "requiredInputs": [
+          {
+            "name": "audio",
+            "type": "AUDIO",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "SaveAudio",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "filename_prefix": null
+        },
+        "requiredInputs": [
+          {
+            "name": "audio",
+            "type": "AUDIO",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "SaveAudioAdvanced",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "filename_prefix": null
+        },
+        "requiredInputs": [
+          {
+            "name": "audio",
+            "type": "AUDIO",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "SaveAudioMP3",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "filename_prefix": null,
+          "quality": null
+        },
+        "requiredInputs": [
+          {
+            "name": "audio",
+            "type": "AUDIO",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "SaveAudioOpus",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "filename_prefix": null,
+          "quality": null
+        },
+        "requiredInputs": [
+          {
+            "name": "audio",
+            "type": "AUDIO",
             "slotIndex": 0
           }
         ]
@@ -5947,6 +6084,20 @@
         ]
       },
       {
+        "class": "ConditioningMultiply",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "multiplier": null
+        },
+        "requiredInputs": [
+          {
+            "name": "conditioning",
+            "type": "CONDITIONING",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
         "class": "ConditioningSetArea",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -6462,6 +6613,40 @@
           {
             "name": "conditioning",
             "type": "CONDITIONING",
+            "slotIndex": 1
+          }
+        ]
+      },
+      {
+        "class": "SeedVR2Conditioning",
+        "outputSlot": 0,
+        "widgetDefaults": {},
+        "requiredInputs": [
+          {
+            "name": "model",
+            "type": "MODEL",
+            "slotIndex": 0
+          },
+          {
+            "name": "vae_conditioning",
+            "type": "LATENT",
+            "slotIndex": 1
+          }
+        ]
+      },
+      {
+        "class": "SeedVR2Conditioning",
+        "outputSlot": 1,
+        "widgetDefaults": {},
+        "requiredInputs": [
+          {
+            "name": "model",
+            "type": "MODEL",
+            "slotIndex": 0
+          },
+          {
+            "name": "vae_conditioning",
+            "type": "LATENT",
             "slotIndex": 1
           }
         ]
@@ -9117,6 +9302,15 @@
         "requiredInputs": []
       },
       {
+        "class": "CreateBoundingBoxes",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "width": null,
+          "height": null
+        },
+        "requiredInputs": []
+      },
+      {
         "class": "DA3Render",
         "outputSlot": 0,
         "widgetDefaults": {},
@@ -9306,24 +9500,6 @@
           "aspect_ratio": null,
           "number_of_images": null,
           "seed": null
-        },
-        "requiredInputs": []
-      },
-      {
-        "class": "IdeogramV1",
-        "outputSlot": 0,
-        "widgetDefaults": {
-          "prompt": null,
-          "turbo": null
-        },
-        "requiredInputs": []
-      },
-      {
-        "class": "IdeogramV2",
-        "outputSlot": 0,
-        "widgetDefaults": {
-          "prompt": null,
-          "turbo": null
         },
         "requiredInputs": []
       },
@@ -10396,6 +10572,97 @@
         ]
       },
       {
+        "class": "SaveAnimatedPNG",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "filename_prefix": null,
+          "fps": null,
+          "compress_level": null
+        },
+        "requiredInputs": [
+          {
+            "name": "images",
+            "type": "IMAGE",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "SaveAnimatedWEBP",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "filename_prefix": null,
+          "fps": null,
+          "lossless": null,
+          "quality": null,
+          "method": null
+        },
+        "requiredInputs": [
+          {
+            "name": "images",
+            "type": "IMAGE",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "SaveImage",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "filename_prefix": null
+        },
+        "requiredInputs": [
+          {
+            "name": "images",
+            "type": "IMAGE",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "SaveImageAdvanced",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "filename_prefix": null
+        },
+        "requiredInputs": [
+          {
+            "name": "images",
+            "type": "IMAGE",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "SaveWEBM",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "filename_prefix": null,
+          "codec": null,
+          "fps": null,
+          "crf": null
+        },
+        "requiredInputs": [
+          {
+            "name": "images",
+            "type": "IMAGE",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "SeedVR2Preprocess",
+        "outputSlot": 0,
+        "widgetDefaults": {},
+        "requiredInputs": [
+          {
+            "name": "resized_images",
+            "type": "IMAGE",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
         "class": "ShuffleImageTextDataset",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -10572,6 +10839,24 @@
           {
             "name": "model_3d",
             "type": "MULTITYPE",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "TextOverlay",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "text": null,
+          "font_size": null,
+          "position": null,
+          "align": null,
+          "outline": null
+        },
+        "requiredInputs": [
+          {
+            "name": "images",
+            "type": "IMAGE",
             "slotIndex": 0
           }
         ]
@@ -10887,6 +11172,25 @@
           {
             "name": "mask",
             "type": "MASK",
+            "slotIndex": 1
+          }
+        ]
+      },
+      {
+        "class": "SeedVR2PostProcessing",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "color_correction_method": null
+        },
+        "requiredInputs": [
+          {
+            "name": "images",
+            "type": "IMAGE",
+            "slotIndex": 0
+          },
+          {
+            "name": "original_resized_images",
+            "type": "IMAGE",
             "slotIndex": 1
           }
         ]
@@ -11539,6 +11843,48 @@
         "requiredInputs": [
           {
             "name": "destination",
+            "type": "LATENT",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "SaveLatent",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "filename_prefix": null
+        },
+        "requiredInputs": [
+          {
+            "name": "samples",
+            "type": "LATENT",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "SeedVR2TemporalChunk",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "temporal_overlap": null
+        },
+        "requiredInputs": [
+          {
+            "name": "latent",
+            "type": "LATENT",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "SeedVR2TemporalMerge",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "temporal_overlap": null
+        },
+        "requiredInputs": [
+          {
+            "name": "latents",
             "type": "LATENT",
             "slotIndex": 0
           }
@@ -13928,6 +14274,7 @@
           "freenoise": null,
           "cond_retain_index_list": null,
           "split_conds_to_windows": null,
+          "latent_retain_index_list": null,
           "causal_window_fix": null
         },
         "requiredInputs": [
@@ -15575,6 +15922,14 @@
         "requiredInputs": []
       },
       {
+        "class": "GeminiVideoOmni",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "seed": null
+        },
+        "requiredInputs": []
+      },
+      {
         "class": "GrokVideoNode",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -15721,6 +16076,48 @@
           "duration": null,
           "loop": null,
           "seed": null
+        },
+        "requiredInputs": []
+      },
+      {
+        "class": "LumaRay32ExtendVideoNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "source_generation_id": null,
+          "prompt": null,
+          "resolution": null
+        },
+        "requiredInputs": []
+      },
+      {
+        "class": "LumaRay32ImageToVideoNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null,
+          "resolution": null,
+          "loop": null
+        },
+        "requiredInputs": []
+      },
+      {
+        "class": "LumaRay32KeyframesToVideoNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null,
+          "resolution": null,
+          "duration": null
+        },
+        "requiredInputs": []
+      },
+      {
+        "class": "LumaRay32TextToVideoNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null,
+          "aspect_ratio": null,
+          "resolution": null,
+          "duration": null,
+          "loop": null
         },
         "requiredInputs": []
       },
@@ -16227,6 +16624,38 @@
         ]
       },
       {
+        "class": "LumaRay32VideoEditNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null,
+          "resolution": null,
+          "strength": null
+        },
+        "requiredInputs": [
+          {
+            "name": "video",
+            "type": "VIDEO",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "LumaRay32VideoReframeNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null,
+          "aspect_ratio": null,
+          "resolution": null
+        },
+        "requiredInputs": [
+          {
+            "name": "video",
+            "type": "VIDEO",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
         "class": "MinimaxImageToVideoNode",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -16305,6 +16734,22 @@
           {
             "name": "start_frame",
             "type": "IMAGE",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "SaveVideo",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "filename_prefix": null,
+          "format": null,
+          "codec": null
+        },
+        "requiredInputs": [
+          {
+            "name": "video",
+            "type": "VIDEO",
             "slotIndex": 0
           }
         ]

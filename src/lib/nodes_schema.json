@@ -34,7 +34,7 @@
     ]
   },
   "AddNoise": {
-    "category": "experimental/custom_sampling/noise",
+    "category": "model/sampling/noise",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -354,6 +354,20 @@
       "VIDEO"
     ]
   },
+  "BuildJsonPromptIdeogram": {
+    "category": "text",
+    "inputs": {
+      "required": {
+        "high_level_description": "STRING",
+        "background": "STRING",
+        "aesthetics": "STRING",
+        "lighting": "STRING",
+        "medium": "STRING"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
   "ByteDance2FirstLastFrameNode": {
     "category": "partner/video/ByteDance",
     "inputs": {
@@ -511,6 +525,23 @@
       "VIDEO"
     ]
   },
+  "ByteDanceSeedAudio": {
+    "category": "partner/audio/ByteDance",
+    "inputs": {
+      "required": {
+        "text_prompt": "STRING",
+        "sample_rate": "COMBO",
+        "speech_rate": "INT",
+        "loudness_rate": "INT",
+        "pitch_rate": "INT",
+        "seed": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "AUDIO"
+    ]
+  },
   "ByteDanceSeedNode": {
     "category": "partner/text/ByteDance",
     "inputs": {
@@ -557,7 +588,9 @@
         "seed": "INT",
         "watermark": "BOOLEAN"
       },
-      "optional": {}
+      "optional": {
+        "thinking": "BOOLEAN"
+      }
     },
     "outputs": [
       "IMAGE"
@@ -751,7 +784,7 @@
     ]
   },
   "CLIPTextEncodeControlnet": {
-    "category": "experimental/conditioning",
+    "category": "model/conditioning",
     "inputs": {
       "required": {
         "clip": "CLIP",
@@ -1031,7 +1064,8 @@
       "optional": {}
     },
     "outputs": [
-      "INT"
+      "INT",
+      "FLOAT"
     ]
   },
   "ColorTransfer": {
@@ -1149,6 +1183,19 @@
       "required": {
         "conditioning_to": "CONDITIONING",
         "conditioning_from": "CONDITIONING"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "CONDITIONING"
+    ]
+  },
+  "ConditioningMultiply": {
+    "category": "model/conditioning/transform",
+    "inputs": {
+      "required": {
+        "conditioning": "CONDITIONING",
+        "multiplier": "FLOAT"
       },
       "optional": {}
     },
@@ -1294,6 +1341,7 @@
         "freenoise": "BOOLEAN",
         "cond_retain_index_list": "STRING",
         "split_conds_to_windows": "BOOLEAN",
+        "latent_retain_index_list": "STRING",
         "causal_window_fix": "BOOLEAN"
       },
       "optional": {}
@@ -1391,6 +1439,30 @@
       "CONTROL_NET"
     ]
   },
+  "ConvertArrayToString": {
+    "category": "text",
+    "inputs": {
+      "required": {
+        "indent": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "STRING"
+    ]
+  },
+  "ConvertDictionaryToString": {
+    "category": "text",
+    "inputs": {
+      "required": {
+        "indent": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "STRING"
+    ]
+  },
   "CosmosImageToVideoLatent": {
     "category": "model/conditioning/cosmos",
     "inputs": {
@@ -1427,6 +1499,22 @@
     },
     "outputs": [
       "LATENT"
+    ]
+  },
+  "CreateBoundingBoxes": {
+    "category": "utilities",
+    "inputs": {
+      "required": {
+        "width": "INT",
+        "height": "INT"
+      },
+      "optional": {
+        "background": "IMAGE",
+        "bboxes": "MULTITYPE"
+      }
+    },
+    "outputs": [
+      "IMAGE"
     ]
   },
   "CreateCameraInfo": {
@@ -2598,6 +2686,19 @@
       "STRING"
     ]
   },
+  "GeminiVideoOmni": {
+    "category": "partner/video/Gemini",
+    "inputs": {
+      "required": {
+        "seed": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO",
+      "STRING"
+    ]
+  },
   "GenerateTracks": {
     "category": "model/conditioning/wan/move",
     "inputs": {
@@ -3072,46 +3173,6 @@
     },
     "outputs": [
       "SIGMAS"
-    ]
-  },
-  "IdeogramV1": {
-    "category": "partner/image/Ideogram",
-    "inputs": {
-      "required": {
-        "prompt": "STRING",
-        "turbo": "BOOLEAN"
-      },
-      "optional": {
-        "aspect_ratio": "COMBO",
-        "magic_prompt_option": "COMBO",
-        "seed": "INT",
-        "negative_prompt": "STRING",
-        "num_images": "INT"
-      }
-    },
-    "outputs": [
-      "IMAGE"
-    ]
-  },
-  "IdeogramV2": {
-    "category": "partner/image/Ideogram",
-    "inputs": {
-      "required": {
-        "prompt": "STRING",
-        "turbo": "BOOLEAN"
-      },
-      "optional": {
-        "aspect_ratio": "COMBO",
-        "resolution": "COMBO",
-        "magic_prompt_option": "COMBO",
-        "seed": "INT",
-        "style_type": "COMBO",
-        "negative_prompt": "STRING",
-        "num_images": "INT"
-      }
-    },
-    "outputs": [
-      "IMAGE"
     ]
   },
   "IdeogramV3": {
@@ -4831,6 +4892,21 @@
       "VIDEO"
     ]
   },
+  "Load3DAdvanced": {
+    "category": "3d",
+    "inputs": {
+      "required": {
+        "model_file": "COMBO",
+        "width": "INT",
+        "height": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "INT",
+      "INT"
+    ]
+  },
   "LoadAudio": {
     "category": "audio",
     "inputs": {
@@ -4927,7 +5003,7 @@
     ]
   },
   "LoadLatent": {
-    "category": "experimental",
+    "category": "model/latent",
     "inputs": {
       "required": {},
       "optional": {}
@@ -5225,6 +5301,113 @@
       "VIDEO"
     ]
   },
+  "LumaRay32ExtendVideoNode": {
+    "category": "partner/video/Luma",
+    "inputs": {
+      "required": {
+        "source_generation_id": "STRING",
+        "prompt": "STRING",
+        "resolution": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO",
+      "STRING"
+    ]
+  },
+  "LumaRay32ImageToVideoNode": {
+    "category": "partner/video/Luma",
+    "inputs": {
+      "required": {
+        "prompt": "STRING",
+        "resolution": "COMBO",
+        "loop": "BOOLEAN"
+      },
+      "optional": {
+        "start_frame": "IMAGE",
+        "end_frame": "IMAGE"
+      }
+    },
+    "outputs": [
+      "VIDEO",
+      "STRING"
+    ]
+  },
+  "LumaRay32KeyframeNode": {
+    "category": "partner/video/Luma",
+    "inputs": {
+      "required": {
+        "image": "IMAGE"
+      },
+      "optional": {}
+    },
+    "outputs": []
+  },
+  "LumaRay32KeyframesToVideoNode": {
+    "category": "partner/video/Luma",
+    "inputs": {
+      "required": {
+        "prompt": "STRING",
+        "resolution": "COMBO",
+        "duration": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO",
+      "STRING"
+    ]
+  },
+  "LumaRay32TextToVideoNode": {
+    "category": "partner/video/Luma",
+    "inputs": {
+      "required": {
+        "prompt": "STRING",
+        "aspect_ratio": "COMBO",
+        "resolution": "COMBO",
+        "duration": "COMBO",
+        "loop": "BOOLEAN"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO",
+      "STRING"
+    ]
+  },
+  "LumaRay32VideoEditNode": {
+    "category": "partner/video/Luma",
+    "inputs": {
+      "required": {
+        "video": "VIDEO",
+        "prompt": "STRING",
+        "resolution": "COMBO",
+        "strength": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO",
+      "STRING"
+    ]
+  },
+  "LumaRay32VideoReframeNode": {
+    "category": "partner/video/Luma",
+    "inputs": {
+      "required": {
+        "video": "VIDEO",
+        "prompt": "STRING",
+        "aspect_ratio": "COMBO",
+        "resolution": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO",
+      "STRING"
+    ]
+  },
   "LumaReferenceNode": {
     "category": "partner/image/Luma",
     "inputs": {
@@ -5376,7 +5559,7 @@
     ]
   },
   "ManualSigmas": {
-    "category": "experimental/custom_sampling",
+    "category": "model/sampling/sigmas",
     "inputs": {
       "required": {
         "sigmas": "STRING"
@@ -5767,6 +5950,14 @@
     "outputs": []
   },
   "ModelMergeFlux1": {
+    "category": "model/merging/model specific",
+    "inputs": {
+      "required": {},
+      "optional": {}
+    },
+    "outputs": []
+  },
+  "ModelMergeKrea2": {
     "category": "model/merging/model specific",
     "inputs": {
       "required": {},
@@ -6328,7 +6519,7 @@
     ]
   },
   "PhotoMakerEncode": {
-    "category": "experimental/photomaker",
+    "category": "model/conditioning/photomaker",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -6342,7 +6533,7 @@
     ]
   },
   "PhotoMakerLoader": {
-    "category": "experimental/photomaker",
+    "category": "model/loaders",
     "inputs": {
       "required": {
         "photomaker_model_name": "COMBO"
@@ -6511,7 +6702,9 @@
       },
       "optional": {}
     },
-    "outputs": []
+    "outputs": [
+      "AUDIO"
+    ]
   },
   "PreviewGaussianSplat": {
     "category": "3d",
@@ -7915,6 +8108,22 @@
       "FLOAT"
     ]
   },
+  "Save3DAdvanced": {
+    "category": "3d",
+    "inputs": {
+      "required": {
+        "model_3d": "MULTITYPE",
+        "filename_prefix": "STRING",
+        "width": "INT",
+        "height": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "INT",
+      "INT"
+    ]
+  },
   "SaveAnimatedPNG": {
     "category": "image",
     "inputs": {
@@ -7926,7 +8135,9 @@
       },
       "optional": {}
     },
-    "outputs": []
+    "outputs": [
+      "IMAGE"
+    ]
   },
   "SaveAnimatedWEBP": {
     "category": "image",
@@ -7941,7 +8152,9 @@
       },
       "optional": {}
     },
-    "outputs": []
+    "outputs": [
+      "IMAGE"
+    ]
   },
   "SaveAudio": {
     "category": "audio",
@@ -7952,7 +8165,9 @@
       },
       "optional": {}
     },
-    "outputs": []
+    "outputs": [
+      "AUDIO"
+    ]
   },
   "SaveAudioAdvanced": {
     "category": "audio",
@@ -7963,7 +8178,9 @@
       },
       "optional": {}
     },
-    "outputs": []
+    "outputs": [
+      "AUDIO"
+    ]
   },
   "SaveAudioMP3": {
     "category": "audio",
@@ -7975,7 +8192,9 @@
       },
       "optional": {}
     },
-    "outputs": []
+    "outputs": [
+      "AUDIO"
+    ]
   },
   "SaveAudioOpus": {
     "category": "audio",
@@ -7987,7 +8206,9 @@
       },
       "optional": {}
     },
-    "outputs": []
+    "outputs": [
+      "AUDIO"
+    ]
   },
   "SaveGLB": {
     "category": "3d",
@@ -7999,6 +8220,22 @@
     },
     "outputs": []
   },
+  "SaveGaussianSplat": {
+    "category": "3d",
+    "inputs": {
+      "required": {
+        "model_3d": "MULTITYPE",
+        "filename_prefix": "STRING",
+        "width": "INT",
+        "height": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "INT",
+      "INT"
+    ]
+  },
   "SaveImage": {
     "category": "image",
     "inputs": {
@@ -8008,7 +8245,9 @@
       },
       "optional": {}
     },
-    "outputs": []
+    "outputs": [
+      "IMAGE"
+    ]
   },
   "SaveImageAdvanced": {
     "category": "image",
@@ -8019,7 +8258,9 @@
       },
       "optional": {}
     },
-    "outputs": []
+    "outputs": [
+      "IMAGE"
+    ]
   },
   "SaveImageDataSetToFolder": {
     "category": "image",
@@ -8050,7 +8291,7 @@
     "outputs": []
   },
   "SaveLatent": {
-    "category": "experimental",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -8058,7 +8299,9 @@
       },
       "optional": {}
     },
-    "outputs": []
+    "outputs": [
+      "LATENT"
+    ]
   },
   "SaveLoRA": {
     "category": "model/merging",
@@ -8072,6 +8315,22 @@
     },
     "outputs": []
   },
+  "SavePointCloud": {
+    "category": "3d",
+    "inputs": {
+      "required": {
+        "model_3d": "MULTITYPE",
+        "filename_prefix": "STRING",
+        "width": "INT",
+        "height": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "INT",
+      "INT"
+    ]
+  },
   "SaveSVGNode": {
     "category": "image",
     "inputs": {
@@ -8081,6 +8340,20 @@
       "optional": {}
     },
     "outputs": []
+  },
+  "SaveText": {
+    "category": "text",
+    "inputs": {
+      "required": {
+        "text": "STRING",
+        "filename_prefix": "STRING",
+        "format": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "STRING"
+    ]
   },
   "SaveTrainingDataset": {
     "category": "model/training",
@@ -8106,7 +8379,9 @@
       },
       "optional": {}
     },
-    "outputs": []
+    "outputs": [
+      "VIDEO"
+    ]
   },
   "SaveWEBM": {
     "category": "video",
@@ -8120,7 +8395,9 @@
       },
       "optional": {}
     },
-    "outputs": []
+    "outputs": [
+      "IMAGE"
+    ]
   },
   "ScaleROPE": {
     "category": "model/patch",
@@ -8138,6 +8415,85 @@
     },
     "outputs": [
       "MODEL"
+    ]
+  },
+  "SeedNode": {
+    "category": "utilities",
+    "inputs": {
+      "required": {
+        "seed": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "INT"
+    ]
+  },
+  "SeedVR2Conditioning": {
+    "category": "model/conditioning",
+    "inputs": {
+      "required": {
+        "model": "MODEL",
+        "vae_conditioning": "LATENT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "CONDITIONING",
+      "CONDITIONING"
+    ]
+  },
+  "SeedVR2PostProcessing": {
+    "category": "image/post-processors",
+    "inputs": {
+      "required": {
+        "images": "IMAGE",
+        "original_resized_images": "IMAGE",
+        "color_correction_method": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "IMAGE"
+    ]
+  },
+  "SeedVR2Preprocess": {
+    "category": "image/pre-processors",
+    "inputs": {
+      "required": {
+        "resized_images": "IMAGE"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "IMAGE"
+    ]
+  },
+  "SeedVR2TemporalChunk": {
+    "category": "model/latent/batch",
+    "inputs": {
+      "required": {
+        "latent": "LATENT",
+        "temporal_overlap": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "LATENT",
+      "INT"
+    ]
+  },
+  "SeedVR2TemporalMerge": {
+    "category": "model/latent/batch",
+    "inputs": {
+      "required": {
+        "latents": "LATENT",
+        "temporal_overlap": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "LATENT"
     ]
   },
   "SelectCLIPDevice": {
@@ -8624,7 +8980,7 @@
     ]
   },
   "StableCascade_SuperResolutionControlnet": {
-    "category": "experimental/stable_cascade",
+    "category": "experimental/stable cascade",
     "inputs": {
       "required": {
         "image": "IMAGE",
@@ -8819,7 +9175,7 @@
     ]
   },
   "T5TokenizerOptions": {
-    "category": "experimental/conditioning",
+    "category": "model/conditioning",
     "inputs": {
       "required": {
         "clip": "CLIP",
@@ -9101,6 +9457,23 @@
       "optional": {}
     },
     "outputs": []
+  },
+  "TextOverlay": {
+    "category": "text",
+    "inputs": {
+      "required": {
+        "images": "IMAGE",
+        "text": "STRING",
+        "font_size": "FLOAT",
+        "position": "COMBO",
+        "align": "COMBO",
+        "outline": "BOOLEAN"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "IMAGE"
+    ]
   },
   "ThresholdMask": {
     "category": "image/mask",
@@ -9494,7 +9867,7 @@
     ]
   },
   "TripoSplatSamplingPreview": {
-    "category": "3d/latent",
+    "category": "model/latent/triposplat",
     "inputs": {
       "required": {
         "model": "MODEL",
@@ -9697,7 +10070,7 @@
     ]
   },
   "VAEDecodeTiled": {
-    "category": "experimental",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -9714,7 +10087,7 @@
     ]
   },
   "VAEDecodeTripoSplat": {
-    "category": "3d/latent",
+    "category": "model/latent/triposplat",
     "inputs": {
       "required": {
         "samples": "LATENT",
@@ -9768,7 +10141,7 @@
     ]
   },
   "VAEEncodeTiled": {
-    "category": "experimental",
+    "category": "model/latent",
     "inputs": {
       "required": {
         "pixels": "IMAGE",
