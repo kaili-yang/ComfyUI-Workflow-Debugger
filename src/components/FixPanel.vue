@@ -9,6 +9,7 @@ const props = defineProps<{
   rawContent: string | null
   fileName: string | null
   objectInfo?: ObjectInfo
+  topHeightPct?: number
 }>()
 
 const emit = defineEmits<{ apply: [fixedJson: string, newNodeIds: number[], newLinkIds: number[]] }>()
@@ -74,18 +75,19 @@ function download(): void {
 
 <template>
   <div class="flex flex-col h-full bg-transparent">
-    <!-- Header -->
-    <div class="flex-shrink-0 px-6 py-5 border-b border-ink-800 bg-ink-900/20">
-      <h2 class="panel-header">Auto Fix</h2>
-      <p class="text-xs text-zinc-500 mt-1">Clean up broken link references automatically</p>
-    </div>
-
-    <!-- Body -->
-    <div class="flex-1 min-h-0 overflow-y-auto px-6 py-6 flex flex-col gap-6">
-      <div class="step-title">Step 4: Fix</div>
+    <!-- Step 4 — aligns with Step 2 Preview height -->
+    <div
+      id="tour-step-4"
+      class="min-h-0 overflow-y-auto px-6 py-5 flex flex-col gap-4"
+      :style="{ height: (topHeightPct ?? 60) + '%' }"
+    >
+      <div class="flex flex-col gap-1.5 flex-shrink-0">
+        <div class="step-title">Step 4: Fix</div>
+        <p class="text-xs text-zinc-500">Clean up broken link references automatically</p>
+      </div>
 
       <!-- Big circular Fix button, always centered -->
-      <div class="flex flex-col items-center justify-center gap-4.5 py-6">
+      <div class="flex flex-col items-center justify-center gap-3 flex-1 min-h-0 py-2">
         <button
           class="fix-circle-btn"
           :class="{
@@ -110,7 +112,7 @@ function download(): void {
       </div>
 
       <!-- What got fixed (animated, shown only after fix) -->
-      <div v-if="fixApplied && fixBreakdown.length > 0" class="flex flex-col gap-3">
+      <div v-if="fixApplied && fixBreakdown.length > 0" class="flex flex-col gap-3 flex-shrink-0">
         <p class="text-xs text-zinc-500 uppercase tracking-widest font-bold font-display px-0.5">What got fixed</p>
         <div class="flex flex-col gap-2">
           <div
@@ -130,22 +132,31 @@ function download(): void {
 
     </div>
 
-    <!-- Footer: export -->
-    <div class="flex-shrink-0 border-t border-ink-800 px-6 py-5 bg-ink-900/20 flex flex-col gap-3">
+    <!-- Match center column divider height for horizontal alignment -->
+    <div class="flex-shrink-0 h-1.5 bg-ink-800" />
+
+    <!-- Step 5 — aligns with Step 3 Diagnostics height -->
+    <div
+      id="tour-step-5"
+      class="min-h-0 overflow-y-auto border-t border-ink-800 px-6 py-5 bg-ink-900/20 flex flex-col gap-4"
+      :style="{ height: (100 - (topHeightPct ?? 60)) + '%' }"
+    >
       <div class="step-title">Step 5: Download</div>
-      <button
-        class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border text-sm font-semibold tracking-wide transition-all duration-200 cursor-pointer shadow-sm"
-        :class="rawContent
-          ? 'border-brand-yellow/45 text-brand-yellow hover:bg-brand-yellow/10 hover:border-brand-yellow'
-          : 'border-ink-700 text-zinc-600 cursor-not-allowed'"
-        :disabled="!rawContent"
-        @click="download"
-      >
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 3v13m0 0l-4-4m4 4l4-4" />
-        </svg>
-        Export fixed workflow
-      </button>
+      <div class="flex flex-1 flex-col items-stretch justify-center gap-3 min-h-0">
+        <button
+          class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border text-sm font-semibold tracking-wide transition-all duration-200 cursor-pointer shadow-sm"
+          :class="rawContent
+            ? 'border-brand-yellow/45 text-brand-yellow hover:bg-brand-yellow/10 hover:border-brand-yellow'
+            : 'border-ink-700 text-zinc-600 cursor-not-allowed'"
+          :disabled="!rawContent"
+          @click="download"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 3v13m0 0l-4-4m4 4l4-4" />
+          </svg>
+          Export fixed workflow
+        </button>
+      </div>
     </div>
 
   </div>

@@ -3,11 +3,12 @@ import UploadPanel from './components/UploadPanel.vue'
 import WorkflowVisualizer from './components/WorkflowVisualizer.vue'
 import DiagnosticsPanel from './components/DiagnosticsPanel.vue'
 import FixPanel from './components/FixPanel.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { usePanelSplit } from './composables/usePanelSplit'
 import { useServerConnection } from './composables/useServerConnection'
 import { useWorkflowFile } from './composables/useWorkflowFile'
 import { useWorkflowAnalysis } from './composables/useWorkflowAnalysis'
+import { startProductTour } from './composables/useDriverTour'
 import { fixByType } from './lib/fixer'
 import type { FixType } from './types/workflow'
 
@@ -49,6 +50,11 @@ function onFixIssue(fixType: FixType): void {
     rawContent.value = r.fixed
   }
 }
+
+onMounted(() => {
+  // Slight delay so panel layout is painted before Driver.js measures targets
+  window.setTimeout(() => startProductTour({ force: true }), 450)
+})
 </script>
 
 <template>
@@ -63,23 +69,7 @@ function onFixIssue(fixType: FixType): void {
             ComfyUI Workflow Debugger
           </h1>
         </div>
- 
-       <!-- Center: nav links -->
-       <nav class="flex items-center gap-6">
-         <a
-           href="https://kaili.space/"
-           target="_blank"
-           rel="noopener noreferrer"
-           class="text-xs font-medium text-zinc-400 hover:text-zinc-100 transition-colors duration-150"
-         >Kaili</a>
-         <a
-           href="https://letscomfy.netlify.app/guides/basic/"
-           target="_blank"
-           rel="noopener noreferrer"
-           class="text-xs font-medium text-zinc-400 hover:text-zinc-100 transition-colors duration-150"
-         >Let's ComfyUI</a>
-       </nav>
- 
+
         <!-- Right: GitHub -->
         <a
           href="https://github.com/kaili-yang/ComfyUI-Workflow-Debugger"
@@ -112,7 +102,7 @@ function onFixIssue(fixType: FixType): void {
  
      <!-- Center column: canvas (top) + drag handle + diagnostics (bottom) -->
      <div class="flex flex-col flex-1 min-w-0 overflow-hidden bg-ink-900">
-       <div class="min-h-0 overflow-hidden" :style="{ height: topHeightPct + '%' }">
+       <div id="tour-step-2" class="min-h-0 overflow-hidden" :style="{ height: topHeightPct + '%' }">
          <WorkflowVisualizer
            :workflow="workflow"
            :result="result"
@@ -129,7 +119,7 @@ function onFixIssue(fixType: FixType): void {
        >
          <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-ink-700 group-hover:bg-brand-yellow/40 transition-colors" />
        </div>
-       <div class="min-h-0 overflow-hidden" :style="{ height: (100 - topHeightPct) + '%' }">
+       <div id="tour-step-3" class="min-h-0 overflow-hidden" :style="{ height: (100 - topHeightPct) + '%' }">
          <DiagnosticsPanel
            :result="result"
            :selected-node-id="selectedNodeId"
@@ -146,6 +136,7 @@ function onFixIssue(fixType: FixType): void {
          :raw-content="rawContent"
          :file-name="fileName"
          :object-info="objectInfo ?? undefined"
+         :top-height-pct="topHeightPct"
          @apply="onFixed"
        />
      </div>

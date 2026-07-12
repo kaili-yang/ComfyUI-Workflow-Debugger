@@ -109,6 +109,74 @@ onUnmounted(() => document.removeEventListener('paste', onPaste))
 
 <template>
   <div class="flex flex-col h-full bg-transparent overflow-y-auto">
+    <!-- Step 1: Upload -->
+    <div id="tour-step-1" class="flex-1 flex flex-col gap-4 p-6 min-h-[280px] border-b border-ink-800">
+      <div class="step-title">Step 1: Upload a workflow</div>
+
+      <!-- File loaded state -->
+      <template v-if="props.fileName">
+        <div class="flex-1 flex flex-col items-center justify-center gap-3.5 bg-ink-800/40 border border-ink-700 rounded-2xl p-6 text-center shadow-sm">
+          <div class="w-12 h-12 bg-brand-yellow/10 border border-brand-yellow/20 rounded-full flex items-center justify-center">
+            <svg class="w-5 h-5 text-brand-yellow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <p class="text-zinc-200 text-sm font-semibold font-mono break-all leading-relaxed">{{ props.fileName }}</p>
+        </div>
+        <button
+          class="w-full py-2.5 text-sm font-semibold text-zinc-300 bg-ink-800 hover:bg-ink-700 border border-ink-700 hover:border-ink-600 rounded-xl transition-all duration-150 cursor-pointer text-center"
+          @click="triggerInput"
+        >
+          Upload another
+        </button>
+        <button
+          class="w-full py-2.5 text-sm font-semibold text-red-400 hover:text-red-300 bg-red-950/20 hover:bg-red-950/30 border border-red-900/30 hover:border-red-900/50 rounded-xl transition-all duration-150 cursor-pointer text-center"
+          @click="emit('reset')"
+        >
+          Clear
+        </button>
+      </template>
+
+      <!-- Upload state -->
+      <template v-else>
+        <div
+          class="flex-1 flex flex-col items-center justify-center gap-5 border-2 border-dashed rounded-2xl cursor-pointer transition-all duration-200 select-none p-6 text-center"
+          :class="isDragging
+            ? 'border-brand-yellow bg-brand-yellow/5 shadow-glow-yellow'
+            : 'border-ink-700 bg-ink-800/20 hover:border-ink-600 hover:bg-ink-800/40'"
+          @dragover="onDragOver"
+          @dragleave="onDragLeave"
+          @drop="onDrop"
+          @click="triggerInput"
+        >
+          <div
+            class="w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-200 shrink-0"
+            :class="isDragging ? 'bg-brand-yellow/15 shadow-sm' : 'bg-ink-800 border border-ink-700'"
+          >
+            <svg
+              class="w-6 h-6 transition-colors"
+              :class="isDragging ? 'text-brand-yellow' : 'text-zinc-500'"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+            </svg>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <p class="text-zinc-200 text-sm font-semibold font-display">Drop workflow JSON here</p>
+            <p class="text-brand-yellow text-xs font-semibold hover:text-white underline underline-offset-4 cursor-pointer">
+              click to browse
+            </p>
+            <div class="flex items-center gap-1.5 text-zinc-500 text-xs">
+              <kbd class="text-zinc-400 font-mono text-[10px] bg-ink-800 border border-ink-700 rounded-lg px-1.5 py-0.5 shadow-sm">Ctrl+V</kbd>
+              <span>to paste</span>
+            </div>
+          </div>
+          <span class="text-[10px] uppercase font-bold tracking-widest text-zinc-650 bg-ink-800 px-2 py-0.5 rounded border border-ink-700 font-mono shrink-0">JSON</span>
+        </div>
+        <p v-if="errorMsg" class="w-full text-red-400 text-xs text-center border border-red-950 bg-red-950/20 px-3 py-2 rounded-xl shrink-0">{{ errorMsg }}</p>
+      </template>
+    </div>
+
     <!-- Feature list -->
     <div class="px-6 py-6 border-b border-ink-800 flex flex-col gap-1.5">
       <div
@@ -134,7 +202,7 @@ onUnmounted(() => document.removeEventListener('paste', onPaste))
     </div>
 
     <!-- Connection section -->
-    <div class="px-6 py-5 border-b border-ink-800 bg-ink-900/20 flex flex-col gap-3.5">
+    <div class="px-6 py-5 bg-ink-900/20 flex flex-col gap-3.5">
       <!-- Header row with toggle -->
       <div class="flex items-center justify-between">
         <h2 class="panel-header">ComfyUI Server</h2>
@@ -200,75 +268,6 @@ onUnmounted(() => document.removeEventListener('paste', onPaste))
         </template>
         <span v-else class="text-xs text-zinc-500">Off — static analysis only for now, dynamic analysis is coming.</span>
       </div>
-    </div>
-
-    <!-- Body -->
-    <div class="flex-1 flex flex-col gap-4 p-6 min-h-[280px]">
-      <div class="step-title">Step 1: Upload a workflow</div>
-
-      <!-- File loaded state -->
-      <template v-if="props.fileName">
-        <div class="flex-1 flex flex-col items-center justify-center gap-3.5 bg-ink-800/40 border border-ink-700 rounded-2xl p-6 text-center shadow-sm">
-          <div class="w-12 h-12 bg-brand-yellow/10 border border-brand-yellow/20 rounded-full flex items-center justify-center">
-            <svg class="w-5 h-5 text-brand-yellow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <p class="text-zinc-200 text-sm font-semibold font-mono break-all leading-relaxed">{{ props.fileName }}</p>
-        </div>
-        <button
-          class="w-full py-2.5 text-sm font-semibold text-zinc-300 bg-ink-800 hover:bg-ink-700 border border-ink-700 hover:border-ink-600 rounded-xl transition-all duration-150 cursor-pointer text-center"
-          @click="triggerInput"
-        >
-          Upload another
-        </button>
-        <button
-          class="w-full py-2.5 text-sm font-semibold text-red-400 hover:text-red-300 bg-red-950/20 hover:bg-red-950/30 border border-red-900/30 hover:border-red-900/50 rounded-xl transition-all duration-150 cursor-pointer text-center"
-          @click="emit('reset')"
-        >
-          Clear
-        </button>
-      </template>
-
-      <!-- Upload state -->
-      <template v-else>
-        <div
-          class="flex-1 flex flex-col items-center justify-center gap-5 border-2 border-dashed rounded-2xl cursor-pointer transition-all duration-200 select-none p-6 text-center"
-          :class="isDragging
-            ? 'border-brand-yellow bg-brand-yellow/5 shadow-glow-yellow'
-            : 'border-ink-700 bg-ink-800/20 hover:border-ink-600 hover:bg-ink-800/40'"
-          @dragover="onDragOver"
-          @dragleave="onDragLeave"
-          @drop="onDrop"
-          @click="triggerInput"
-        >
-          <div
-            class="w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-200 shrink-0"
-            :class="isDragging ? 'bg-brand-yellow/15 shadow-sm' : 'bg-ink-800 border border-ink-700'"
-          >
-            <svg
-              class="w-6 h-6 transition-colors"
-              :class="isDragging ? 'text-brand-yellow' : 'text-zinc-500'"
-              fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-            </svg>
-          </div>
-          <div class="flex flex-col items-center gap-2">
-            <p class="text-zinc-200 text-sm font-semibold font-display">Drop workflow JSON here</p>
-            <p class="text-brand-yellow text-xs font-semibold hover:text-white underline underline-offset-4 cursor-pointer">
-              click to browse
-            </p>
-            <div class="flex items-center gap-1.5 text-zinc-500 text-xs">
-              <kbd class="text-zinc-400 font-mono text-[10px] bg-ink-800 border border-ink-700 rounded-lg px-1.5 py-0.5 shadow-sm">Ctrl+V</kbd>
-              <span>to paste</span>
-            </div>
-          </div>
-          <span class="text-[10px] uppercase font-bold tracking-widest text-zinc-650 bg-ink-800 px-2 py-0.5 rounded border border-ink-700 font-mono shrink-0">JSON</span>
-        </div>
-        <p v-if="errorMsg" class="w-full text-red-400 text-xs text-center border border-red-950 bg-red-950/20 px-3 py-2 rounded-xl shrink-0">{{ errorMsg }}</p>
-      </template>
-
     </div>
 
     <input
