@@ -104,3 +104,134 @@ The built-in node definitions are sourced directly from the [official ComfyUI re
 ComfyUI Core follows a weekly release cycle, targeting Monday. This tool syncs the built-in node schema every Tuesday after the ComfyUI release. If ComfyUI delays its release, the schema update here is delayed accordingly.
 
 To always check against the exact nodes installed in your ComfyUI instance, connect the tool to your running ComfyUI server — this bypasses the built-in schema entirely.
+
+---
+
+## Contributing
+
+Thank you for your interest in contributing to **ComfyUI Workflow Debugger**!  
+We welcome bug reports, feature ideas, documentation improvements, and pull requests from the community — the same spirit you will find in projects such as [Vue](https://github.com/vuejs/core/blob/main/.github/contributing.md), [Vite](https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md), and [Node.js](https://github.com/nodejs/node/blob/main/CONTRIBUTING.md).
+
+> Full step-by-step contributor workflow also lives in [`CONTRIBUTING.md`](./CONTRIBUTING.md).
+
+### Code of Conduct
+
+By participating in this project you agree to treat everyone with respect.  
+Harassment, discrimination, or hostile behavior will not be tolerated.  
+If you experience or witness unacceptable behavior, please open a private report with the maintainers via [GitHub](https://github.com/kaili-yang/ComfyUI-Workflow-Debugger/issues) or contact [Kaili Yang](https://github.com/kaili-yang).
+
+### Ways to contribute
+
+| Area | Examples |
+| --- | --- |
+| **Bugs** | Broken analysis results, UI glitches, incorrect auto-fixes |
+| **Features** | New diagnostics, new auto-fix strategies, UX improvements |
+| **Docs** | README, guides, inline comments, translations |
+| **Schema sync** | Keeping built-in node definitions in sync with ComfyUI |
+| **Tests & fixtures** | Sample workflows under `test data/` / `workflow/` that reproduce issues |
+
+Not sure where to start? Browse [open issues](https://github.com/kaili-yang/ComfyUI-Workflow-Debugger/issues) and look for labels such as `good first issue` or `help wanted`.
+
+### Development setup
+
+**Prerequisites:** Node.js 20+ (or current LTS) and [pnpm](https://pnpm.io/).
+
+```bash
+git clone git@github.com:kaili-yang/ComfyUI-Workflow-Debugger.git
+cd ComfyUI-Workflow-Debugger
+pnpm install
+pnpm dev          # http://localhost:5177/
+```
+
+Useful scripts:
+
+```bash
+pnpm build        # type-check + production build
+pnpm preview      # preview the production build
+```
+
+Stack: **Vue 3 + TypeScript + Vite + Tailwind CSS**. Analysis and auto-fix logic live under `src/lib/` (pure functions); UI lives under `src/components/`.
+
+### Branch & pull request workflow
+
+1. **Fork** the repository and clone your fork.
+2. Create a topic branch from `main`:
+   ```bash
+   git checkout -b fix/describe-your-change
+   # or
+   git checkout -b feat/describe-your-change
+   ```
+3. Make focused commits. Prefer small PRs that do one thing well.
+4. Ensure the app builds: `pnpm build`.
+5. Push your branch and open a **Pull Request** against `main` on  
+   [kaili-yang/ComfyUI-Workflow-Debugger](https://github.com/kaili-yang/ComfyUI-Workflow-Debugger).
+6. Fill in the PR template (or describe): **what**, **why**, **how to test**.
+7. Respond to review feedback. Maintainers may ask for changes before merging.
+
+#### Pull request checklist
+
+- [ ] The change solves a real problem or adds clear value
+- [ ] UI-only vs analysis changes stay separated where practical
+- [ ] New diagnostics go in `src/lib/checks/` and stay **pure** (no mutation)
+- [ ] New auto-fixes go in `src/lib/fixes/` and set `fixable: true` on matching issues
+- [ ] Fix ordering in `fixer.ts` is preserved (`fixGhostLinks` before `fixLinkTypeMetadata`)
+- [ ] No secrets, API keys, or personal workflow dumps committed
+- [ ] `pnpm build` succeeds
+
+### Coding guidelines
+
+- Prefer **clear, small diffs** over drive-by refactors in the same PR.
+- Keep Vue components free of analysis logic; put checks/fixes in `src/lib/`.
+- Match existing TypeScript types in `src/types/workflow.ts`.
+- Follow the surrounding naming and formatting style (no need to reformat unrelated files).
+- For checks: return `Issue[]`; never mutate `GraphAnalysisContext`.
+- For fixes: receive an owned workflow object; return a change count (or structured result).
+
+Architecture notes for adding checks/fixes are documented in [`CLAUDE.md`](./CLAUDE.md).
+
+### Commit messages
+
+Use short, imperative subjects (similar to Conventional Commits):
+
+```
+feat: detect stale media refs in API-format workflows
+fix: correct link type metadata after ghost-link removal
+docs: clarify contribution workflow
+chore: sync node schema from latest ComfyUI backend
+style: polish Step 2 empty-state minimap
+```
+
+- **Author email** for commits that should count on GitHub’s contribution graph must be a verified address on your GitHub account (for maintainers of this repo: `Kelly Yang <124ykl@gmail.com>`).
+- Do not put secrets or personal data in commit messages.
+
+### Reporting bugs
+
+Open an issue with:
+
+1. **ComfyUI Workflow Debugger** version / commit (or the live Netlify build date)
+2. Browser and OS
+3. Whether you used **offline** analysis or a **connected ComfyUI** server
+4. A **minimal workflow JSON** that reproduces the problem (sanitize private paths)
+5. Expected vs actual behavior (screenshots help)
+
+### Feature requests
+
+Open an issue describing:
+
+- The user problem (not only the proposed solution)
+- How you would test the feature
+- Whether it needs ComfyUI server connectivity
+
+### License
+
+This project is released under the **[GNU Affero General Public License v3.0 only](https://www.gnu.org/licenses/agpl-3.0.html)** (`AGPL-3.0-only`), as declared in `package.json`.
+
+By submitting a contribution (including patches, pull requests, and documentation), you agree that your work is licensed under the same AGPL-3.0-only terms, and that you have the right to submit it under those terms.
+
+### Maintainers & contact
+
+- **Author / maintainer:** [Kaili Yang](https://github.com/kaili-yang) (`Kelly Yang <124ykl@gmail.com>`)
+- **Repository:** [github.com/kaili-yang/ComfyUI-Workflow-Debugger](https://github.com/kaili-yang/ComfyUI-Workflow-Debugger)
+- **Live demo:** [comfy-workflow-debugger.netlify.app](https://comfy-workflow-debugger.netlify.app/)
+
+Questions that are not bugs or features are welcome in Issues (please choose a clear title). We appreciate every contribution — large or small.

@@ -104,3 +104,135 @@ ComfyUI 工作流加载失败通常是因为 JSON 结构损坏、指向已删除
 ComfyUI 核心遵循每周发布周期（通常是周一）。本工具在 ComfyUI 发布后的每周二同步内置节点定义。如果 ComfyUI 延迟发布，此处的定义更新也会相应延迟。
 
 为了始终针对您 ComfyUI 实例中安装的确切节点进行检查，请将工具连接到您正在运行缺陷检查的 ComfyUI 服务器 —— 这将完全绕过内置定义。
+
+---
+
+## 开源贡献指南 (Contributing)
+
+感谢你关注并愿意为 **ComfyUI Workflow Debugger** 做出贡献！  
+我们欢迎社区提交缺陷报告、功能建议、文档改进与 Pull Request——这与 [Vue](https://github.com/vuejs/core/blob/main/.github/contributing.md)、[Vite](https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md)、[Node.js](https://github.com/nodejs/node/blob/main/CONTRIBUTING.md) 等知名开源项目的协作方式一致。
+
+> 英文版逐步流程见 [`CONTRIBUTING.md`](./CONTRIBUTING.md)。
+
+### 行为准则 (Code of Conduct)
+
+参与本项目即表示你同意以尊重的方式与他人协作。  
+任何骚扰、歧视或敌对行为都不可接受。  
+若遇到不当行为，请通过 [GitHub Issues](https://github.com/kaili-yang/ComfyUI-Workflow-Debugger/issues) 私下联系维护者，或联系 [Kaili Yang](https://github.com/kaili-yang)。
+
+### 你可以贡献的方向
+
+| 类型 | 示例 |
+| --- | --- |
+| **缺陷修复** | 错误的分析结果、界面异常、不正确的自动修复 |
+| **新功能** | 新的诊断项、新的自动修复策略、体验优化 |
+| **文档** | README、指南、注释、翻译 |
+| **Schema 同步** | 与官方 ComfyUI 内置节点定义保持一致 |
+| **测试与样例** | 在 `test data/`、`workflow/` 中补充可复现问题的样例工作流 |
+
+不知道从哪开始？浏览 [open issues](https://github.com/kaili-yang/ComfyUI-Workflow-Debugger/issues)，优先查看 `good first issue`、`help wanted` 等标签。
+
+### 本地开发环境
+
+**前置要求：** Node.js 20+（或当前 LTS）与 [pnpm](https://pnpm.io/)。
+
+```bash
+git clone git@github.com:kaili-yang/ComfyUI-Workflow-Debugger.git
+cd ComfyUI-Workflow-Debugger
+pnpm install
+pnpm dev          # http://localhost:5177/
+```
+
+常用命令：
+
+```bash
+pnpm build        # 类型检查 + 生产构建
+pnpm preview      # 预览生产构建
+```
+
+技术栈：**Vue 3 + TypeScript + Vite + Tailwind CSS**。  
+静态分析与自动修复逻辑在 `src/lib/`（纯函数）；界面在 `src/components/`。
+
+### 分支与 Pull Request 流程
+
+1. **Fork** 本仓库，并 clone 你的 fork。
+2. 从 `main` 创建主题分支：
+   ```bash
+   git checkout -b fix/describe-your-change
+   # 或
+   git checkout -b feat/describe-your-change
+   ```
+3. 保持提交聚焦，尽量让一个 PR 只做一件事。
+4. 提交前确认可以构建：`pnpm build`。
+5. 推送分支，并向  
+   [kaili-yang/ComfyUI-Workflow-Debugger](https://github.com/kaili-yang/ComfyUI-Workflow-Debugger) 的 `main` 发起 **Pull Request**。
+6. 在 PR 中说明：**改了什么、为什么、如何验证**。
+7. 根据 review 反馈继续修改，维护者确认后合并。
+
+#### Pull Request 检查清单
+
+- [ ] 解决真实问题，或带来明确价值
+- [ ] 尽量把 UI 改动与分析/修复逻辑改动分开
+- [ ] 新诊断放在 `src/lib/checks/`，并保持 **纯函数**（不修改输入）
+- [ ] 新自动修复放在 `src/lib/fixes/`，并在对应 issue 上设置 `fixable: true`
+- [ ] 保持 `fixer.ts` 中的修复顺序（`fixGhostLinks` 必须在 `fixLinkTypeMetadata` 之前）
+- [ ] 不要提交密钥、API Key 或含隐私路径的工作流
+- [ ] `pnpm build` 通过
+
+### 编码约定
+
+- 同一 PR 内避免无关的大范围重构；优先清晰、小范围的改动。
+- Vue 组件不要塞分析逻辑；检查与修复放到 `src/lib/`。
+- 复用 `src/types/workflow.ts` 中已有类型。
+- 跟随周边代码的命名与格式；不要顺手格式化无关文件。
+- Check：返回 `Issue[]`，不要突变 `GraphAnalysisContext`。
+- Fix：接收已克隆的工作流对象，返回修改数量（或结构化结果）。
+
+更详细的 check/fix 扩展说明见 [`CLAUDE.md`](./CLAUDE.md)。
+
+### Commit 信息
+
+使用简短、祈使语气的标题（接近 Conventional Commits）：
+
+```
+feat: detect stale media refs in API-format workflows
+fix: correct link type metadata after ghost-link removal
+docs: clarify contribution workflow
+chore: sync node schema from latest ComfyUI backend
+style: polish Step 2 empty-state minimap
+```
+
+- 若希望出现在 GitHub 贡献墙，commit 的 **author email** 必须是 GitHub 账号已验证的邮箱（本仓库维护者使用：`Kelly Yang <124ykl@gmail.com>`）。
+- 不要在 commit message 中写入密钥或个人隐私。
+
+### 报告缺陷
+
+请在 Issue 中包含：
+
+1. **ComfyUI Workflow Debugger** 版本 / commit（或线上 Netlify 构建时间）
+2. 浏览器与操作系统
+3. 使用的是 **离线分析** 还是已 **连接 ComfyUI 服务器**
+4. 可复现问题的 **最小工作流 JSON**（请脱敏隐私路径）
+5. 期望行为 vs 实际行为（截图更好）
+
+### 功能建议
+
+请在 Issue 中说明：
+
+- 用户遇到的问题（而不仅是设想的方案）
+- 你希望如何验收该功能
+- 是否依赖连接 ComfyUI 服务器
+
+### 许可证 (License)
+
+本项目以 **[GNU Affero General Public License v3.0 only](https://www.gnu.org/licenses/agpl-3.0.html)**（`AGPL-3.0-only`）发布，详见 `package.json`。
+
+提交贡献（包括补丁、Pull Request、文档）即表示你同意将该贡献以相同的 AGPL-3.0-only 条款授权，并且你有权以该条款提交。
+
+### 维护者与联系方式
+
+- **作者 / 维护者：** [Kaili Yang](https://github.com/kaili-yang)（`Kelly Yang <124ykl@gmail.com>`）
+- **仓库：** [github.com/kaili-yang/ComfyUI-Workflow-Debugger](https://github.com/kaili-yang/ComfyUI-Workflow-Debugger)
+- **在线演示：** [comfy-workflow-debugger.netlify.app](https://comfy-workflow-debugger.netlify.app/)
+
+非缺陷、非功能类的问题也可以开 Issue（请使用清晰标题）。无论贡献大小，我们都非常感谢。
