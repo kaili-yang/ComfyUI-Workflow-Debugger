@@ -131,7 +131,7 @@ const verdictIcon = computed(() => {
 
     <template v-else>
       <!-- Summary bar -->
-      <div class="flex-shrink-0 flex items-center gap-5 pl-[236px] pr-6 py-4 border-b border-ink-800 bg-ink-900/40">
+      <div class="flex-shrink-0 flex items-center justify-end gap-5 pl-6 pr-6 py-4 border-b border-ink-800 bg-ink-900/40">
         <!-- Verdict -->
         <div class="flex items-center gap-2.5">
           <span class="text-lg font-extrabold leading-none" :class="verdictStyle">{{ verdictIcon }}</span>
@@ -140,34 +140,12 @@ const verdictIcon = computed(() => {
 
         <div class="w-px h-4 bg-ink-800" />
 
-        <!-- Stats chips -->
-        <div class="flex items-center gap-2.5 flex-wrap">
-          <span class="text-xs text-zinc-500">
-            <span class="text-zinc-300 font-semibold tabular-nums">{{ result.nodeCount }}</span> nodes
-          </span>
-          <span v-if="result.format === 'graph'" class="text-xs text-zinc-500">
-            <span class="text-zinc-300 font-semibold tabular-nums">{{ result.linkCount }}</span> links
-          </span>
-          <span
-            v-if="errors.length > 0"
-            class="text-xs px-2.5 py-0.5 rounded-full font-medium"
-            :class="severityTag('error')"
-          >{{ errors.length }} error{{ errors.length !== 1 ? 's' : '' }}</span>
-          <span
-            v-if="warnings.length > 0"
-            class="text-xs px-2.5 py-0.5 rounded-full font-medium"
-            :class="severityTag('warning')"
-          >{{ warnings.length }} warning{{ warnings.length !== 1 ? 's' : '' }}</span>
-          <span
-            v-if="infos.length > 0"
-            class="text-xs px-2.5 py-0.5 rounded-full font-medium"
-            :class="severityTag('info')"
-          >{{ infos.length }} info</span>
-        </div>
-
-        <div class="ml-auto text-xs text-zinc-650 font-bold uppercase tracking-wider font-mono">
-          {{ result.format === 'graph' ? 'Graph format' : result.format === 'api' ? 'API format' : 'Unknown format' }}
-        </div>
+        <span class="text-xs text-zinc-500">
+          <span class="text-zinc-300 font-semibold tabular-nums">{{ result.nodeCount }}</span> nodes
+        </span>
+        <span class="text-xs text-zinc-500">
+          <span class="text-zinc-300 font-semibold tabular-nums">{{ result.linkCount }}</span> links
+        </span>
       </div>
 
       <!-- Issues area -->
