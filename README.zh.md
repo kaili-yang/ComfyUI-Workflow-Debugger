@@ -8,6 +8,7 @@
 
 | 维护日期 | 维护人 | 维护内容 | 备注/状态 |
 | :--- | :--- | :--- | :--- |
+| 2026-07-28 | Claude | 同步 ComfyUI 后端节点定义与 ComfyUI_frontend 派生类型（共 781 个节点，sourceMap 25 种类型/740 条，conversionMap 21 种类型/352 条） | 已同步且测试通过 |
 | 2026-06-10 | Antigravity | 同步 ComfyUI 后端节点定义与 ComfyUI_frontend 派生类型（共 690 个节点，sourceMap 25 种类型，conversionMap 21 种类型） | 已同步且测试通过 |
 | 2026-06-03 | Antigravity | 同步 ComfyUI 后端节点定义与 ComfyUI_frontend 派生类型（共 690 个节点，sourceMap 25 种类型，conversionMap 21 种类型） | 已同步且测试通过 |
 | 2026-05-25 | Antigravity | 同步 ComfyUI 后端与 ComfyUI_frontend 节点定义及类型，更新 UploadPanel 静态分析提示文本 | 已同步且测试通过 |
@@ -17,16 +18,17 @@
 
 一款免费的、基于浏览器的工具，可用于检查您的 ComfyUI 工作流问题并自动修复它们 —— 无需安装 ComfyUI。非常适合进行 **ComfyUI 问题排查 (ComfyUI troubleshooting)**、**工作流分析 (workflow analysis)** 以及 **节点故障诊断 (node failure diagnosis)**。
 
-## 截图
+## 截图与演示
 
-![无工作流问题的示意图](screenshots/no-issues.png)
-*干净的工作流 —— 所有连接有效，未发现问题*
+![ComfyUI Workflow Debugger](<src/assets/ComfyUI Workflow Debugger-KL.png>)
+*ComfyUI Workflow Debugger —— 诊断与自动修复面板*
 
-![有警告的工作流](screenshots/warnings.png)
-*带有警告的工作流 —— 检测到过期的文件引用，有 1 个可修复问题*
+<video src="https://github.com/kaili-yang/ComfyUI-Workflow-Debugger/raw/main/src/assets/workflow%20debugger%20intro%20video.mp4" controls width="800">
+  您的浏览器不支持 video 标签，请查看
+  <code>src/assets/workflow debugger intro video.mp4</code> 观看演示视频。
+</video>
 
-![有多个问题的工作流](screenshots/multiple-issues.png)
-*复杂的工作流 —— 类型不匹配、过期引用和孤立节点，有 5 个可修复问题*
+*快速演示：上传工作流、查看诊断结果、一键自动修复问题*
 
 ## 如何使用
 

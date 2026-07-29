@@ -8,6 +8,7 @@
 
 | Date | Maintainer | Description | Status/Notes |
 | :--- | :--- | :--- | :--- |
+| 2026-07-28 | Claude | Synchronized ComfyUI backend node definitions and ComfyUI_frontend derived types (781 nodes, sourceMap 25 types/740 entries, conversionMap 21 types/352 entries) | Synchronized and verified |
 | 2026-06-10 | Antigravity | Synchronized ComfyUI backend node definitions and ComfyUI_frontend derived types (690 nodes, sourceMap 25 types, conversionMap 21 types) | Synchronized and verified |
 | 2026-06-03 | Antigravity | Synchronized ComfyUI backend node definitions and ComfyUI_frontend derived types (690 nodes, sourceMap 25 types, conversionMap 21 types) | Synchronized and verified |
 | 2026-05-25 | Antigravity | Synchronized ComfyUI backend and ComfyUI_frontend node definitions and types, updated UploadPanel static analysis tooltip texts | Synchronized and verified |
@@ -17,16 +18,17 @@
 
 A free, browser-based tool that checks your ComfyUI workflow for problems and fixes them automatically — no ComfyUI installation required. Perfect for **ComfyUI troubleshooting**, **workflow analysis**, and **node failure diagnosis**.
 
-## Screenshots
+## Screenshots & Demo
 
-![Workflow with no issues](screenshots/no-issues.png)
-*Clean workflow — all connections valid, no issues found*
+![ComfyUI Workflow Debugger](<src/assets/ComfyUI Workflow Debugger-KL.png>)
+*ComfyUI Workflow Debugger — diagnostics and auto-fix panel*
 
-![Workflow with warnings](screenshots/warnings.png)
-*Workflow with warnings — stale file reference detected, 1 fixable issue*
+<video src="https://github.com/kaili-yang/ComfyUI-Workflow-Debugger/raw/main/src/assets/workflow%20debugger%20intro%20video.mp4" controls width="800">
+  Your browser does not support the video tag. Watch the intro video at
+  <code>src/assets/workflow debugger intro video.mp4</code>.
+</video>
 
-![Workflow with multiple issues](screenshots/multiple-issues.png)
-*Complex workflow — type mismatches, stale refs, and orphan nodes, 5 fixable issues*
+*Quick walkthrough of uploading a workflow, reviewing diagnostics, and auto-fixing issues*
 
 ## How to use
 
