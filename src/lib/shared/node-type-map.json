@@ -105,6 +105,32 @@
               "slotIndex": 0
             }
           ]
+        },
+        {
+          "class": "SyncLipSyncNode",
+          "inputSlot": "audio",
+          "inputSlotIndex": 1,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "video",
+              "type": "VIDEO",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "SyncTalkingImageNode",
+          "inputSlot": "audio",
+          "inputSlotIndex": 1,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 0
+            }
+          ]
         }
       ]
     },
@@ -311,6 +337,13 @@
               "slotIndex": 1
             }
           ]
+        },
+        {
+          "class": "TextEncodeJoyImageEdit",
+          "inputSlot": "clip",
+          "inputSlotIndex": 0,
+          "outputSlot": 0,
+          "extraInputs": []
         },
         {
           "class": "TextEncodeQwenImageEdit",
@@ -2350,6 +2383,24 @@
               "slotIndex": 1
             }
           ]
+        },
+        {
+          "class": "AnimaLLLiteApply",
+          "inputSlot": "image",
+          "inputSlotIndex": 2,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "model",
+              "type": "MODEL",
+              "slotIndex": 0
+            },
+            {
+              "name": "model_patch",
+              "type": "MODEL_PATCH",
+              "slotIndex": 1
+            }
+          ]
         }
       ],
       "VIDEO": [
@@ -2403,6 +2454,13 @@
         {
           "class": "HappyHorseImageToVideoApi",
           "inputSlot": "first_frame",
+          "inputSlotIndex": 0,
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "HeyGenTalkingPhotoNode",
+          "inputSlot": "image",
           "inputSlotIndex": 0,
           "outputSlot": 0,
           "extraInputs": []
@@ -2639,6 +2697,19 @@
           "inputSlotIndex": 0,
           "outputSlot": 0,
           "extraInputs": []
+        },
+        {
+          "class": "SyncTalkingImageNode",
+          "inputSlot": "image",
+          "inputSlotIndex": 0,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "audio",
+              "type": "AUDIO",
+              "slotIndex": 1
+            }
+          ]
         },
         {
           "class": "Veo3FirstLastFrameNode",
@@ -3400,6 +3471,24 @@
     },
     "MODEL_PATCH": {
       "MODEL": [
+        {
+          "class": "AnimaLLLiteApply",
+          "inputSlot": "model_patch",
+          "inputSlotIndex": 1,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "model",
+              "type": "MODEL",
+              "slotIndex": 0
+            },
+            {
+              "name": "image",
+              "type": "IMAGE",
+              "slotIndex": 2
+            }
+          ]
+        },
         {
           "class": "USOStyleReference",
           "inputSlot": "model_patch",
@@ -5176,6 +5265,15 @@
         "requiredInputs": []
       },
       {
+        "class": "HeyGenTextToSpeechNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "text": null,
+          "voice": null
+        },
+        "requiredInputs": []
+      },
+      {
         "class": "LoadAudio",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -6316,6 +6414,20 @@
           "top_p": null,
           "top_k": null,
           "min_p": null
+        },
+        "requiredInputs": [
+          {
+            "name": "clip",
+            "type": "CLIP",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "TextEncodeJoyImageEdit",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null
         },
         "requiredInputs": [
           {
@@ -9501,6 +9613,12 @@
           "number_of_images": null,
           "seed": null
         },
+        "requiredInputs": []
+      },
+      {
+        "class": "HeyGenCreateAvatarNode",
+        "outputSlot": 1,
+        "widgetDefaults": {},
         "requiredInputs": []
       },
       {
@@ -13890,6 +14008,18 @@
         ]
       },
       {
+        "class": "MaskPreview",
+        "outputSlot": 0,
+        "widgetDefaults": {},
+        "requiredInputs": [
+          {
+            "name": "mask",
+            "type": "MASK",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
         "class": "RecraftRemoveBackgroundNode",
         "outputSlot": 1,
         "widgetDefaults": {},
@@ -15171,6 +15301,32 @@
         ]
       },
       {
+        "class": "AnimaLLLiteApply",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "strength": null,
+          "start_percent": null,
+          "end_percent": null
+        },
+        "requiredInputs": [
+          {
+            "name": "model",
+            "type": "MODEL",
+            "slotIndex": 0
+          },
+          {
+            "name": "model_patch",
+            "type": "MODEL_PATCH",
+            "slotIndex": 1
+          },
+          {
+            "name": "image",
+            "type": "IMAGE",
+            "slotIndex": 2
+          }
+        ]
+      },
+      {
         "class": "USOStyleReference",
         "outputSlot": 0,
         "widgetDefaults": {},
@@ -15281,6 +15437,37 @@
           {
             "name": "vae",
             "type": "VAE",
+            "slotIndex": 3
+          }
+        ]
+      },
+      {
+        "class": "WanUni3CControlnetApply",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "strength": null,
+          "start_percent": null,
+          "end_percent": null
+        },
+        "requiredInputs": [
+          {
+            "name": "model",
+            "type": "MODEL",
+            "slotIndex": 0
+          },
+          {
+            "name": "model_patch",
+            "type": "MODEL_PATCH",
+            "slotIndex": 1
+          },
+          {
+            "name": "vae",
+            "type": "VAE",
+            "slotIndex": 2
+          },
+          {
+            "name": "render_video",
+            "type": "IMAGE",
             "slotIndex": 3
           }
         ]
@@ -15970,6 +16157,12 @@
         "requiredInputs": []
       },
       {
+        "class": "HeyGenAvatarVideoNode",
+        "outputSlot": 0,
+        "widgetDefaults": {},
+        "requiredInputs": []
+      },
+      {
         "class": "KlingCameraControlT2VNode",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -16051,6 +16244,22 @@
         "outputSlot": 0,
         "widgetDefaults": {
           "file": null
+        },
+        "requiredInputs": []
+      },
+      {
+        "class": "LoadVideoDataSetFromFolder",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "folder": null
+        },
+        "requiredInputs": []
+      },
+      {
+        "class": "LoadVideoTextDataSetFromFolder",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "folder": null
         },
         "requiredInputs": []
       },
@@ -16440,6 +16649,33 @@
         ]
       },
       {
+        "class": "HeyGenTalkingPhotoNode",
+        "outputSlot": 0,
+        "widgetDefaults": {},
+        "requiredInputs": [
+          {
+            "name": "image",
+            "type": "IMAGE",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "HeyGenVideoTranslateNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "output_language": null,
+          "mode": null
+        },
+        "requiredInputs": [
+          {
+            "name": "video",
+            "type": "VIDEO",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
         "class": "HitPawVideoEnhance",
         "outputSlot": 0,
         "widgetDefaults": {},
@@ -16755,6 +16991,35 @@
         ]
       },
       {
+        "class": "ShuffleVideoDataset",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "seed": null
+        },
+        "requiredInputs": [
+          {
+            "name": "videos",
+            "type": "VIDEO",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "ShuffleVideoTextDataset",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "texts": null,
+          "seed": null
+        },
+        "requiredInputs": [
+          {
+            "name": "videos",
+            "type": "VIDEO",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
         "class": "TopazVideoEnhance",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -16789,6 +17054,52 @@
           "start_time": null,
           "duration": null,
           "strict_duration": null
+        },
+        "requiredInputs": [
+          {
+            "name": "video",
+            "type": "VIDEO",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "VideoFrameSample",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "num_frames": null,
+          "strategy": null,
+          "seed": null
+        },
+        "requiredInputs": [
+          {
+            "name": "video",
+            "type": "VIDEO",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "VideoRandomTemporalCrop",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "length": null,
+          "seed": null
+        },
+        "requiredInputs": [
+          {
+            "name": "video",
+            "type": "VIDEO",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "VideoTemporalCrop",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "start_frame": null,
+          "length": null
         },
         "requiredInputs": [
           {
@@ -17161,6 +17472,45 @@
           {
             "name": "end_frame",
             "type": "IMAGE",
+            "slotIndex": 1
+          }
+        ]
+      },
+      {
+        "class": "SyncLipSyncNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "seed": null
+        },
+        "requiredInputs": [
+          {
+            "name": "video",
+            "type": "VIDEO",
+            "slotIndex": 0
+          },
+          {
+            "name": "audio",
+            "type": "AUDIO",
+            "slotIndex": 1
+          }
+        ]
+      },
+      {
+        "class": "SyncTalkingImageNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null,
+          "seed": null
+        },
+        "requiredInputs": [
+          {
+            "name": "image",
+            "type": "IMAGE",
+            "slotIndex": 0
+          },
+          {
+            "name": "audio",
+            "type": "AUDIO",
             "slotIndex": 1
           }
         ]

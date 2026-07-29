@@ -62,6 +62,25 @@
       "SIGMAS"
     ]
   },
+  "AnimaLLLiteApply": {
+    "category": "model_patches/anima",
+    "inputs": {
+      "required": {
+        "model": "MODEL",
+        "model_patch": "MODEL_PATCH",
+        "image": "IMAGE",
+        "strength": "FLOAT",
+        "start_percent": "FLOAT",
+        "end_percent": "FLOAT"
+      },
+      "optional": {
+        "mask": "MASK"
+      }
+    },
+    "outputs": [
+      "MODEL"
+    ]
+  },
   "AudioAdjustVolume": {
     "category": "audio",
     "inputs": {
@@ -536,7 +555,9 @@
         "pitch_rate": "INT",
         "seed": "INT"
       },
-      "optional": {}
+      "optional": {
+        "model": "COMBO"
+      }
     },
     "outputs": [
       "AUDIO"
@@ -2953,6 +2974,86 @@
       "VIDEO"
     ]
   },
+  "HeyGenAvatarVideoNode": {
+    "category": "partner/video/HeyGen",
+    "inputs": {
+      "required": {},
+      "optional": {
+        "custom_avatar_id": "STRING",
+        "resolution": "COMBO",
+        "aspect_ratio": "COMBO",
+        "background_color": "STRING",
+        "seed": "INT"
+      }
+    },
+    "outputs": [
+      "VIDEO"
+    ]
+  },
+  "HeyGenCreateAvatarNode": {
+    "category": "partner/video/HeyGen",
+    "inputs": {
+      "required": {},
+      "optional": {}
+    },
+    "outputs": [
+      "STRING",
+      "IMAGE"
+    ]
+  },
+  "HeyGenTalkingPhotoNode": {
+    "category": "partner/video/HeyGen",
+    "inputs": {
+      "required": {
+        "image": "IMAGE"
+      },
+      "optional": {
+        "resolution": "COMBO",
+        "aspect_ratio": "COMBO",
+        "expressiveness": "COMBO",
+        "seed": "INT"
+      }
+    },
+    "outputs": [
+      "VIDEO"
+    ]
+  },
+  "HeyGenTextToSpeechNode": {
+    "category": "partner/audio/HeyGen",
+    "inputs": {
+      "required": {
+        "text": "STRING",
+        "voice": "COMBO"
+      },
+      "optional": {
+        "custom_voice_id": "STRING",
+        "speed": "FLOAT",
+        "ssml": "BOOLEAN",
+        "seed": "INT"
+      }
+    },
+    "outputs": [
+      "AUDIO"
+    ]
+  },
+  "HeyGenVideoTranslateNode": {
+    "category": "partner/video/HeyGen",
+    "inputs": {
+      "required": {
+        "video": "VIDEO",
+        "output_language": "COMBO",
+        "mode": "COMBO"
+      },
+      "optional": {
+        "translate_audio_only": "BOOLEAN",
+        "speaker_count": "INT",
+        "seed": "INT"
+      }
+    },
+    "outputs": [
+      "VIDEO"
+    ]
+  },
   "HiDreamO1PatchSeamSmoothing": {
     "category": "model/patch/hidream",
     "inputs": {
@@ -5057,6 +5158,31 @@
       "VIDEO"
     ]
   },
+  "LoadVideoDataSetFromFolder": {
+    "category": "video",
+    "inputs": {
+      "required": {
+        "folder": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO"
+    ]
+  },
+  "LoadVideoTextDataSetFromFolder": {
+    "category": "video",
+    "inputs": {
+      "required": {
+        "folder": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO",
+      "STRING"
+    ]
+  },
   "LoraLoader": {
     "category": "model/loaders",
     "inputs": {
@@ -5594,7 +5720,9 @@
       },
       "optional": {}
     },
-    "outputs": []
+    "outputs": [
+      "MASK"
+    ]
   },
   "MaskToImage": {
     "category": "image/mask",
@@ -8603,6 +8731,34 @@
       "STRING"
     ]
   },
+  "ShuffleVideoDataset": {
+    "category": "video/batch",
+    "inputs": {
+      "required": {
+        "videos": "VIDEO",
+        "seed": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO"
+    ]
+  },
+  "ShuffleVideoTextDataset": {
+    "category": "dataset/video",
+    "inputs": {
+      "required": {
+        "videos": "VIDEO",
+        "texts": "STRING",
+        "seed": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO",
+      "STRING"
+    ]
+  },
   "SkipLayerGuidanceDiT": {
     "category": "advanced/guidance",
     "inputs": {
@@ -9174,6 +9330,35 @@
       "STYLE_MODEL"
     ]
   },
+  "SyncLipSyncNode": {
+    "category": "partner/video/sync.so",
+    "inputs": {
+      "required": {
+        "video": "VIDEO",
+        "audio": "AUDIO",
+        "seed": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO"
+    ]
+  },
+  "SyncTalkingImageNode": {
+    "category": "partner/video/sync.so",
+    "inputs": {
+      "required": {
+        "image": "IMAGE",
+        "audio": "AUDIO",
+        "prompt": "STRING",
+        "seed": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO"
+    ]
+  },
   "T5TokenizerOptions": {
     "category": "model/conditioning",
     "inputs": {
@@ -9371,6 +9556,21 @@
         "image_interleave": "INT"
       },
       "optional": {}
+    },
+    "outputs": [
+      "CONDITIONING"
+    ]
+  },
+  "TextEncodeJoyImageEdit": {
+    "category": "model/conditioning/joyimage",
+    "inputs": {
+      "required": {
+        "clip": "CLIP",
+        "prompt": "STRING"
+      },
+      "optional": {
+        "vae": "VAE"
+      }
     },
     "outputs": [
       "CONDITIONING"
@@ -10348,6 +10548,21 @@
       "VIDEO"
     ]
   },
+  "VideoFrameSample": {
+    "category": "video",
+    "inputs": {
+      "required": {
+        "video": "VIDEO",
+        "num_frames": "INT",
+        "strategy": "COMBO",
+        "seed": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO"
+    ]
+  },
   "VideoLinearCFGGuidance": {
     "category": "model/sampling/guiders",
     "inputs": {
@@ -10359,6 +10574,34 @@
     },
     "outputs": [
       "MODEL"
+    ]
+  },
+  "VideoRandomTemporalCrop": {
+    "category": "video/transform",
+    "inputs": {
+      "required": {
+        "video": "VIDEO",
+        "length": "INT",
+        "seed": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO"
+    ]
+  },
+  "VideoTemporalCrop": {
+    "category": "video/transform",
+    "inputs": {
+      "required": {
+        "video": "VIDEO",
+        "start_frame": "INT",
+        "length": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO"
     ]
   },
   "VideoTriangleCFGGuidance": {
@@ -11336,6 +11579,24 @@
       "CONDITIONING",
       "CONDITIONING",
       "LATENT"
+    ]
+  },
+  "WanUni3CControlnetApply": {
+    "category": "model/patch/wan",
+    "inputs": {
+      "required": {
+        "model": "MODEL",
+        "model_patch": "MODEL_PATCH",
+        "vae": "VAE",
+        "render_video": "IMAGE",
+        "strength": "FLOAT",
+        "start_percent": "FLOAT",
+        "end_percent": "FLOAT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "MODEL"
     ]
   },
   "WanVaceToVideo": {
