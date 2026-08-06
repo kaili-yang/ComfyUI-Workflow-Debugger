@@ -273,6 +273,37 @@
           ]
         },
         {
+          "class": "MiniMaxH3ImageToVideo",
+          "inputSlot": "clip",
+          "inputSlotIndex": 0,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "MiniMaxH3ReferenceToVideo",
+          "inputSlot": "clip",
+          "inputSlotIndex": 0,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            },
+            {
+              "name": "audio_vae",
+              "type": "VAE",
+              "slotIndex": 2
+            }
+          ]
+        },
+        {
           "class": "PhotoMakerEncode",
           "inputSlot": "clip",
           "inputSlotIndex": 1,
@@ -346,6 +377,20 @@
           "extraInputs": []
         },
         {
+          "class": "TextEncodeMageFlowEdit",
+          "inputSlot": "clip",
+          "inputSlotIndex": 0,
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "TextEncodeMageFlowEdit",
+          "inputSlot": "clip",
+          "inputSlotIndex": 0,
+          "outputSlot": 1,
+          "extraInputs": []
+        },
+        {
           "class": "TextEncodeQwenImageEdit",
           "inputSlot": "clip",
           "inputSlotIndex": 0,
@@ -385,6 +430,44 @@
               "slotIndex": 1
             }
           ]
+        },
+        {
+          "class": "MiniMaxH3ImageToVideo",
+          "inputSlot": "clip",
+          "inputSlotIndex": 0,
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
+          "class": "MiniMaxH3ReferenceToVideo",
+          "inputSlot": "clip",
+          "inputSlotIndex": 0,
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            },
+            {
+              "name": "audio_vae",
+              "type": "VAE",
+              "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "TextEncodeMageFlowEdit",
+          "inputSlot": "clip",
+          "inputSlotIndex": 0,
+          "outputSlot": 2,
+          "extraInputs": []
         }
       ],
       "MODEL": [
@@ -2479,39 +2562,6 @@
           ]
         },
         {
-          "class": "KlingCameraControlI2VNode",
-          "inputSlot": "start_frame",
-          "inputSlotIndex": 0,
-          "outputSlot": 0,
-          "extraInputs": []
-        },
-        {
-          "class": "KlingDualCharacterVideoEffectNode",
-          "inputSlot": "image_left",
-          "inputSlotIndex": 0,
-          "outputSlot": 0,
-          "extraInputs": [
-            {
-              "name": "image_right",
-              "type": "IMAGE",
-              "slotIndex": 1
-            }
-          ]
-        },
-        {
-          "class": "KlingDualCharacterVideoEffectNode",
-          "inputSlot": "image_right",
-          "inputSlotIndex": 1,
-          "outputSlot": 0,
-          "extraInputs": [
-            {
-              "name": "image_left",
-              "type": "IMAGE",
-              "slotIndex": 0
-            }
-          ]
-        },
-        {
           "class": "KlingFirstLastFrameNode",
           "inputSlot": "first_frame",
           "inputSlotIndex": 0,
@@ -2579,13 +2629,6 @@
           "extraInputs": []
         },
         {
-          "class": "KlingSingleImageVideoEffectNode",
-          "inputSlot": "image",
-          "inputSlotIndex": 0,
-          "outputSlot": 0,
-          "extraInputs": []
-        },
-        {
           "class": "KlingStartEndFrameNode",
           "inputSlot": "start_frame",
           "inputSlotIndex": 0,
@@ -2614,6 +2657,13 @@
         {
           "class": "LtxvApiImageToVideo",
           "inputSlot": "image",
+          "inputSlotIndex": 0,
+          "outputSlot": 0,
+          "extraInputs": []
+        },
+        {
+          "class": "MinimaxHailuo03FirstLastFrameNode",
+          "inputSlot": "first_frame",
           "inputSlotIndex": 0,
           "outputSlot": 0,
           "extraInputs": []
@@ -3736,6 +3786,55 @@
           ]
         },
         {
+          "class": "MiniMaxH3ImageToVideo",
+          "inputSlot": "vae",
+          "inputSlotIndex": 1,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "clip",
+              "type": "CLIP",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "MiniMaxH3ReferenceToVideo",
+          "inputSlot": "vae",
+          "inputSlotIndex": 1,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "clip",
+              "type": "CLIP",
+              "slotIndex": 0
+            },
+            {
+              "name": "audio_vae",
+              "type": "VAE",
+              "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "MiniMaxH3ReferenceToVideo",
+          "inputSlot": "audio_vae",
+          "inputSlotIndex": 2,
+          "outputSlot": 0,
+          "extraInputs": [
+            {
+              "name": "clip",
+              "type": "CLIP",
+              "slotIndex": 0
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
+            }
+          ]
+        },
+        {
           "class": "SV3D_Conditioning",
           "inputSlot": "vae",
           "inputSlotIndex": 2,
@@ -4638,6 +4737,55 @@
               "name": "clip",
               "type": "CLIP",
               "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "MiniMaxH3ImageToVideo",
+          "inputSlot": "vae",
+          "inputSlotIndex": 1,
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "clip",
+              "type": "CLIP",
+              "slotIndex": 0
+            }
+          ]
+        },
+        {
+          "class": "MiniMaxH3ReferenceToVideo",
+          "inputSlot": "vae",
+          "inputSlotIndex": 1,
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "clip",
+              "type": "CLIP",
+              "slotIndex": 0
+            },
+            {
+              "name": "audio_vae",
+              "type": "VAE",
+              "slotIndex": 2
+            }
+          ]
+        },
+        {
+          "class": "MiniMaxH3ReferenceToVideo",
+          "inputSlot": "audio_vae",
+          "inputSlotIndex": 2,
+          "outputSlot": 1,
+          "extraInputs": [
+            {
+              "name": "clip",
+              "type": "CLIP",
+              "slotIndex": 0
+            },
+            {
+              "name": "vae",
+              "type": "VAE",
+              "slotIndex": 1
             }
           ]
         },
@@ -6438,6 +6586,42 @@
         ]
       },
       {
+        "class": "TextEncodeMageFlowEdit",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null,
+          "negative_prompt": null,
+          "width": null,
+          "height": null,
+          "batch_size": null
+        },
+        "requiredInputs": [
+          {
+            "name": "clip",
+            "type": "CLIP",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "TextEncodeMageFlowEdit",
+        "outputSlot": 1,
+        "widgetDefaults": {
+          "prompt": null,
+          "negative_prompt": null,
+          "width": null,
+          "height": null,
+          "batch_size": null
+        },
+        "requiredInputs": [
+          {
+            "name": "clip",
+            "type": "CLIP",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
         "class": "TextEncodeQwenImageEdit",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -6669,6 +6853,28 @@
           {
             "name": "negative",
             "type": "CONDITIONING",
+            "slotIndex": 1
+          }
+        ]
+      },
+      {
+        "class": "MiniMaxH3ImageToVideo",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null,
+          "width": null,
+          "height": null,
+          "length": null
+        },
+        "requiredInputs": [
+          {
+            "name": "clip",
+            "type": "CLIP",
+            "slotIndex": 0
+          },
+          {
+            "name": "vae",
+            "type": "VAE",
             "slotIndex": 1
           }
         ]
@@ -7232,6 +7438,34 @@
           {
             "name": "clip",
             "type": "CLIP",
+            "slotIndex": 2
+          }
+        ]
+      },
+      {
+        "class": "MiniMaxH3ReferenceToVideo",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null,
+          "width": null,
+          "height": null,
+          "length": null,
+          "ref_image_size": null
+        },
+        "requiredInputs": [
+          {
+            "name": "clip",
+            "type": "CLIP",
+            "slotIndex": 0
+          },
+          {
+            "name": "vae",
+            "type": "VAE",
+            "slotIndex": 1
+          },
+          {
+            "name": "audio_vae",
+            "type": "VAE",
             "slotIndex": 2
           }
         ]
@@ -9622,6 +9856,18 @@
         "requiredInputs": []
       },
       {
+        "class": "IdeogramPImage",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null,
+          "quality": null,
+          "resolution": null,
+          "aspect_ratio": null,
+          "prompt_upsampling": null
+        },
+        "requiredInputs": []
+      },
+      {
         "class": "IdeogramV3",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -10994,6 +11240,18 @@
         ]
       },
       {
+        "class": "TopazImageEnhanceV2",
+        "outputSlot": 0,
+        "widgetDefaults": {},
+        "requiredInputs": [
+          {
+            "name": "image",
+            "type": "IMAGE",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
         "class": "WanImageToImageApi",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -11226,25 +11484,6 @@
           {
             "name": "alpha",
             "type": "MASK",
-            "slotIndex": 1
-          }
-        ]
-      },
-      {
-        "class": "KlingVirtualTryOnNode",
-        "outputSlot": 0,
-        "widgetDefaults": {
-          "model_name": null
-        },
-        "requiredInputs": [
-          {
-            "name": "human_image",
-            "type": "IMAGE",
-            "slotIndex": 0
-          },
-          {
-            "name": "cloth_image",
-            "type": "IMAGE",
             "slotIndex": 1
           }
         ]
@@ -11599,6 +11838,16 @@
         "requiredInputs": []
       },
       {
+        "class": "EmptyMiniMaxH3LatentAV",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "width": null,
+          "height": null,
+          "length": null
+        },
+        "requiredInputs": []
+      },
+      {
         "class": "EmptyMochiLatentVideo",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -11635,7 +11884,6 @@
         "outputSlot": 0,
         "widgetDefaults": {
           "frames_number": null,
-          "frame_rate": null,
           "batch_size": null
         },
         "requiredInputs": []
@@ -12009,6 +12257,24 @@
         ]
       },
       {
+        "class": "TextEncodeMageFlowEdit",
+        "outputSlot": 2,
+        "widgetDefaults": {
+          "prompt": null,
+          "negative_prompt": null,
+          "width": null,
+          "height": null,
+          "batch_size": null
+        },
+        "requiredInputs": [
+          {
+            "name": "clip",
+            "type": "CLIP",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
         "class": "TrimVideoLatent",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -12264,6 +12530,28 @@
           {
             "name": "samples2",
             "type": "LATENT",
+            "slotIndex": 1
+          }
+        ]
+      },
+      {
+        "class": "MiniMaxH3ImageToVideo",
+        "outputSlot": 1,
+        "widgetDefaults": {
+          "prompt": null,
+          "width": null,
+          "height": null,
+          "length": null
+        },
+        "requiredInputs": [
+          {
+            "name": "clip",
+            "type": "CLIP",
+            "slotIndex": 0
+          },
+          {
+            "name": "vae",
+            "type": "VAE",
             "slotIndex": 1
           }
         ]
@@ -12700,6 +12988,34 @@
           {
             "name": "clip",
             "type": "CLIP",
+            "slotIndex": 2
+          }
+        ]
+      },
+      {
+        "class": "MiniMaxH3ReferenceToVideo",
+        "outputSlot": 1,
+        "widgetDefaults": {
+          "prompt": null,
+          "width": null,
+          "height": null,
+          "length": null,
+          "ref_image_size": null
+        },
+        "requiredInputs": [
+          {
+            "name": "clip",
+            "type": "CLIP",
+            "slotIndex": 0
+          },
+          {
+            "name": "vae",
+            "type": "VAE",
+            "slotIndex": 1
+          },
+          {
+            "name": "audio_vae",
+            "type": "VAE",
             "slotIndex": 2
           }
         ]
@@ -14639,6 +14955,21 @@
         ]
       },
       {
+        "class": "MiniMaxH3SigmaShift",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "shift_video": null,
+          "shift_audio": null
+        },
+        "requiredInputs": [
+          {
+            "name": "model",
+            "type": "MODEL",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
         "class": "ModelComputeDtype",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -16109,6 +16440,22 @@
         "requiredInputs": []
       },
       {
+        "class": "Flux3ImageToVideoNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null
+        },
+        "requiredInputs": []
+      },
+      {
+        "class": "Flux3TextToVideoNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null
+        },
+        "requiredInputs": []
+      },
+      {
         "class": "GeminiVideoOmni",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -16160,17 +16507,6 @@
         "class": "HeyGenAvatarVideoNode",
         "outputSlot": 0,
         "widgetDefaults": {},
-        "requiredInputs": []
-      },
-      {
-        "class": "KlingCameraControlT2VNode",
-        "outputSlot": 0,
-        "widgetDefaults": {
-          "prompt": null,
-          "negative_prompt": null,
-          "cfg_scale": null,
-          "aspect_ratio": null
-        },
         "requiredInputs": []
       },
       {
@@ -16341,6 +16677,24 @@
           "duration": null,
           "loop": null,
           "seed": null
+        },
+        "requiredInputs": []
+      },
+      {
+        "class": "MinimaxHailuo03ReferenceNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "seed": null,
+          "watermark": null
+        },
+        "requiredInputs": []
+      },
+      {
+        "class": "MinimaxHailuo03TextToVideoNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "seed": null,
+          "watermark": null
         },
         "requiredInputs": []
       },
@@ -16588,6 +16942,20 @@
         ]
       },
       {
+        "class": "Flux3VideoContinuationNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "prompt": null
+        },
+        "requiredInputs": [
+          {
+            "name": "video",
+            "type": "VIDEO",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
         "class": "GrokVideoEditNode",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -16683,23 +17051,6 @@
           {
             "name": "video",
             "type": "VIDEO",
-            "slotIndex": 0
-          }
-        ]
-      },
-      {
-        "class": "KlingCameraControlI2VNode",
-        "outputSlot": 0,
-        "widgetDefaults": {
-          "prompt": null,
-          "negative_prompt": null,
-          "cfg_scale": null,
-          "aspect_ratio": null
-        },
-        "requiredInputs": [
-          {
-            "name": "start_frame",
-            "type": "IMAGE",
             "slotIndex": 0
           }
         ]
@@ -16826,22 +17177,6 @@
         ]
       },
       {
-        "class": "KlingSingleImageVideoEffectNode",
-        "outputSlot": 0,
-        "widgetDefaults": {
-          "effect_scene": null,
-          "model_name": null,
-          "duration": null
-        },
-        "requiredInputs": [
-          {
-            "name": "image",
-            "type": "IMAGE",
-            "slotIndex": 0
-          }
-        ]
-      },
-      {
         "class": "LtxvApiImageToVideo",
         "outputSlot": 0,
         "widgetDefaults": {
@@ -16887,6 +17222,21 @@
           {
             "name": "video",
             "type": "VIDEO",
+            "slotIndex": 0
+          }
+        ]
+      },
+      {
+        "class": "MinimaxHailuo03FirstLastFrameNode",
+        "outputSlot": 0,
+        "widgetDefaults": {
+          "seed": null,
+          "watermark": null
+        },
+        "requiredInputs": [
+          {
+            "name": "first_frame",
+            "type": "IMAGE",
             "slotIndex": 0
           }
         ]
@@ -16979,8 +17329,7 @@
         "outputSlot": 0,
         "widgetDefaults": {
           "filename_prefix": null,
-          "format": null,
-          "codec": null
+          "format": null
         },
         "requiredInputs": [
           {
@@ -17319,28 +17668,6 @@
           {
             "name": "sound_file",
             "type": "AUDIO",
-            "slotIndex": 1
-          }
-        ]
-      },
-      {
-        "class": "KlingDualCharacterVideoEffectNode",
-        "outputSlot": 0,
-        "widgetDefaults": {
-          "effect_scene": null,
-          "model_name": null,
-          "mode": null,
-          "duration": null
-        },
-        "requiredInputs": [
-          {
-            "name": "image_left",
-            "type": "IMAGE",
-            "slotIndex": 0
-          },
-          {
-            "name": "image_right",
-            "type": "IMAGE",
             "slotIndex": 1
           }
         ]

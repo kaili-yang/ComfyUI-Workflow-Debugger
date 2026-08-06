@@ -2111,6 +2111,20 @@
       "LATENT"
     ]
   },
+  "EmptyMiniMaxH3LatentAV": {
+    "category": "model/latent/minimax",
+    "inputs": {
+      "required": {
+        "width": "INT",
+        "height": "INT",
+        "length": "INT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "LATENT"
+    ]
+  },
   "EmptyMochiLatentVideo": {
     "category": "model/latent/mochi",
     "inputs": {
@@ -2277,6 +2291,43 @@
     },
     "outputs": [
       "SIGMAS"
+    ]
+  },
+  "Flux3ImageToVideoNode": {
+    "category": "partner/video/BFL",
+    "inputs": {
+      "required": {
+        "prompt": "STRING"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO"
+    ]
+  },
+  "Flux3TextToVideoNode": {
+    "category": "partner/video/BFL",
+    "inputs": {
+      "required": {
+        "prompt": "STRING"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO"
+    ]
+  },
+  "Flux3VideoContinuationNode": {
+    "category": "partner/video/BFL",
+    "inputs": {
+      "required": {
+        "video": "VIDEO",
+        "prompt": "STRING"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO"
     ]
   },
   "FluxDisableGuidance": {
@@ -3276,6 +3327,25 @@
       "SIGMAS"
     ]
   },
+  "IdeogramPImage": {
+    "category": "partner/image/Ideogram",
+    "inputs": {
+      "required": {
+        "prompt": "STRING",
+        "quality": "COMBO",
+        "resolution": "COMBO",
+        "aspect_ratio": "COMBO",
+        "prompt_upsampling": "COMBO"
+      },
+      "optional": {
+        "seed": "INT"
+      }
+    },
+    "outputs": [
+      "IMAGE",
+      "STRING"
+    ]
+  },
   "IdeogramV3": {
     "category": "partner/image/Ideogram",
     "inputs": {
@@ -3927,75 +3997,6 @@
       "VIDEO"
     ]
   },
-  "KlingCameraControlI2VNode": {
-    "category": "partner/video/Kling",
-    "inputs": {
-      "required": {
-        "start_frame": "IMAGE",
-        "prompt": "STRING",
-        "negative_prompt": "STRING",
-        "cfg_scale": "FLOAT",
-        "aspect_ratio": "COMBO"
-      },
-      "optional": {}
-    },
-    "outputs": [
-      "VIDEO",
-      "STRING",
-      "STRING"
-    ]
-  },
-  "KlingCameraControlT2VNode": {
-    "category": "partner/video/Kling",
-    "inputs": {
-      "required": {
-        "prompt": "STRING",
-        "negative_prompt": "STRING",
-        "cfg_scale": "FLOAT",
-        "aspect_ratio": "COMBO"
-      },
-      "optional": {}
-    },
-    "outputs": [
-      "VIDEO",
-      "STRING",
-      "STRING"
-    ]
-  },
-  "KlingCameraControls": {
-    "category": "partner/video/Kling",
-    "inputs": {
-      "required": {
-        "camera_control_type": "COMBO",
-        "horizontal_movement": "FLOAT",
-        "vertical_movement": "FLOAT",
-        "pan": "FLOAT",
-        "tilt": "FLOAT",
-        "roll": "FLOAT",
-        "zoom": "FLOAT"
-      },
-      "optional": {}
-    },
-    "outputs": []
-  },
-  "KlingDualCharacterVideoEffectNode": {
-    "category": "partner/video/Kling",
-    "inputs": {
-      "required": {
-        "image_left": "IMAGE",
-        "image_right": "IMAGE",
-        "effect_scene": "COMBO",
-        "model_name": "COMBO",
-        "mode": "COMBO",
-        "duration": "COMBO"
-      },
-      "optional": {}
-    },
-    "outputs": [
-      "VIDEO",
-      "STRING"
-    ]
-  },
   "KlingFirstLastFrameNode": {
     "category": "partner/video/Kling",
     "inputs": {
@@ -4244,23 +4245,6 @@
       "VIDEO"
     ]
   },
-  "KlingSingleImageVideoEffectNode": {
-    "category": "partner/video/Kling",
-    "inputs": {
-      "required": {
-        "image": "IMAGE",
-        "effect_scene": "COMBO",
-        "model_name": "COMBO",
-        "duration": "COMBO"
-      },
-      "optional": {}
-    },
-    "outputs": [
-      "VIDEO",
-      "STRING",
-      "STRING"
-    ]
-  },
   "KlingStartEndFrameNode": {
     "category": "partner/video/Kling",
     "inputs": {
@@ -4346,20 +4330,6 @@
     },
     "outputs": [
       "VIDEO"
-    ]
-  },
-  "KlingVirtualTryOnNode": {
-    "category": "partner/image/Kling",
-    "inputs": {
-      "required": {
-        "human_image": "IMAGE",
-        "cloth_image": "IMAGE",
-        "model_name": "COMBO"
-      },
-      "optional": {}
-    },
-    "outputs": [
-      "IMAGE"
     ]
   },
   "Krea2ImageNode": {
@@ -4507,7 +4477,6 @@
     "inputs": {
       "required": {
         "frames_number": "INT",
-        "frame_rate": "INT",
         "batch_size": "INT"
       },
       "optional": {}
@@ -5137,7 +5106,7 @@
     "category": "model/training",
     "inputs": {
       "required": {
-        "folder_name": "STRING"
+        "folder_name": "COMBO"
       },
       "optional": {}
     },
@@ -5888,6 +5857,103 @@
     },
     "outputs": [
       "STRING"
+    ]
+  },
+  "MiniMaxH3ImageToVideo": {
+    "category": "model/conditioning/minimax",
+    "inputs": {
+      "required": {
+        "clip": "CLIP",
+        "vae": "VAE",
+        "prompt": "STRING",
+        "width": "INT",
+        "height": "INT",
+        "length": "INT"
+      },
+      "optional": {
+        "first_frame": "IMAGE",
+        "last_frame": "IMAGE"
+      }
+    },
+    "outputs": [
+      "CONDITIONING",
+      "LATENT"
+    ]
+  },
+  "MiniMaxH3ReferenceToVideo": {
+    "category": "model/conditioning/minimax",
+    "inputs": {
+      "required": {
+        "clip": "CLIP",
+        "vae": "VAE",
+        "audio_vae": "VAE",
+        "prompt": "STRING",
+        "width": "INT",
+        "height": "INT",
+        "length": "INT",
+        "ref_image_size": "COMBO"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "CONDITIONING",
+      "LATENT"
+    ]
+  },
+  "MiniMaxH3SigmaShift": {
+    "category": "model/patch/minimax",
+    "inputs": {
+      "required": {
+        "model": "MODEL",
+        "shift_video": "FLOAT",
+        "shift_audio": "FLOAT"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "MODEL"
+    ]
+  },
+  "MinimaxHailuo03FirstLastFrameNode": {
+    "category": "partner/video/MiniMax",
+    "inputs": {
+      "required": {
+        "first_frame": "IMAGE",
+        "seed": "INT",
+        "watermark": "BOOLEAN"
+      },
+      "optional": {
+        "last_frame": "IMAGE"
+      }
+    },
+    "outputs": [
+      "VIDEO"
+    ]
+  },
+  "MinimaxHailuo03ReferenceNode": {
+    "category": "partner/video/MiniMax",
+    "inputs": {
+      "required": {
+        "seed": "INT",
+        "watermark": "BOOLEAN"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO"
+    ]
+  },
+  "MinimaxHailuo03TextToVideoNode": {
+    "category": "partner/video/MiniMax",
+    "inputs": {
+      "required": {
+        "seed": "INT",
+        "watermark": "BOOLEAN"
+      },
+      "optional": {}
+    },
+    "outputs": [
+      "VIDEO"
     ]
   },
   "MinimaxHailuoVideoNode": {
@@ -8502,8 +8568,7 @@
       "required": {
         "video": "VIDEO",
         "filename_prefix": "STRING",
-        "format": "COMBO",
-        "codec": "COMBO"
+        "format": "COMBO"
       },
       "optional": {}
     },
@@ -9576,6 +9641,27 @@
       "CONDITIONING"
     ]
   },
+  "TextEncodeMageFlowEdit": {
+    "category": "model/conditioning/mage",
+    "inputs": {
+      "required": {
+        "clip": "CLIP",
+        "prompt": "STRING",
+        "negative_prompt": "STRING",
+        "width": "INT",
+        "height": "INT",
+        "batch_size": "INT"
+      },
+      "optional": {
+        "vae": "VAE"
+      }
+    },
+    "outputs": [
+      "CONDITIONING",
+      "CONDITIONING",
+      "LATENT"
+    ]
+  },
   "TextEncodeQwenImageEdit": {
     "category": "model/conditioning/qwen image",
     "inputs": {
@@ -9720,6 +9806,21 @@
         "creativity": "INT",
         "face_preservation": "BOOLEAN",
         "color_preservation": "BOOLEAN"
+      }
+    },
+    "outputs": [
+      "IMAGE"
+    ]
+  },
+  "TopazImageEnhanceV2": {
+    "category": "partner/image/Topaz",
+    "inputs": {
+      "required": {
+        "image": "IMAGE"
+      },
+      "optional": {
+        "output_width": "INT",
+        "output_height": "INT"
       }
     },
     "outputs": [
