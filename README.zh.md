@@ -8,6 +8,7 @@
 
 | 维护日期 | 维护人 | 维护内容 | 备注/状态 |
 | :--- | :--- | :--- | :--- |
+| 2026-08-05 | Claude | 同步 ComfyUI 后端节点定义与 ComfyUI_frontend 派生类型（共 788 个节点，sourceMap 25 种类型/752 条，conversionMap 21 种类型/362 条） | 已同步且测试通过 |
 | 2026-07-28 | Claude | 同步 ComfyUI 后端节点定义与 ComfyUI_frontend 派生类型（共 781 个节点，sourceMap 25 种类型/740 条，conversionMap 21 种类型/352 条） | 已同步且测试通过 |
 | 2026-06-10 | Antigravity | 同步 ComfyUI 后端节点定义与 ComfyUI_frontend 派生类型（共 690 个节点，sourceMap 25 种类型，conversionMap 21 种类型） | 已同步且测试通过 |
 | 2026-06-03 | Antigravity | 同步 ComfyUI 后端节点定义与 ComfyUI_frontend 派生类型（共 690 个节点，sourceMap 25 种类型，conversionMap 21 种类型） | 已同步且测试通过 |

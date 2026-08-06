@@ -8,6 +8,7 @@
 
 | Date | Maintainer | Description | Status/Notes |
 | :--- | :--- | :--- | :--- |
+| 2026-08-05 | Claude | Synchronized ComfyUI backend node definitions and ComfyUI_frontend derived types (788 nodes, sourceMap 25 types/752 entries, conversionMap 21 types/362 entries) | Synchronized and verified |
 | 2026-07-28 | Claude | Synchronized ComfyUI backend node definitions and ComfyUI_frontend derived types (781 nodes, sourceMap 25 types/740 entries, conversionMap 21 types/352 entries) | Synchronized and verified |
 | 2026-06-10 | Antigravity | Synchronized ComfyUI backend node definitions and ComfyUI_frontend derived types (690 nodes, sourceMap 25 types, conversionMap 21 types) | Synchronized and verified |
 | 2026-06-03 | Antigravity | Synchronized ComfyUI backend node definitions and ComfyUI_frontend derived types (690 nodes, sourceMap 25 types, conversionMap 21 types) | Synchronized and verified |
